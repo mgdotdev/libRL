@@ -35,6 +35,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         print(ErrorMsg)
         return ErrorMsg
 
+    # allows for file location to be passed as the data variable.
     if isinstance(Mcalc, str) is True:
         if splitext(Mcalc)[1] == '.csv':
             Mcalc = pd.read_csv(Mcalc, sep=',').to_numpy()
@@ -42,6 +43,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         elif splitext(Mcalc)[1] == '.xlsx':
             Mcalc = pd.read_excel(Mcalc).to_numpy()
 
+        # finds all rows in numpy array which aren't a part of the Nx5 data array expected
         x = []
         for i in np.arange(Mcalc.shape[0]):
             for k in np.arange(Mcalc.shape[1]):
@@ -49,6 +51,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     x.append(i)
                     break
 
+        # removes non-data rows from input array to yield the data array
         Mcalc = np.delete(Mcalc, x, axis=0)
 
     if d_set is None:

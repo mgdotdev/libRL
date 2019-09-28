@@ -1,6 +1,4 @@
 import libRL
-import numpy as np
-import pandas as pd
 
 def main():
     file_location = r'D:\Research and Teaching\University of Missouri-Kansas City\Dr. Xiaobo Chen\Microwave Absorption\Data\(nBu4)2Mo6 {A}'
