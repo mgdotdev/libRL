@@ -9,8 +9,9 @@ from os.path import split, splitext
 the RL function caluclates the Reflection Loss based on the mapping
 passed through as the grid variable, done either through
 multiprocessing or through the python built-in map() function. RL-func always
-uses the interpolation function, as the function passes through the input data so
-solving for the function at the data point frequency yields the data point.
+uses the interpolation function, even though as the function passes through the
+points associated with the input data, solving for the function at the associated
+frequencies yields the data point.
 '''
 
 def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
