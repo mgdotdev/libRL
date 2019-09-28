@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 from pathos.multiprocessing import ProcessPool as Pool
-from os.path import split, splitext
+from os.path import splitext
 
 '''    
 the RL function caluclates the Reflection Loss based on the mapping
@@ -161,7 +161,6 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         ErrorMsg = 'Error in partitioning frequency values'
         print(ErrorMsg)
         return ErrorMsg
-
 
     # if multiprocessing is given as a non-zero integer, use int value for number of nodes
     # if multiprocessing is given as a zero integer, use all available nodes
