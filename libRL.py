@@ -6,12 +6,12 @@ from pathos.multiprocessing import ProcessPool as Pool
 from os.path import splitext
 
 '''    
-the RL function caluclates the Reflection Loss based on the mapping
-passed through as the grid variable, done either through
-multiprocessing or through the python built-in map() function. RL-func always
-uses the interpolation function, even though as the function passes through the
-points associated with the input data, solving for the function at the associated
-frequencies yields the data point.
+the RL function calculates the Reflection Loss based on the mapping
+passed through as the grid variable, done either through multiprocessing 
+or through the python built-in map() function. RL-func always uses the 
+interpolation function, even though as the function passes through the 
+points associated with the input data, solving for the function at the 
+associated frequencies yields the data point.
 '''
 
 def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
@@ -44,7 +44,9 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         elif splitext(Mcalc)[1] == '.xlsx':
             Mcalc = pd.read_excel(Mcalc).to_numpy()
 
-        # finds all rows in numpy array which aren't a part of the Nx5 data array expected
+        # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
+        # note, if the file contains more/less than 5 columns this fails as the 6th row is
+        # always filled with NaN. That being said, most instruments output a Nx5 data file.
         x = []
         for i in np.arange(Mcalc.shape[0]):
             for k in np.arange(Mcalc.shape[1]):
@@ -139,22 +141,22 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     if f_set is None:
         grid=np.array([(m, n)
+                       for n in np.arange(d_set[0], d_set[1] + d_set[2], d_set[2])
                        for m in Mcalc[:, 0]
-                       for n in np.arange(d_set[0], d_set[1]+d_set[2], d_set[2])
         ])
 
     elif len(f_set) is 3:
         grid=np.array([(m, n)
+                       for n in np.arange(d_set[0], d_set[1] + d_set[2], d_set[2])
                        for m in np.arange(f_set[0], f_set[1]+f_set[2], f_set[2])
-                       for n in np.arange(d_set[0], d_set[1]+d_set[2], d_set[2])
         ])
 
     elif len(f_set) is 2:
         grid=np.array([(m, n)
+                       for n in np.arange(d_set[0], d_set[1] + d_set[2], d_set[2])
                        for m in Mcalc[
                                 np.argwhere(np.abs(f_set[0]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0]:
                                 np.argwhere(np.abs(f_set[1]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0], 0]
-                       for n in np.arange(d_set[0], d_set[1]+d_set[2], d_set[2])
         ])
 
     else:
@@ -177,7 +179,13 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     # formatting option, sometimes professors like 3 columns for each thickness value
     if 'multicolumn' in kwargs and kwargs['multicolumn'] is True:
-        pass
+        gridInt = int(grid.shape[0] / np.arange(d_set[0], d_set[1] + d_set[2], d_set[2]).shape[0])
+        MCres = np.zeros(
+            (gridInt, np.arange(d_set[0], d_set[1] + d_set[2], d_set[2]).shape[0] * 3)
+        )
+        for i in np.arange(int(MCres.shape[1] / 3)):
+            MCres[:, 3*i:3*i+3] = res[i*gridInt:(i+1)*gridInt, 0:3]
+        res = MCres
 
     return res
 
