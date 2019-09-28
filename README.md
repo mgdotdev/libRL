@@ -16,7 +16,7 @@ Library of functions used for characterizing Microwave Absortion
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>
 
-This Library is o include all of the programs, functions, and methods developed at the University of Missouri-Kansas City 
+This Library is to include all of the programs, functions, and methods developed at the University of Missouri-Kansas City 
 under NSF grant DMR-1609061.
 
 Michael Green is a PhD candidate under the supervision of Dr. Xiaobo Chen at the University of Missouri–Kansas City,
