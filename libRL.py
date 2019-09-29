@@ -82,7 +82,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     # pass data to a numpy array
     Mcalc = np.array(Mcalc)
 
-    # user option to use linear interpolation. Default is cubic spline.
+    # user option to use linear interpolation via a kwarg. Default is cubic spline.
     # (e1, e2, mu1, mu2) = (Real Permittivity, Complex Permittivity, Real Permeability, Complex Permeability)
     if 'interp' in kwargs and kwargs['interp'] is 'linear':
 
@@ -137,7 +137,8 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     # if frequency step value is given, interpolate the results.
     # Otherwise, the grid is tied to the given data as if the function
-    # was never interpolated.
+    # was never interpolated, as interpolating functions pass through
+    # all given variables.
 
     if f_set is None:
         grid=np.array([(m, n)
@@ -164,8 +165,8 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         print(ErrorMsg)
         return ErrorMsg
 
-    # if multiprocessing is given as a non-zero integer, use int value for number of nodes
-    # if multiprocessing is given as a zero integer, use all available nodes
+    # if multiprocessing is given and is a non-zero integer, use int value for number of nodes
+    # if multiprocessing is given and is the zero integer, use all available nodes
 
     if 'multiprocessing' in kwargs and isinstance(kwargs['multiprocessing'], int) is True:
 
