@@ -20,7 +20,7 @@ def main():
 
     characterization = libRL.CARL(
         Mcalc=file_location + file_name + '.csv',
-        f_set=(1,10,0.1), params=('tgde',), as_dataframe=True
+        f_set=(1,10,0.1), params='All', as_dataframe=True
     )
 
 if __name__ == "__main__":
