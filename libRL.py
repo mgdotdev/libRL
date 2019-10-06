@@ -1,6 +1,14 @@
 import cmath
-import numpy as np
-import pandas as pd
+
+from numpy import(
+arange, delete, zeros, abs, array,
+float64, argwhere, errstate, pi, sqrt
+)
+
+from pandas import(
+read_csv, read_excel, DataFrame
+)
+
 from scipy.interpolate import interp1d
 from pathos.multiprocessing import ProcessPool as Pool
 from os.path import splitext
@@ -8,64 +16,63 @@ from os.path import splitext
 '''    
 the RL function calculates the Reflection Loss based on the mapping
 passed through as the grid variable, done either through multiprocessing 
-or through the python built-in map() function. RL-func always uses the 
-interpolation function, even though as the function passes through the 
-points associated with the input data, solving for the function at the 
-associated frequencies yields the data point.
+or through the python built-in map() function. The RL function always
+uses the interpolation function, even though as the function passes 
+through the points associated with the input data, solving for the 
+function at the associated frequencies yields the data point. This
+is simply for simplicity.
 '''
 
 def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     '''
-    :param Mcalc: Permittivity and Permeability data
-    :param f_set: (start, end, [step]) tuple for frequency values in GHz
+    param Mcalc: Permittivity and Permeability data
+    param f_set: (start, end, [step]) tuple for frequency values in GHz
                  - if given as list of len 3, results are interpolated
                  - if given as list of len 2, results are data-derived
                  with the calculation bound by the given start and
                  end frequencies
                  - if f_set is None, frequency is bound to input data
-    :param d_set: (start, end, step) tuple for thickness values in mm
-    :param kwargs: interp - set to linear if user wants to linear interp instead of cubic.
+    param d_set: (start, end, step) tuple for thickness values in mm
+    param kwargs: interp - set to linear if user wants to linear interp instead of cubic.
                    multiprocessing - set to integer value to use multiprocessing with (int) nodes,
                    set to 0 to use all nodes.
-    :return: returns Nx3 data set of [RL, freq, thickness]
+    return: returns Nx3 data set of [RL, freq, thickness]
     '''
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
-        print(ErrorMsg)
         return ErrorMsg
 
     # allows for file location to be passed as the data variable.
     if isinstance(Mcalc, str) is True:
         if splitext(Mcalc)[1] == '.csv':
-            Mcalc = pd.read_csv(Mcalc, sep=',').to_numpy()
+            Mcalc = read_csv(Mcalc, sep=',').to_numpy()
 
         elif splitext(Mcalc)[1] == '.xlsx':
-            Mcalc = pd.read_excel(Mcalc).to_numpy()
+            Mcalc = read_excel(Mcalc).to_numpy()
 
         # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
         # note, if the file contains more/less than 5 columns this fails as the 6th row is
         # always filled with NaN. That being said, most instruments output a Nx5 data file.
         x = []
-        for i in np.arange(Mcalc.shape[0]):
-            for k in np.arange(Mcalc.shape[1]):
+        for i in arange(Mcalc.shape[0]):
+            for k in arange(Mcalc.shape[1]):
                 if isinstance(Mcalc[i, k], (int, float)) is False or Mcalc[i, k] != Mcalc[i, k]:
                     x.append(i)
                     break
 
         # removes non-data rows from input array to yield the data array
-        Mcalc = np.delete(Mcalc, x, axis=0)
+        Mcalc = delete(Mcalc, x, axis=0)
 
     if d_set is None:
         ErrorMsg = 'd_set must be given as a tuple (floats or ints) of length 3 (d_st, d_end, d_step)'
-        print(ErrorMsg)
         return ErrorMsg
 
     def G(grid):
         f = grid[0]
         d = grid[1]
-        y = (20 * cmath.log10((np.abs(((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) /
+        y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) /
             (e1f(f) - j * e2f(f)))) * (cmath.tanh(j * (2 * cmath.pi * (f * GHz) * (d * mm) / c) *
             cmath.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))))) - 1) /
             ((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) / (e1f(f) - j * e2f(f)))) *
@@ -80,58 +87,58 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     mm = 10**(-3)
 
     # pass data to a numpy array
-    Mcalc = np.array(Mcalc)
+    Mcalc = array(Mcalc)
 
     # user option to use linear interpolation via a kwarg. Default is cubic spline.
     # (e1, e2, mu1, mu2) = (Real Permittivity, Complex Permittivity, Real Permeability, Complex Permeability)
     if 'interp' in kwargs and kwargs['interp'] is 'linear':
 
         e1f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 1], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 1], dtype=float64),
             kind='linear', fill_value='extrapolate'
         )
 
         e2f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 2], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 2], dtype=float64),
             kind='linear', fill_value='extrapolate'
         )
 
         mu1f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 3], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 3], dtype=float64),
             kind='linear', fill_value='extrapolate'
         )
 
         mu2f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 4], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 4], dtype=float64),
             kind='linear', fill_value='extrapolate'
         )
 
     else:
         e1f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 1], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 1], dtype=float64),
             kind='cubic', fill_value='extrapolate'
         )
 
         e2f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 2], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 2], dtype=float64),
             kind='cubic', fill_value='extrapolate'
         )
 
         mu1f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 3], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 3], dtype=float64),
             kind='cubic', fill_value='extrapolate'
         )
 
         mu2f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 4], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 4], dtype=float64),
             kind='cubic', fill_value='extrapolate'
         )
 
@@ -141,28 +148,27 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     # all given variables.
 
     if f_set is None:
-        grid=np.array([(m, n)
-                       for n in np.arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+        grid=array([(m, n)
+                       for n in arange(d_set[0], d_set[1] + d_set[2], d_set[2])
                        for m in Mcalc[:, 0]
         ])
 
     elif len(f_set) is 3:
-        grid=np.array([(m, n)
-                       for n in np.arange(d_set[0], d_set[1] + d_set[2], d_set[2])
-                       for m in np.arange(f_set[0], f_set[1]+f_set[2], f_set[2])
+        grid=array([(m, n)
+                       for n in arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+                       for m in arange(f_set[0], f_set[1]+f_set[2], f_set[2])
         ])
 
     elif len(f_set) is 2:
-        grid=np.array([(m, n)
-                       for n in np.arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+        grid=array([(m, n)
+                       for n in arange(d_set[0], d_set[1] + d_set[2], d_set[2])
                        for m in Mcalc[
-                                np.argwhere(np.abs(f_set[0]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0]:
-                                np.argwhere(np.abs(f_set[1]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0], 0]
+                                argwhere(abs(f_set[0]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0]:
+                                argwhere(abs(f_set[1]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0], 0]
         ])
 
     else:
         ErrorMsg = 'Error in partitioning frequency values'
-        print(ErrorMsg)
         return ErrorMsg
 
     # if multiprocessing is given and is a non-zero integer, use int value for number of nodes
@@ -171,24 +177,32 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     if 'multiprocessing' in kwargs and isinstance(kwargs['multiprocessing'], int) is True:
 
         if kwargs['multiprocessing'] is 0:
-            res = np.array(Pool().map(G, grid))
+            res = array(Pool().map(G, grid))
         else:
-            res = np.array(Pool(nodes=kwargs['multiprocessing']).map(G, grid))
+            res = array(Pool(nodes=kwargs['multiprocessing']).map(G, grid))
 
     else:
-        res = np.array(list(map(G, grid)))
+        res = array(list(map(G, grid)))
 
     # formatting option, sometimes professors like 3 columns for each thickness value
     if 'multicolumn' in kwargs and kwargs['multicolumn'] is True:
-        gridInt = int(grid.shape[0] / np.arange(d_set[0], d_set[1] + d_set[2], d_set[2]).shape[0])
-        MCres = np.zeros(
-            (gridInt, np.arange(d_set[0], d_set[1] + d_set[2], d_set[2]).shape[0] * 3)
+        gridInt = int(grid.shape[0] / arange(d_set[0], d_set[1] + d_set[2], d_set[2]).shape[0])
+        MCres = zeros(
+            (gridInt, arange(d_set[0], d_set[1] + d_set[2], d_set[2]).shape[0] * 3)
         )
-        for i in np.arange(int(MCres.shape[1] / 3)):
+        for i in arange(int(MCres.shape[1] / 3)):
             MCres[:, 3*i:3*i+3] = res[i*gridInt:(i+1)*gridInt, 0:3]
         res = MCres
 
     return res
+
+'''
+the CARL (ChAracterization of Reflection Loss) function takes
+a set or list of keywords in the 'params' variable and calculates 
+the character values associated with the parameter. See  
+10.1016/j.jmat.2019.07.003 for further details and the
+function comments below for a full list of keywords.
+'''
 
 def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
@@ -228,29 +242,28 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
-        print(ErrorMsg)
         return ErrorMsg
 
     # allows for file location to be passed as the data variable.
     if isinstance(Mcalc, str) is True:
         if splitext(Mcalc)[1] == '.csv':
-            Mcalc = pd.read_csv(Mcalc, sep=',').to_numpy()
+            Mcalc = read_csv(Mcalc, sep=',').to_numpy()
 
         elif splitext(Mcalc)[1] == '.xlsx':
-            Mcalc = pd.read_excel(Mcalc).to_numpy()
+            Mcalc = read_excel(Mcalc).to_numpy()
 
         # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
         # note, if the file contains more/less than 5 columns this fails as the 6th row is
         # always filled with NaN. That being said, most instruments output a Nx5 data file.
         x = []
-        for i in np.arange(Mcalc.shape[0]):
-            for k in np.arange(Mcalc.shape[1]):
+        for i in arange(Mcalc.shape[0]):
+            for k in arange(Mcalc.shape[1]):
                 if isinstance(Mcalc[i, k], (int, float)) is False or Mcalc[i, k] != Mcalc[i, k]:
                     x.append(i)
                     break
 
         # removes non-data rows from input array to yield the data array
-        Mcalc = np.delete(Mcalc, x, axis=0)
+        Mcalc = delete(Mcalc, x, axis=0)
 
     # constants for later use
     j = cmath.sqrt(-1)
@@ -261,82 +274,81 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     e0 = 8.854188 * 10 ** (-12)
 
     # pass data to a numpy array
-    Mcalc = np.array(Mcalc)
+    Mcalc = array(Mcalc)
 
     # user option to use linear interpolation via a kwarg. Default is cubic spline.
     # (e1, e2, mu1, mu2) = (Real Permittivity, Complex Permittivity, Real Permeability, Complex Permeability)
     if 'interp' in kwargs and kwargs['interp'] is 'linear':
 
         e1f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 1], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 1], dtype=float64),
             kind='linear', fill_value='extrapolate'
         )
 
         e2f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 2], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 2], dtype=float64),
             kind='linear', fill_value='extrapolate'
         )
 
         mu1f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 3], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 3], dtype=float64),
             kind='linear', fill_value='extrapolate'
         )
 
         mu2f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 4], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 4], dtype=float64),
             kind='linear', fill_value='extrapolate'
         )
 
     else:
         e1f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 1], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 1], dtype=float64),
             kind='cubic', fill_value='extrapolate'
         )
 
         e2f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 2], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 2], dtype=float64),
             kind='cubic', fill_value='extrapolate'
         )
 
         mu1f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 3], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 3], dtype=float64),
             kind='cubic', fill_value='extrapolate'
         )
 
         mu2f = interp1d(
-            np.array(Mcalc[:, 0], dtype=np.float),
-            np.array(Mcalc[:, 4], dtype=np.float),
+            array(Mcalc[:, 0], dtype=float64),
+            array(Mcalc[:, 4], dtype=float64),
             kind='cubic', fill_value='extrapolate'
         )
 
-    np.errstate(divide='ignore')
+    errstate(divide='ignore')
 
     if f_set is None:
-        f_vals=np.array([
+        f_vals=array([
             m for m in Mcalc[:, 0]
         ])
 
     elif len(f_set) is 3:
-        f_vals=np.array([
-            m for m in np.arange(f_set[0], f_set[1]+f_set[2], f_set[2])
+        f_vals=array([
+            m for m in arange(f_set[0], f_set[1]+f_set[2], f_set[2])
         ])
 
     elif len(f_set) is 2:
-        f_vals=np.array([
-            m for m in Mcalc[np.argwhere(np.abs(f_set[0]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0]:
-                             np.argwhere(np.abs(f_set[1]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0], 0]
+        f_vals=array([
+            m for m in Mcalc[argwhere(abs(f_set[0]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0]:
+                             argwhere(abs(f_set[1]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0], 0]
         ])
 
     else:
         ErrorMsg = 'Error in partitioning frequency values'
-        print(ErrorMsg)
         return ErrorMsg
 
     chars = {
@@ -345,16 +357,19 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         "Qe": lambda f: (e1f(f) / e2f(f))**-1,
         "Qu": lambda f: (mu1f(f) / mu2f(f))**-1,
         "Qf": lambda f: ((e1f(f) / e2f(f))+(mu1f(f) / mu2f(f)))**-1,
-        "ReRefIndx": lambda f: np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).real,
-        "ExtCoeff": lambda f:  np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).imag,
-        "AtnuCnstNm": lambda f: ((2*np.pi*f*GHz*np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1)).real,
-        "AtnuCnstdB": lambda f: ((2*np.pi*f*GHz*np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1)).real * 8.86588,
-        "PhsCnst": lambda f: ((2*np.pi*f*GHz*np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1)).imag,
-        "PhsVel": lambda f: ((2 * np.pi * i * GHz) / ((2*np.pi*f*GHz*np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1))).imag,
-        "Res": lambda f: (Z0 * np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).real,
-        "React": lambda f: (Z0 * np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).imag,
-        "Condt": lambda f: (2 * np.pi * f * GHz) * (e0 * e2f(f)),
-        "Skd": lambda f: 1000 / ((2*np.pi*f*GHz*np.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1)).real,
+        "ReRefIndx": lambda f: sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).real,
+        "ExtCoeff": lambda f:  sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).imag,
+        "AtnuCnstNm": lambda f: ((2*pi*f*GHz*sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1)).real,
+        "AtnuCnstdB": lambda f: ((2*pi*f*GHz*sqrt((mu1f(f) - j * mu2f(f)) *
+                                (e1f(f) - j * e2f(f))))*(c**-1)).real * 8.86588,
+        "PhsCnst": lambda f: ((2*pi*f*GHz*sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1)).imag,
+        "PhsVel": lambda f: ((2 * pi * i * GHz) /
+                            ((2*pi*f*GHz*sqrt((mu1f(f) - j * mu2f(f)) *
+                            (e1f(f) - j * e2f(f))))*(c**-1))).imag,
+        "Res": lambda f: (Z0 * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).real,
+        "React": lambda f: (Z0 * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).imag,
+        "Condt": lambda f: (2 *pi * f * GHz) * (e0 * e2f(f)),
+        "Skd": lambda f: 1000 / ((2*pi*f*GHz*sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1)).real,
         "Eddy": lambda f: mu2f(f) / (mu1f(f) ** 2 * f)
     }
 
@@ -367,7 +382,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
             "React","Condt","Skd","Eddy"
         ]
 
-    Matrix, names = np.zeros((f_vals.shape[0],len(params)+1), dtype=float), ["frequency"]
+    Matrix, names = zeros((f_vals.shape[0],len(params)+1), dtype=float64), ["frequency"]
     Matrix[:,0] = f_vals[:]
 
     for counter, param in enumerate(params, start=1):
@@ -375,7 +390,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         names.append(param)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
-        panda_matrix = pd.DataFrame(Matrix)
+        panda_matrix = DataFrame(Matrix)
         panda_matrix.columns = names
         return panda_matrix
 
