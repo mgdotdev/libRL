@@ -30,13 +30,19 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     param f_set: (start, end, [step]) tuple for frequency values in GHz
                  - if given as list of len 3, results are interpolated
                  - if given as list of len 2, results are data-derived
-                 with the calculation bound by the given start and
-                 end frequencies
+                 with the calculation bound by the given start and end
+                 frequencies
                  - if f_set is None, frequency is bound to input data
-    param d_set: (start, end, step) tuple for thickness values in mm
-    param kwargs: interp - set to linear if user wants to linear interp instead of cubic.
-                   multiprocessing - set to integer value to use multiprocessing with (int) nodes,
-                   set to 0 to use all nodes.
+    param d_set: (start, end, step) tuple for thickness values in mm.
+                 - or -
+                 if d_set is of type list, then the thickness values
+                 calculated will only be of the values present in the
+                 list.
+    param kwargs: interp - set to linear if user wants to linear interp
+                  instead of cubic.
+                  multiprocessing - set to integer value to use
+                  multiprocessing with (int) nodes, set to 0 to use all
+                  nodes.
     return: returns Nx3 data set of [RL, freq, thickness]
     '''
 
@@ -142,6 +148,11 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
             kind='cubic', fill_value='extrapolate'
         )
 
+    if type(d_set) is list:
+        pass
+    else:
+        d_set = arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+
     # if frequency step value is given, interpolate the results.
     # Otherwise, the grid is tied to the given data as if the function
     # was never interpolated, as interpolating functions pass through
@@ -149,19 +160,19 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     if f_set is None:
         grid=array([(m, n)
-                       for n in arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+                       for n in d_set
                        for m in Mcalc[:, 0]
         ])
 
     elif len(f_set) is 3:
         grid=array([(m, n)
-                       for n in arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+                       for n in d_set
                        for m in arange(f_set[0], f_set[1]+f_set[2], f_set[2])
         ])
 
     elif len(f_set) is 2:
         grid=array([(m, n)
-                       for n in arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+                       for n in d_set
                        for m in Mcalc[
                                 argwhere(abs(f_set[0]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0]:
                                 argwhere(abs(f_set[1]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0], 0]
@@ -214,7 +225,10 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                  with the calculation bound by the given start and
                  end frequencies
                  - if f_set is None, frequency is bound to input data
-    :param params: A set i.e. {} of text arguments for the parameters
+                 or
+                 - if f_set is of type list, the frequencies calculate
+                 will be only the frequencies represented in the list.
+    :param params: A list i.e. [] of text arguments for the parameters
                    the user wants calculated. The available arguments
                    are: {
                    "tgde",          # dielectric loss tangent
@@ -234,7 +248,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                    "Skd",           # Skin Depth
                    "Eddy"           # Eddy Current Loss
                    }
-                   If no set is passed, the default is to calculate everything.
+                   If no list is passed, the default is to calculate everything.
 
     :return: returns NxY data set of the requested parameters as columns 1 to Y with the input
                   frequency values in column zero of length N.
@@ -336,6 +350,9 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
             m for m in Mcalc[:, 0]
         ])
 
+    elif type(f_set) is list:
+        f_vals=array(f_set)
+
     elif len(f_set) is 3:
         f_vals=array([
             m for m in arange(f_set[0], f_set[1]+f_set[2], f_set[2])
@@ -373,7 +390,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         "Eddy": lambda f: mu2f(f) / (mu1f(f) ** 2 * f)
     }
 
-    if params is "All":
+    if params is "All" or params[0] is "All":
         params = [
             "tgde","tgdu","Qe","Qu","Qf",
             "ReRefIndx","ExtCoeff",
@@ -386,7 +403,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     Matrix[:,0] = f_vals[:]
 
     for counter, param in enumerate(params, start=1):
-        Matrix[:,counter] = chars[param](f_vals[:])
+        Matrix[:, counter] = chars[param](f_vals[:])
         names.append(param)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
