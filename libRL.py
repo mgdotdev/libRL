@@ -9,6 +9,7 @@ from pandas import(
 read_csv, read_excel, DataFrame
 )
 
+import warnings
 from scipy.interpolate import interp1d
 from pathos.multiprocessing import ProcessPool as Pool
 from os.path import splitext
@@ -48,7 +49,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
-        return ErrorMsg
+        raise RuntimeError(ErrorMsg)
 
     # allows for file location to be passed as the data variable.
     if isinstance(Mcalc, str) is True:
@@ -57,6 +58,10 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
         elif splitext(Mcalc)[1] == '.xlsx':
             Mcalc = read_excel(Mcalc).to_numpy()
+
+        else:
+            ErrorMsg = 'Error partitioning input data'
+            raise RuntimeError(ErrorMsg)
 
         # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
         # note, if the file contains more/less than 5 columns this fails as the 6th row is
@@ -72,8 +77,14 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         Mcalc = delete(Mcalc, x, axis=0)
 
     if d_set is None:
-        ErrorMsg = 'd_set must be given as a tuple (floats or ints) of length 3 (d_st, d_end, d_step)'
-        return ErrorMsg
+        ErrorMsg = 'd_set must be given as a tuple of length 3 (d_st, d_end, d_step) or a list [] of d values/'
+        raise SyntaxError(ErrorMsg)
+
+    if Mcalc[0,0] > f_set[0] or Mcalc[-1,0] < f_set[1]:
+        warning = r'You are electing to interpolate outside of the bounds of your experimental data ' \
+                  'set. Please be advised that the resulting calculations for points beyond the data' \
+                  'set are likely to be in Error.'
+        warnings.warn(warning)
 
     def G(grid):
         f = grid[0]
@@ -174,13 +185,15 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         grid=array([(m, n)
                        for n in d_set
                        for m in Mcalc[
-                                argwhere(abs(f_set[0]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0]:
-                                argwhere(abs(f_set[1]-Mcalc[:,0])<=Mcalc[1,0]-Mcalc[0,0])[0][0], 0]
+                                argwhere(abs(f_set[0]-Mcalc[:,0])<=
+                                         Mcalc[1,0]-Mcalc[0,0])[0][0]:
+                                argwhere(abs(f_set[1]-Mcalc[:,0])<=
+                                         Mcalc[1,0]-Mcalc[0,0])[0][0], 0]
         ])
 
     else:
         ErrorMsg = 'Error in partitioning frequency values'
-        return ErrorMsg
+        raise SyntaxError(ErrorMsg)
 
     # if multiprocessing is given and is a non-zero integer, use int value for number of nodes
     # if multiprocessing is given and is the zero integer, use all available nodes
@@ -256,7 +269,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
-        return ErrorMsg
+        raise RuntimeError(ErrorMsg)
 
     # allows for file location to be passed as the data variable.
     if isinstance(Mcalc, str) is True:
@@ -289,6 +302,12 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     # pass data to a numpy array
     Mcalc = array(Mcalc)
+
+    if Mcalc[0,0] > f_set[0] or Mcalc[-1,0] < f_set[1]:
+        warning = r'You are electing to interpolate outside of the bounds of your experimental data ' \
+                  'set. Please be advised that the resulting calculations for points beyond the data ' \
+                  'set are likely to be in Error.'
+        warnings.warn(warning)
 
     # user option to use linear interpolation via a kwarg. Default is cubic spline.
     # (e1, e2, mu1, mu2) = (Real Permittivity, Complex Permittivity, Real Permeability, Complex Permeability)
@@ -366,7 +385,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     else:
         ErrorMsg = 'Error in partitioning frequency values'
-        return ErrorMsg
+        raise RuntimeError(ErrorMsg)
 
     chars = {
         "tgde": lambda f: e1f(f) / e2f(f),

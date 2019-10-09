@@ -14,7 +14,7 @@ def main():
 
     reflection_loss = libRL.RL(
         Mcalc=file_location + file_name + '.csv',
-        f_set=(1,10,0.1), d_set=(1,10,1), interp='linear',
+        f_set=(1,10), d_set=(1,10,1), interp='linear',
         multiprocessing=0, multicolumn=True
     )
 
