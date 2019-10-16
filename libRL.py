@@ -36,25 +36,40 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     function at the associated frequencies yields the data point. This
     is simply for simplicity.
     
-    :param Mcalc: Permittivity and Permeability data
-    :param f_set: (start, end, [step]) tuple for frequency values in GHz
-                 - if given as list of len 3, results are interpolated
-                 - if given as list of len 2, results are data-derived
-                 with the calculation bound by the given start and end
-                 frequencies
-                 - if f_set is None, frequency is bound to input data
-    :param d_set: (start, end, step) tuple for thickness values in mm.
-                 - or -
-                 if d_set is of type list, then the thickness values
-                 calculated will only be of the values present in the
-                 list.
-    :param kwargs: interp - set to linear if user wants to linear interp
-                  instead of cubic.
-                  multiprocessing=(int) - set to integer value to use
-                  multiprocessing with (int) nodes; set to 0 to use all
-                  nodes.
-    :return:     returns Nx3 data set of [RL, freq, thickness] by default or an
-                 NxM dataframe where N rows for the input frequency values
+    :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
+                    Can be a string equivalent to the directory and file
+                    name of either a .csv or .xlsx of Nx5 dimensions. Text
+                    above and below data array will be automatically 
+                    avoided by the program (most network analysis instruments
+                    report data which is compatible with the required format)
+    
+    :param f_set:   (start, end, [step]) tuple for frequency values in GHz
+                    - if given as list of len 3, results are interpolated
+                    - if given as list of len 2, results are data-derived
+                    with the calculation bound by the given start and end
+                    frequencies
+                    - if f_set is None, frequency is bound to input data
+    
+    :param d_set:   (start, end, step) tuple for thickness values in mm.
+                    - or -
+                    if d_set is of type list, then the thickness values
+                    calculated will only be of the values present in the
+                    list.
+    
+    :param kwargs:  interp='linear' - set to linear if user wants to linear 
+                    interp instead of cubic.
+                    multiprocessing=(int) - set to integer value to use
+                    multiprocessing with (int) nodes; set to 0 to use all
+                    nodes.
+                    'multicolumn'=True - outputs data in multicolumn form with
+                    either a numpy array of [RL, f, d] iterated over each three
+                    columns, or, if as_dataframe is used, then as a pandas 
+                    dataframe with columns of name d and indexes of name f
+                    as_dataframe=True - returns data in a pandas dataframe.
+    
+    
+    :return:        returns Nx3 data set of [RL, f, d] by default or an
+                    NxM dataframe where N rows for the input frequency values
     
     -------------------------------------
     '''
@@ -271,41 +286,49 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     
     ref: https://doi.org/10.1016/j.jmat.2019.07.003
     
-    :param Mcalc: Permittivity and Permeability data
-    :param f_set: (start, end, [step]) tuple for frequency values in GHz
-                 - if given as list of len 3, results are interpolated
-                 - if given as list of len 2, results are data-derived
-                 with the calculation bound by the given start and
-                 end frequencies
-                 - if f_set is None, frequency is bound to input data
-                 or
-                 - if f_set is of type list, the frequencies calculate
-                 will be only the frequencies represented in the list.
-    :param params: A list i.e. [] of text arguments for the parameters
-                   the user wants calculated. The available arguments
-                   are: {
-                   "tgde",          # dielectric loss tangent
-                   "tgdu",          # magnetic loss tangent
-                   "Qe",            # dielectric quality factor
-                   "Qu",            # magnetic quality factor
-                   "Qf",            # total quality factor
-                   "ReRefIndx",     # Refractive Index
-                   "ExtCoeff",      # Extinction Coeffecient
-                   "AtnuCnstNm",    # Attenuation Constant (in Np/m)
-                   "AtnuCnstdB",    # Attenuation Constant (in dB/m)
-                   "PhsCnst",       # Phase Constant
-                   "PhsVel",        # Phase Velocity
-                   "Res",           # Resistance
-                   "React",         # Reactance
-                   "Condt",         # Conductivity
-                   "Skd",           # Skin Depth
-                   "Eddy"           # Eddy Current Loss
-                   }
-                   If no list is passed, the default is to calculate everything.
+    :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
+                    Can be a string equivalent to the directory and file
+                    name of either a .csv or .xlsx of Nx5 dimensions. Text
+                    above and below data array will be automatically 
+                    avoided by the program (most network analysis instruments
+                    report data which is compatible with the required format)
+    
+    :param f_set:   (start, end, [step]) tuple for frequency values in GHz
+                    - if given as list of len 3, results are interpolated
+                    - if given as list of len 2, results are data-derived
+                    with the calculation bound by the given start and
+                    end frequencies
+                    - if f_set is None, frequency is bound to input data
+                    or:
+                    - if f_set is of type list, the frequencies calculate
+                    will be only the frequencies represented in the list.
+    
+    :param params:  A list i.e. [] of text arguments for the parameters
+                    the user wants calculated. The available arguments
+                    are: {
+                    "tgde",          # dielectric loss tangent
+                    "tgdu",          # magnetic loss tangent
+                    "Qe",            # dielectric quality factor
+                    "Qu",            # magnetic quality factor
+                    "Qf",            # total quality factor
+                    "ReRefIndx",     # Refractive Index
+                    "ExtCoeff",      # Extinction Coeffecient
+                    "AtnuCnstNm",    # Attenuation Constant (in Np/m)
+                    "AtnuCnstdB",    # Attenuation Constant (in dB/m)
+                    "PhsCnst",       # Phase Constant
+                    "PhsVel",        # Phase Velocity
+                    "Res",           # Resistance
+                    "React",         # Reactance
+                    "Condt",         # Conductivity
+                    "Skd",           # Skin Depth
+                    "Eddy"           # Eddy Current Loss
+                    }
+                    If no list is passed, the default is to calculate everything.
 
     :param kwargs:  as_dataframe=True - returns the requested parameters as
                     a pandas dataframe with column names as the parameter keywords
 
+    
     :return:        NxY data set of the requested parameters as columns 1 to Y with the input
                     frequency values in column zero to N.
     
@@ -502,6 +525,12 @@ def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
          https://doi.org/10.1016/j.jmat.2019.07.003
     
     :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
+                    Can be a string equivalent to the directory and file
+                    name of either a .csv or .xlsx of Nx5 dimensions. Text
+                    above and below data array will be automatically 
+                    avoided by the program (most network analysis instruments
+                    report data which is compatible with the required format)
+    
     :param f_set:   (start, end, [step]) tuple for frequency values in GHz
                     or:
                     - if given as tuple of len 3, results are interpolated
@@ -513,16 +542,19 @@ def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
                     of the given tuple value.
                     - if f_set is None (default), frequency is bound to 
                     input data.
+    
     :param d_set:   (start, end, [step]) tuple for thickness values in mm.
                     or:
                     if d_set is of type list, then the thickness values
                     calculated will only be of the values present in the
                     list. (is weird, but whatever.)
+    
     :param m_set:   (start, end, [step]) tuple of ints which define the
                     bands to be calculated.
                     or:
                     if m_set is given as a list [], the explicitly listed
                     band integers will be calculated.                                                            
+    
     :param kwargs:  interp='linear' - set to linear if user wants to 
                     linear interp instead of cubic.
                     as_dataframe=True - formats results into a pandas 
@@ -530,6 +562,7 @@ def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
                     values, the column labels as the band numbers, and 
                     the dataframe as the resulting effective bandwidths.
                   
+    
     :return:        returns len(3) tuple with [d_set, band_results, m_set]
                     or the requested dataframe
     
