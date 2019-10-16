@@ -753,5 +753,3 @@ def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
         res = (d_set, band_results, m_set)
 
     return res
-
-    # build the new data matrix, pass data through to cpfunc and have cython return band results
