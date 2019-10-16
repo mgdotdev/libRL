@@ -35,6 +35,8 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     through the points associated with the input data, solving for the 
     function at the associated frequencies yields the data point. This
     is simply for simplicity.
+
+    ref: https://doi.org/10.1016/j.jmat.2019.07.003
     
     :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
