@@ -38,7 +38,7 @@ def main():
 
     print(characterization)
 
-    band_analysis = libRL.BAR(
+    band_analysis = libRL.BARF(
         Mcalc=data,
         f_set=(1,18,0.1),
         d_set=(1,20,0.1),

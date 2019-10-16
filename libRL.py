@@ -18,7 +18,7 @@ from os.path import splitext
 def help():
     q1 = RL(Mcalc='?')
     q2 = CARL(Mcalc='?')
-    q3 = BAR(Mcalc='?')
+    q3 = BARF(Mcalc='?')
     return q1, q2, q3
 
 
@@ -507,19 +507,20 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     return Matrix, names
 
-def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs):
+def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs):
 
     init='''
     
-    BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
+    BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
     
-    BAR (Band Analysis for Reflection loss) uses Permittivity and Permeability data
-    of materials so to determine the effective bandwidth of Reflection Loss. The
-    effective bandwidth is the span of frequencies where the reflection loss is below
-    some proficiency threshold (standard threshold is -10 dB). Program is computationally
-    taxing; thus, efforts were made to push most of the computation to the C-level for
-    faster run times - the blueprints for such are included in the cpfuncs.pyx file, which
-    was compiled via Cython and the setup.py file.
+    the BARF (Band Analysis for ReFlection loss) function uses Permittivity 
+    and Permeability data of materials so to determine the effective bandwidth 
+    of Reflection Loss. The effective bandwidth is the span of frequencies where 
+    the reflection loss is below some proficiency threshold (standard threshold
+    is -10 dB). Program is computationally taxing; thus, efforts were made to push 
+    most of the computation to the C-level for faster run times - the blueprints
+    for such are included in the cpfuncs.pyx file, which was compiled via Cython 
+    and the setup.py file. [and yes, I love you 3000]
     
     ref: https://doi.org/10.1016/j.jmat.2018.12.005 
          https://doi.org/10.1016/j.jmat.2019.07.003

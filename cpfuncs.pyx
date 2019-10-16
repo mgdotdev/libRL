@@ -88,7 +88,7 @@ cpdef BARC(PnPGrid, mGrid, m_set, d_set, threshold):
             PnPGrid[lower_index:upper_index].shape[0]-1))
 
             # clean up data
-            res = nan_to_num(res, nan=0)
+            res = nan_to_num(res)
             res = where(res<0, 0, res)
 
     return res
