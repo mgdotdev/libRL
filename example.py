@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 this example file demonstrates how to use the included
 functions available through the libRL library. Users are encouraged
 to read the function descriptions for full context on the *args and 
-**kwargs available.
+**kwargs available. use 'for text in libRL.help(): print(text)' to
+print out all help texts.
 '''
 
 
@@ -14,30 +15,41 @@ def main():
     file_location = r'D:\Research and Teaching\University of Missouri-Kansas City\Dr. Xiaobo Chen\Microwave Absorption\Data\Al-TiO2'
     file_name = r'\Al-TiO2.xlsx'
 
-    # reflection_loss = libRL.RL(
-    #     Mcalc=file_location + file_name + '.xlsx',
-    #     f_set=(1,18,0.1), d_set=(1,5,0.1), interp='linear',
-    #     multiprocessing=0, multicolumn=True, as_dataframe=True
-    # )
+    data = pd.ExcelFile(file_location + file_name).parse('700').to_numpy()[1:, :]
 
-    # characterization = libRL.CARL(
-    #     Mcalc=file_location + file_name + '.csv',
-    #     f_set=(1,10,0.1), params='All', as_dataframe=True
-    # )
+    reflection_loss = libRL.RL(
+        Mcalc=data,
+        f_set=(1,18,0.1),
+        d_set=(1,5,0.1),
+        interp='cubic',
+        multiprocessing=0,
+        multicolumn=True,
+        as_dataframe=True
+    )
 
-    data = pd.ExcelFile(file_location+file_name).parse('700').to_numpy()[1:,:]
+    print(reflection_loss)
+
+    characterization = libRL.CARL(
+        Mcalc=data,
+        f_set=(1,10,0.1),
+        params='all',
+        as_dataframe=True
+    )
+
+    print(characterization)
 
     band_analysis = libRL.BAR(
         Mcalc=data,
-        f_set=(1,18,0.1), d_set=(1,4,0.1),
-        m_set=(1, 1, 1), threshold=-10
+        f_set=(1,18,0.1),
+        d_set=(1,20,0.1),
+        m_set=(1,4,1),
+        threshold=-10,
+        as_dataframe=True
     )
 
     print(band_analysis)
 
-    plt.plot(band_analysis[0], band_analysis[1])
-    plt.show()
-
+    for text in libRL.help(): print(text)
 
 
 if __name__ == "__main__":

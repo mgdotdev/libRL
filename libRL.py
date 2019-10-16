@@ -14,19 +14,28 @@ from scipy.interpolate import interp1d
 from pathos.multiprocessing import ProcessPool as Pool
 from os.path import splitext
 
-'''    
-the RL function calculates the Reflection Loss based on the mapping
-passed through as the grid variable, done either through multiprocessing 
-or through the python built-in map() function. The RL function always
-uses the interpolation function, even though as the function passes 
-through the points associated with the input data, solving for the 
-function at the associated frequencies yields the data point. This
-is simply for simplicity.
-'''
+
+def help():
+    q1 = RL(Mcalc='?')
+    q2 = CARL(Mcalc='?')
+    q3 = BAR(Mcalc='?')
+    return q1, q2, q3
+
 
 def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     init='''
+    
+    RL(Mcalc=None, f_set=None, d_set=None, **kwargs)
+    
+    the RL function calculates the Reflection Loss based on the mapping
+    passed through as the grid variable, done either through multiprocessing 
+    or through the python built-in map() function. The RL function always
+    uses the interpolation function, even though as the function passes 
+    through the points associated with the input data, solving for the 
+    function at the associated frequencies yields the data point. This
+    is simply for simplicity.
+    
     :param Mcalc: Permittivity and Permeability data
     :param f_set: (start, end, [step]) tuple for frequency values in GHz
                  - if given as list of len 3, results are interpolated
@@ -41,14 +50,17 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                  list.
     :param kwargs: interp - set to linear if user wants to linear interp
                   instead of cubic.
-                  multiprocessing - set to integer value to use
-                  multiprocessing with (int) nodes, set to 0 to use all
+                  multiprocessing=(int) - set to integer value to use
+                  multiprocessing with (int) nodes; set to 0 to use all
                   nodes.
-    :return: returns Nx3 data set of [RL, freq, thickness]
+    :return:     returns Nx3 data set of [RL, freq, thickness] by default or an
+                 NxM dataframe where N rows for the input frequency values
+    
+    -------------------------------------
     '''
 
     if Mcalc is '?':
-        raise UserWarning(init)
+        return init
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
@@ -167,30 +179,31 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     # all given variables.
 
     if f_set is None:
+        f_set = Mcalc[:, 0]
         grid=array([(m, n)
                        for n in d_set
-                       for m in Mcalc[:, 0]
+                       for m in f_set
         ])
 
     elif f_set is float or int and not tuple:
+        f_set = arange(Mcalc[0,0],Mcalc[-1,0]+f_set, f_set)
         grid=array([(m, n)
                     for n in d_set
-                    for m in arange(Mcalc[0,0],Mcalc[-1,0]+f_set, f_set)
+                    for m in f_set
         ])
 
     elif len(f_set) is 2:
+        f_set = Mcalc[argmin(abs(f_set[0]-Mcalc[:,0])):argmin(abs(f_set[1]-Mcalc[:,0])),0]
         grid=array([(m, n)
                        for n in d_set
-                       for m in Mcalc[
-                                argmin(abs(f_set[0]-Mcalc[:,0])):
-                                argmin(abs(f_set[1]-Mcalc[:,0])),
-                                0]
+                       for m in f_set
         ])
 
     elif len(f_set) is 3:
+        f_set = arange(f_set[0], f_set[1]+f_set[2], f_set[2])
         grid=array([(m, n)
                        for n in d_set
-                       for m in arange(f_set[0], f_set[1]+f_set[2], f_set[2])
+                       for m in f_set
         ])
 
     else:
@@ -231,21 +244,33 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         res = MCres
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
-        res = DataFrame(res)
+
+        if 'multicolumn' in kwargs and kwargs['multicolumn'] is True:
+            res = DataFrame(res[:, ::3])
+            res.columns = list(d_set)
+            res.index = list(f_set)
+
+        else:
+            res = DataFrame(res)
+            res.columns = ['RL', 'f', 'd']
 
     return res
 
-'''
-the CARL (ChAracterization of Reflection Loss) function takes
-a set or list of keywords in the 'params' variable and calculates 
-the character values associated with the parameter. See  
-10.1016/j.jmat.2019.07.003 for further details and the
-function comments below for a full list of keywords.
-'''
 
 def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     init='''
+    
+    CARL(Mcalc=None, f_set=None, params="All", **kwargs)
+    
+    the CARL (ChAracterization of Reflection Loss) function takes
+    a set or list of keywords in the 'params' variable and calculates 
+    the character values associated with the parameter. See  
+    10.1016/j.jmat.2019.07.003 for further details and the
+    function comments below for a full list of keywords.
+    
+    ref: https://doi.org/10.1016/j.jmat.2019.07.003
+    
     :param Mcalc: Permittivity and Permeability data
     :param f_set: (start, end, [step]) tuple for frequency values in GHz
                  - if given as list of len 3, results are interpolated
@@ -278,15 +303,21 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                    }
                    If no list is passed, the default is to calculate everything.
 
-    :return: returns NxY data set of the requested parameters as columns 1 to Y with the input
-                  frequency values in column zero of length N.
+    :param kwargs:  as_dataframe=True - returns the requested parameters as
+                    a pandas dataframe with column names as the parameter keywords
+
+    :return:        NxY data set of the requested parameters as columns 1 to Y with the input
+                    frequency values in column zero to N.
+    
+    -------------------------------------
     '''
 
     if Mcalc is '?':
-        raise UserWarning(init)
+        return init
 
     if Mcalc is None:
-        ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
+        ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 ' \
+                   'numpy array with columns [freq, e1, e2, mu1, mu2]'
         raise RuntimeError(ErrorMsg)
 
     # allows for file location to be passed as the data variable.
@@ -419,7 +450,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         "AtnuCnstdB": lambda f: ((2*pi*f*GHz*sqrt((mu1f(f) - j * mu2f(f)) *
                                 (e1f(f) - j * e2f(f))))*(c**-1)).real * 8.86588,
         "PhsCnst": lambda f: ((2*pi*f*GHz*sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))))*(c**-1)).imag,
-        "PhsVel": lambda f: ((2 * pi * i * GHz) /
+        "PhsVel": lambda f: ((2 * pi * f * GHz) /
                             ((2*pi*f*GHz*sqrt((mu1f(f) - j * mu2f(f)) *
                             (e1f(f) - j * e2f(f))))*(c**-1))).imag,
         "Res": lambda f: (Z0 * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).real,
@@ -429,7 +460,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         "Eddy": lambda f: mu2f(f) / (mu1f(f) ** 2 * f)
     }
 
-    if params is "All" or params[0] is "All":
+    if params is 'All' or 'all' or params[0] is 'All' or params[0] is 'all':
         params = [
             "tgde","tgdu","Qe","Qu","Qf",
             "ReRefIndx","ExtCoeff",
@@ -446,8 +477,9 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         names.append(param)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
-        panda_matrix = DataFrame(Matrix)
-        panda_matrix.columns = names
+        panda_matrix = DataFrame(Matrix[:, 1:])
+        panda_matrix.columns = list(names[1:])
+        panda_matrix.index = list(f_vals)
         return panda_matrix
 
     return Matrix, names
@@ -455,28 +487,57 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs):
 
     init='''
-    :param Mcalc: Permittivity and Permeability data
-    :param f_set: (start, end, [step]) tuple for frequency values in GHz
-                 - if given as list of len 3, results are interpolated
-                 - if given as list of len 2, results are data-derived
-                 with the calculation bound by the given start and end
-                 frequencies
-                 - if f_set is None, frequency is bound to input data
-    :param d_set: (start, end, step) tuple for thickness values in mm.
-                 - or -
-                 if d_set is of type list, then the thickness values
-                 calculated will only be of the values present in the
-                 list.
-    :param kwargs: interp - set to linear if user wants to linear interp
-                  instead of cubic.
-                  multiprocessing - set to integer value to use
-                  multiprocessing with (int) nodes, set to 0 to use all
-                  nodes.
-    :return: returns Nx3 data set of [RL, freq, thickness]
+    
+    BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
+    
+    BAR (Band Analysis for Reflection loss) uses Permittivity and Permeability data
+    of materials so to determine the effective bandwidth of Reflection Loss. The
+    effective bandwidth is the span of frequencies where the reflection loss is below
+    some proficiency threshold (standard threshold is -10 dB). Program is computationally
+    taxing; thus, efforts were made to push most of the computation to the C-level for
+    faster run times - the blueprints for such are included in the cpfuncs.pyx file, which
+    was compiled via Cython and the setup.py file.
+    
+    ref: https://doi.org/10.1016/j.jmat.2018.12.005 
+         https://doi.org/10.1016/j.jmat.2019.07.003
+    
+    :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
+    :param f_set:   (start, end, [step]) tuple for frequency values in GHz
+                    or:
+                    - if given as tuple of len 3, results are interpolated
+                    - if given as tuple of len 2, results are data-derived
+                    with the calculation bound by the given start and end
+                    frequencies from the tuple
+                    - is given as int or float of len 1, results are 
+                    interpolated over the entire data set with a step size
+                    of the given tuple value.
+                    - if f_set is None (default), frequency is bound to 
+                    input data.
+    :param d_set:   (start, end, [step]) tuple for thickness values in mm.
+                    or:
+                    if d_set is of type list, then the thickness values
+                    calculated will only be of the values present in the
+                    list. (is weird, but whatever.)
+    :param m_set:   (start, end, [step]) tuple of ints which define the
+                    bands to be calculated.
+                    or:
+                    if m_set is given as a list [], the explicitly listed
+                    band integers will be calculated.                                                            
+    :param kwargs:  interp='linear' - set to linear if user wants to 
+                    linear interp instead of cubic.
+                    as_dataframe=True - formats results into a pandas 
+                    dataframe with the index labels as the thickness 
+                    values, the column labels as the band numbers, and 
+                    the dataframe as the resulting effective bandwidths.
+                  
+    :return:        returns len(3) tuple with [d_set, band_results, m_set]
+                    or the requested dataframe
+    
+    -------------------------------------
     '''
 
     if Mcalc is '?':
-        raise UserWarning(init)
+        return init
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
@@ -508,14 +569,13 @@ def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
         Mcalc = delete(Mcalc, x, axis=0)
 
     if d_set is None:
-        ErrorMsg = 'd_set must be given as a tuple of length 3 (d_st, d_end, d_step) or a list [] of d values/'
+        ErrorMsg = 'd_set must be given as a tuple of length 3 (d_st, d_end, d_step) or a list [] of d values.'
         raise SyntaxError(ErrorMsg)
 
     # constants for later use
     j = cmath.sqrt(-1)
     c = 299792458
     GHz = 10**9
-    mm = 10**(-3)
 
     # pass data to a numpy array
     Mcalc = array(Mcalc)
@@ -578,7 +638,12 @@ def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
     if type(d_set) is list:
         d_set = array(d_set)
     else:
-        d_set = arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+        try:
+            d_set = arange(d_set[0], d_set[1] + d_set[2], d_set[2])
+        except:
+            ErrorMsg = 'd_set must be a tuple type int or float of structure (start, end, step) ' \
+                       'or a list [] of type int or float values.'
+            raise SyntaxError(ErrorMsg)
 
     # paritition band values
     if type(m_set) is list:
@@ -588,7 +653,8 @@ def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
         try:
             m_set = arange(m_set[0], m_set[1] + m_set[2], m_set[2])
         except:
-            ErrorMsg = 'first value in m_set tuple must be a positive integer of value less than m_set[1]'
+            ErrorMsg = 'm_set must be a tuple of positive integers of structure (start, end, step) ' \
+                       'or a list [] of integer values.'
             raise SyntaxError(ErrorMsg)
 
     # if frequency step value is given, interpolate the results.
@@ -631,19 +697,27 @@ def BAR(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
     PnPGrid[:,3] = mu1f(f_set[:])
     PnPGrid[:,4] = mu2f(f_set[:])
 
-    mGrid = zeros((f_set.shape[0], m_set.shape[0]))
+    mGrid = zeros((f_set.shape[0], m_set.shape[0]*2))
 
     # to find the 1/2th integer wavelength, NOT quarter.
     def dfind(f, m):
-        return ((c/(f*GHz))*(1.0/(sqrt((mu1f(f) - j*mu2f(f)) * (e1f(f) - j*e2f(f))).real))*(((2.0*m)-1.0)/4.0))*1000
+        return ((c/(f*GHz))*(1.0/(sqrt((mu1f(f) - j*mu2f(f)) * (e1f(f) - j*e2f(f))).real))*(((2.0*m)-2.0)/4.0))*1000
 
     for i, m in enumerate(m_set):
-        mGrid[:,i] = dfind(f_set[:], m)
+        mGrid[:,2*i] = dfind(f_set[:], m)
+        mGrid[:,2*i+1] = dfind(f_set[:], m+1)
 
-    res = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, threshold)
+    # pushes calculation to the C-level for increased computation performance.
+    # see included file titled 'cpfuncs.pyx' for build blueprint
+    band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, threshold)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
-        res = DataFrame(res)
+        res = DataFrame(band_results)
+        res.columns = list(m_set)
+        res.index = list(d_set)
+
+    else:
+        res = (d_set, band_results, m_set)
 
     return res
 

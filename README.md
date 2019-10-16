@@ -1,5 +1,5 @@
 # libRL
-Library of functions used for characterizing Microwave Absortion
+Library of functions used for characterizing Microwave Absorption
 
     Copyright (C) 2019  Michael Green
 
