@@ -197,30 +197,30 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     if f_set is None:
         f_set = Mcalc[:, 0]
-        grid=array([(m, n)
-                       for n in d_set
-                       for m in f_set
+        grid = array([(m, n)
+                      for n in d_set
+                      for m in f_set
         ])
 
     elif f_set is float or int and not tuple:
         f_set = arange(Mcalc[0,0],Mcalc[-1,0]+f_set, f_set)
-        grid=array([(m, n)
-                    for n in d_set
-                    for m in f_set
+        grid = array([(m, n)
+                      for n in d_set
+                      for m in f_set
         ])
 
     elif len(f_set) is 2:
         f_set = Mcalc[argmin(abs(f_set[0]-Mcalc[:,0])):argmin(abs(f_set[1]-Mcalc[:,0])),0]
-        grid=array([(m, n)
-                       for n in d_set
-                       for m in f_set
+        grid = array([(m, n)
+                      for n in d_set
+                      for m in f_set
         ])
 
     elif len(f_set) is 3:
         f_set = arange(f_set[0], f_set[1]+f_set[2], f_set[2])
-        grid=array([(m, n)
-                       for n in d_set
-                       for m in f_set
+        grid = array([(m, n)
+                      for n in d_set
+                      for m in f_set
         ])
 
     else:
@@ -437,17 +437,17 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     # all given variables.
 
     if f_set is None:
-        f_vals=array([
+        f_vals = array([
             m for m in Mcalc[:, 0]
         ])
 
     elif f_set is float or int and not tuple:
-        f_vals=array([
+        f_vals = array([
             m for m in arange(Mcalc[0,0],Mcalc[-1,0]+f_set, f_set)
         ])
 
     elif len(f_set) is 2:
-        f_vals=array([
+        f_vals = array([
             m for m in Mcalc[
                         argmin(abs(f_set[0]-Mcalc[:,0])):
                         argmin(abs(f_set[1]-Mcalc[:,0])),
@@ -455,7 +455,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         ])
 
     elif len(f_set) is 3:
-        f_vals=array([
+        f_vals = array([
             m for m in arange(f_set[0], f_set[1]+f_set[2], f_set[2])
         ])
 

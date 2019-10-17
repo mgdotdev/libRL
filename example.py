@@ -19,8 +19,8 @@ def main():
 
     reflection_loss = libRL.RL(
         Mcalc=data,
-        f_set=(1,18,0.1),
-        d_set=(1,5,0.1),
+        f_set=(1, 18, 0.1),
+        d_set=(1, 5, 0.1),
         interp='cubic',
         multiprocessing=0,
         multicolumn=True,
@@ -31,7 +31,7 @@ def main():
 
     characterization = libRL.CARL(
         Mcalc=data,
-        f_set=(1,10,0.1),
+        f_set=(1, 10, 0.1),
         params='all',
         as_dataframe=True
     )
@@ -40,9 +40,9 @@ def main():
 
     band_analysis = libRL.BARF(
         Mcalc=data,
-        f_set=(1,18,0.1),
-        d_set=(1,20,0.1),
-        m_set=(1,4,1),
+        f_set=(1, 18, 0.1),
+        d_set=(1, 20, 0.1),
+        m_set=(1, 4, 1),
         threshold=-10,
         as_dataframe=True
     )
