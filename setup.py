@@ -24,7 +24,9 @@ setup(
     packages=find_packages(),
 
     package_data={
-        'libRL package.libRL': ['*']
+        '': ['cpfuncs.c'],
+        '': ['cpfuncs.cp37-win_amd64.pyd'],
+        '': ['cpfuncs.pyx'],
     },
 
     include_package_data=True,
