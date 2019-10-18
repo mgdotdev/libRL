@@ -15,15 +15,8 @@ from pathos.multiprocessing import ProcessPool as Pool
 from os.path import splitext
 
 
-def doc_strings():
-    q1 = RL(Mcalc='?')
-    q2 = CARL(Mcalc='?')
-    q3 = BARF(Mcalc='?')
-    return q1, q2, q3
-
-
 def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
-    init = '''
+    '''
 
     RL(Mcalc=None, f_set=None, d_set=None, **kwargs)
 
@@ -74,9 +67,6 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     -------------------------------------
     '''
-
-    if Mcalc is '?':
-        return init
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
@@ -274,7 +264,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
 
 def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
-    init = '''
+    '''
 
     CARL(Mcalc=None, f_set=None, params="All", **kwargs)
 
@@ -334,9 +324,6 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     -------------------------------------
     '''
-
-    if Mcalc is '?':
-        return init
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 ' \
@@ -509,7 +496,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
 
 def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs):
-    init = '''
+    '''
 
     BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
 
@@ -569,9 +556,6 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
 
     -------------------------------------
     '''
-
-    if Mcalc is '?':
-        return init
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'

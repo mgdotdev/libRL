@@ -4,9 +4,8 @@ import pandas as pd
 '''    
 this example file demonstrates how to use the included
 functions available through the libRL library. Users are encouraged
-to read the function descriptions for full context on the *args and 
-**kwargs available. use 'for text in libRL.help(): print(text)' to
-print out all help texts.
+to call/read the docstrings for descriptions and full context on the
+*args and **kwargs available.
 '''
 
 
@@ -19,7 +18,7 @@ def main():
     reflection_loss = libRL.RL(
         Mcalc=data,
         f_set=(1, 18, 0.1),
-        d_set=(1, 5, 0.1),
+        d_set=(1, 20, 0.1),
         interp='cubic',
         multiprocessing=0,
         multicolumn=True,
@@ -47,8 +46,6 @@ def main():
     )
 
     print(band_analysis)
-
-    for text in libRL.doc_strings(): print(text)
 
 
 if __name__ == "__main__":
