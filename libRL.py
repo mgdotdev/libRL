@@ -522,7 +522,7 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
     is -10 dB). Program is computationally taxing; thus, efforts were made to push 
     most of the computation to the C-level for faster run times - the blueprints
     for such are included in the cpfuncs.pyx file, which was compiled via Cython 
-    and the setup.py file. [and yes, I love you 3000]
+    and the cython_setup.py file. [and yes, I love you 3000]
     
     ref: https://doi.org/10.1016/j.jmat.2018.12.005 
          https://doi.org/10.1016/j.jmat.2019.07.003
