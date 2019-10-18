@@ -1,6 +1,5 @@
-import libRL
+from libRL import libRL
 import pandas as pd
-import matplotlib.pyplot as plt
 
 '''    
 this example file demonstrates how to use the included
