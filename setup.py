@@ -21,13 +21,7 @@ setup(
         'License :: OSI Approved :: GPL3 License',
     ],
 
-    packages=[
-        '__init__',
-        'cpfuncs.c',
-        'cpfuncs.cp37-win_amd64.pyd',
-        'cpfuncs.pyx',
-        'cython_setup.py'
-    ],
+    packages=['libRL'],
 
     python_requires='>=3.7',
 
