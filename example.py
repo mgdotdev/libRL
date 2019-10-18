@@ -1,4 +1,4 @@
-from libRL import libRL
+import libRL
 import pandas as pd
 
 '''    
@@ -48,7 +48,7 @@ def main():
 
     print(band_analysis)
 
-    for text in libRL.help(): print(text)
+    for text in libRL.doc_strings(): print(text)
 
 
 if __name__ == "__main__":
