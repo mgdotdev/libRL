@@ -21,8 +21,13 @@ setup(
         'License :: OSI Approved :: GPL3 License',
     ],
 
-    packages=['libRL'],
+    packages=find_packages(),
 
+    package_data={
+        'libRL package.libRL': ['*']
+    },
+
+    include_package_data=True,
     python_requires='>=3.7',
 
     install_requires=[
