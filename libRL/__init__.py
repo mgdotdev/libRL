@@ -1,3 +1,33 @@
+'''
+libRL
+=====
+
+libRL is a Library of functions used for characterizing Microwave Absorption.
+
+functions include:
+
+    libRL.RL(Mcalc=None, f_set=None, d_set=None, **kwargs)
+        - resultants of Reflection Loss over (f, d) gridspace. Yields the
+        resulting Reflection Loss results for a given set of permittivtiy
+        and permeability data.
+        see libRL.RL? for complete information
+
+    libRL.CARL(Mcalc=None, f_set=None, params="All", **kwargs)
+        - characterization of Reflection Loss. Yields the calculated results
+        of common formulations within the Radar Absorbing Materials field.
+        see libRL.CARL? for complete information
+
+    libRL.BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
+        - Band Analysis of Reflection Loss. Uses given set of permittivity and
+        permeability data in conjuncture with a requested band set to determine
+        the set of frequencies with are below a threshold. see libRL.BARF? for
+        more information.
+
+Developed at the University of Missouri-Kansas City under NSF grant DMR-1609061
+by Michael Green and Xiaobo Chen.
+'''
+
+
 import cmath
 from libRL import cpfuncs
 
