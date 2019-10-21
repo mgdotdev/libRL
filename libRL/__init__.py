@@ -51,10 +51,10 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     RL(Mcalc=None, f_set=None, d_set=None, **kwargs)
 
     the RL function calculates the Reflection Loss based on the mapping
-    passed through as the grid variable, done either through multiprocessing 
+    passed through as the grid variable, done either through multiprocessing
     or through the python built-in map() function. The RL function always
-    uses the interpolation function, even though as the function passes 
-    through the points associated with the input data, solving for the 
+    uses the interpolation function, even though as the function passes
+    through the points associated with the input data, solving for the
     function at the associated frequencies yields the data point. This
     is simply for simplicity.
 
@@ -63,7 +63,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
                     name of either a .csv or .xlsx of Nx5 dimensions. Text
-                    above and below data array will be automatically 
+                    above and below data array will be automatically
                     avoided by the program (most network analysis instruments
                     report data which is compatible with the required format)
 
@@ -80,14 +80,19 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     calculated will only be of the values present in the
                     list.
 
-    :param kwargs:  interp='linear' - set to linear if user wants to linear 
+    :param kwargs:  interp='linear' - set to linear if user wants to linear
                     interp instead of cubic.
                     multiprocessing=(int) - set to integer value to use
                     multiprocessing with (int) nodes; set to 0 to use all
-                    nodes.
+                    nodes.*
+                    * note: if you use the multiprocessing functionality herein
+                    while on a Windows computer you ***MUST MUST MUST MUST***
+                    provide main module protection via the
+                    if __name__ == "__main__":
+                    conditional so to negate infinite spawns.
                     'multicolumn'=True - outputs data in multicolumn form with
                     either a numpy array of [RL, f, d] iterated over each three
-                    columns, or, if as_dataframe is used, then as a pandas 
+                    columns, or, if as_dataframe is used, then as a pandas
                     dataframe with columns of name d and indexes of name f
                     as_dataframe=True - returns data in a pandas dataframe.
 
@@ -135,11 +140,11 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
         f = grid[0]
         d = grid[1]
         y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) /
-                                                     (e1f(f) - j * e2f(f)))) * (cmath.tanh(j * (2 * cmath.pi * (f * GHz) * (d * mm) / c) *
-                                                                                           cmath.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))))) - 1) /
-                                   ((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) / (e1f(f) - j * e2f(f)))) *
-                                     (cmath.tanh(j * (2 * cmath.pi * (f * GHz) * (d * mm) / c) * cmath.sqrt(
-                                         (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))))) + 1)))))
+            (e1f(f) - j * e2f(f)))) * (cmath.tanh(j * (2 * cmath.pi * (f * GHz) * (d * mm) / c) *
+            cmath.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))))) - 1) /
+            ((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) / (e1f(f) - j * e2f(f)))) *
+            (cmath.tanh(j * (2 * cmath.pi * (f * GHz) * (d * mm) / c) * cmath.sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))))) + 1)))))
         return y.real, f, d
 
     # constants for later use
