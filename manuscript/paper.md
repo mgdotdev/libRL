@@ -10,7 +10,6 @@ authors:
     orcid: 0000-0002-2525-1274
     affiliation: 1
   - name: Xiaobo Chen
-    orcid: None
     affiliation: 1
 affiliations:
  - name: Department of Chemistry, University of Missouri−Kansas City, MO 64110, U.S.A.
