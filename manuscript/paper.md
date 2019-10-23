@@ -47,7 +47,7 @@ This module can be installed via pip into the user’s python environment (see R
 for details) and imported/used similarly to any other module available in the standard
 library. ``libRL`` includes therein an exhaustive set of methods for customizing the
 calculation parameters so to satisfy the broadest of scopes necessary for the RAM
-development community. Users are encouraged to consult the docstring therein for a
+development community. Users are encouraged to consult the docstrings therein for a
 full description of the customizations available.
 
 # Acknowledgements
