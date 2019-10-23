@@ -13,7 +13,7 @@ authors:
     orcid: None
     affiliation: 1
 affiliations:
- - name: University of Missouri−Kansas City
+ - name: Department of Chemistry, University of Missouri−Kansas City, MO 64110, U.S.A.
    index: 1
 date: 23 October 2019
 bibliography: paper.bib
