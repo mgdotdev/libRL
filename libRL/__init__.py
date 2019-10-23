@@ -300,6 +300,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     Z0 = 376.730313461              # intrinsic impedance
     e0 = 8.854188 * 10 ** (-12)     # permittivity of free space
 
+    # and you thought that first function was ugly
     chars = {
         "tgde": lambda f: e1f(f) / e2f(f),
         "tgdu": lambda f: mu1f(f) / mu2f(f),
