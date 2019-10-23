@@ -8,7 +8,7 @@ functions include:
 
     libRL.RL(Mcalc=None, f_set=None, d_set=None, **kwargs)
         - resultants of Reflection Loss over (f, d) gridspace. Yields the
-        resulting Reflection Loss results for a given set of permittivtiy
+        resulting Reflection Loss results for a given set of permittivity
         and permeability data.
         see libRL.RL? for complete documentation.
 
