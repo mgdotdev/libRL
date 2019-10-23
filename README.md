@@ -12,7 +12,7 @@ the module can be installed via pip
 once installed, simply import the module as normal, and query the docstring via libRL? - the docstring includes
 a list of the available functions for use.
 
-# --------------------------------
+--------------------------------
 
 Michael Green is a PhD candidate under the supervision of Dr. Xiaobo Chen at the University of Missouri–Kansas City,
 Department of Chemistry. He received his Bachelors of Science in chemistry with a minor in mathematics from the
