@@ -1,4 +1,4 @@
-'''
+"""
 libRL
 =====
 
@@ -10,23 +10,22 @@ functions include:
         - resultants of Reflection Loss over (f, d) gridspace. Yields the
         resulting Reflection Loss results for a given set of permittivtiy
         and permeability data.
-        see libRL.RL? for complete information
+        see libRL.RL? for complete documentation.
 
     libRL.CARL(Mcalc=None, f_set=None, params="All", **kwargs)
         - characterization of Reflection Loss. Yields the calculated results
         of common formulations within the Radar Absorbing Materials field.
-        see libRL.CARL? for complete information
+        see libRL.CARL? for complete documentation.
 
     libRL.BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
         - Band Analysis of Reflection Loss. Uses given set of permittivity and
         permeability data in conjuncture with a requested band set to determine
-        the set of frequencies with are below a threshold. see libRL.BARF? for
-        more information.
+        the set of frequencies with are below a threshold.
+        see libRL.BARF? for complete documentation.
 
 Developed at the University of Missouri-Kansas City under NSF grant DMR-1609061
 by Michael Green and Xiaobo Chen.
-'''
-
+"""
 
 import cmath
 from libRL import cpfuncs
@@ -46,7 +45,7 @@ from os.path import splitext
 
 
 def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
-    '''
+    """
 
     RL(Mcalc=None, f_set=None, d_set=None, **kwargs)
 
@@ -101,7 +100,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     NxM dataframe where N rows for the input frequency values
 
     -------------------------------------
-    '''
+    """
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
@@ -116,7 +115,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
             Mcalc = read_excel(Mcalc).to_numpy()
 
         else:
-            ErrorMsg = 'Error partitioning input data'
+            ErrorMsg = 'Error partitioning input data from string'
             raise RuntimeError(ErrorMsg)
 
         # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
@@ -226,7 +225,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                       for m in f_set
                       ])
 
-    elif f_set is float or int and not tuple:
+    elif f_set is float or int and isinstance(f_set, tuple) is False:
         f_set = arange(Mcalc[0, 0], Mcalc[-1, 0] + f_set, f_set)
         grid = array([(m, n)
                       for n in d_set
@@ -234,6 +233,10 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                       ])
 
     elif len(f_set) is 2:
+        if f_set[0] > f_set[1]:
+            ErrorMsg = "f_set must be of order (start, stop) where 'start' is a value smaller than 'stop'"
+            raise  SyntaxError(ErrorMsg)
+
         f_set = Mcalc[argmin(abs(f_set[0] - Mcalc[:, 0])):argmin(abs(f_set[1] - Mcalc[:, 0])), 0]
         grid = array([(m, n)
                       for n in d_set
@@ -241,6 +244,10 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                       ])
 
     elif len(f_set) is 3:
+        if f_set[0] > f_set[1]:
+            ErrorMsg = "f_set must be of order (start, stop, [step]) where 'start' is a value smaller than 'stop'"
+            raise  SyntaxError(ErrorMsg)
+
         f_set = arange(f_set[0], f_set[1] + f_set[2], f_set[2])
         grid = array([(m, n)
                       for n in d_set
@@ -256,11 +263,12 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     if 'multiprocessing' in kwargs and isinstance(kwargs['multiprocessing'], int) is True:
 
-        if kwargs['multiprocessing'] is 0:
+        if kwargs['multiprocessing'] is 0 or True:
             res = array(Pool().map(G, grid))
-        else:
+        elif kwargs['multiprocessing'] > 0:
             res = array(Pool(nodes=kwargs['multiprocessing']).map(G, grid))
-
+        else:
+            res = array(list(map(G, grid)))
     else:
         res = array(list(map(G, grid)))
 
@@ -299,13 +307,13 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
 
 def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
-    '''
+    """
 
     CARL(Mcalc=None, f_set=None, params="All", **kwargs)
 
     the CARL (ChAracterization of Reflection Loss) function takes
-    a set or list of keywords in the 'params' variable and calculates 
-    the character values associated with the parameter. See  
+    a set or list of keywords in the 'params' variable and calculates
+    the character values associated with the parameter. See
     10.1016/j.jmat.2019.07.003 for further details and the
     function comments below for a full list of keywords.
 
@@ -314,7 +322,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
                     name of either a .csv or .xlsx of Nx5 dimensions. Text
-                    above and below data array will be automatically 
+                    above and below data array will be automatically
                     avoided by the program (most network analysis instruments
                     report data which is compatible with the required format)
 
@@ -358,7 +366,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                     frequency values in column zero to N.
 
     -------------------------------------
-    '''
+    """
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 ' \
@@ -372,6 +380,10 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
         elif splitext(Mcalc)[1] == '.xlsx':
             Mcalc = read_excel(Mcalc).to_numpy()
+
+        else:
+            ErrorMsg = 'Error partitioning input data from string'
+            raise RuntimeError(ErrorMsg)
 
         # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
         # note, if the file contains more/less than 5 columns this fails as the 6th row is
@@ -457,17 +469,25 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     # all given variables.
 
     if f_set is None:
-        f_vals = array([
+        f_set = array([
             m for m in Mcalc[:, 0]
         ])
 
-    elif f_set is float or int and not tuple:
-        f_vals = array([
+    elif type(f_set) is list:
+        f_set = array(f_set)
+
+    elif f_set is float or int and isinstance(f_set, tuple) is False:
+        f_set = array([
             m for m in arange(Mcalc[0, 0], Mcalc[-1, 0] + f_set, f_set)
         ])
 
     elif len(f_set) is 2:
-        f_vals = array([
+
+        if f_set[0] > f_set[1]:
+            ErrorMsg = "f_set must be of order (start, stop) where 'start' is a value smaller than 'stop'"
+            raise SyntaxError(ErrorMsg)
+
+        f_set = array([
             m for m in Mcalc[
                        argmin(abs(f_set[0] - Mcalc[:, 0])):
                        argmin(abs(f_set[1] - Mcalc[:, 0])),
@@ -475,7 +495,12 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         ])
 
     elif len(f_set) is 3:
-        f_vals = array([
+
+        if f_set[0] > f_set[1]:
+            ErrorMsg = "f_set must be of order (start, stop, [step]) where 'start' is a value smaller than 'stop'"
+            raise SyntaxError(ErrorMsg)
+
+        f_set = array([
             m for m in arange(f_set[0], f_set[1] + f_set[2], f_set[2])
         ])
 
@@ -514,43 +539,43 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
             "React", "Condt", "Skd", "Eddy"
         ]
 
-    Matrix, names = zeros((f_vals.shape[0], len(params) + 1), dtype=float64), ["frequency"]
-    Matrix[:, 0] = f_vals[:]
+    Matrix, names = zeros((f_set.shape[0], len(params) + 1), dtype=float64), ["frequency"]
+    Matrix[:, 0] = f_set[:]
 
     for counter, param in enumerate(params, start=1):
-        Matrix[:, counter] = chars[param](f_vals[:])
+        Matrix[:, counter] = chars[param](f_set[:])
         names.append(param)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
         panda_matrix = DataFrame(Matrix[:, 1:])
         panda_matrix.columns = list(names[1:])
-        panda_matrix.index = list(f_vals)
+        panda_matrix.index = list(f_set)
         return panda_matrix
 
     return Matrix, names
 
 
-def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs):
-    '''
+def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
+    """
 
     BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
 
-    the BARF (Band Analysis for ReFlection loss) function uses Permittivity 
-    and Permeability data of materials so to determine the effective bandwidth 
-    of Reflection Loss. The effective bandwidth is the span of frequencies where 
+    the BARF (Band Analysis for ReFlection loss) function uses Permittivity
+    and Permeability data of materials so to determine the effective bandwidth
+    of Reflection Loss. The effective bandwidth is the span of frequencies where
     the reflection loss is below some proficiency threshold (standard threshold
-    is -10 dB). Program is computationally taxing; thus, efforts were made to push 
+    is -10 dB). Program is computationally taxing; thus, efforts were made to push
     most of the computation to the C-level for faster run times - the blueprints
-    for such are included in the cpfuncs.pyx file, which was compiled via Cython 
+    for such are included in the cpfuncs.pyx file, which was compiled via Cython
     and the cython_setup.py file. [and yes, I love you 3000]
 
-    ref: https://doi.org/10.1016/j.jmat.2018.12.005 
+    ref: https://doi.org/10.1016/j.jmat.2018.12.005
          https://doi.org/10.1016/j.jmat.2019.07.003
 
     :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
                     name of either a .csv or .xlsx of Nx5 dimensions. Text
-                    above and below data array will be automatically 
+                    above and below data array will be automatically
                     avoided by the program (most network analysis instruments
                     report data which is compatible with the required format)
 
@@ -560,10 +585,10 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
                     - if given as tuple of len 2, results are data-derived
                     with the calculation bound by the given start and end
                     frequencies from the tuple
-                    - is given as int or float of len 1, results are 
+                    - is given as int or float of len 1, results are
                     interpolated over the entire data set with a step size
                     of the given tuple value.
-                    - if f_set is None (default), frequency is bound to 
+                    - if f_set is None (default), frequency is bound to
                     input data.
 
     :param d_set:   (start, end, [step]) tuple for thickness values in mm.
@@ -576,21 +601,28 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
                     bands to be calculated.
                     or:
                     if m_set is given as a list [], the explicitly listed
-                    band integers will be calculated.                                                            
+                    band integers will be calculated.
 
-    :param kwargs:  interp='linear' - set to linear if user wants to 
+    :param thrs:    Threshold for evaluation. If RL values are below this
+                    threshold value, the point is counted for the band.
+                    Default value is -10.
+
+    :param kwargs:  interp='linear' - set to linear if user wants to
                     linear interp instead of cubic.
-                    as_dataframe=True - formats results into a pandas 
-                    dataframe with the index labels as the thickness 
-                    values, the column labels as the band numbers, and 
+                    as_dataframe=True - formats results into a pandas
+                    dataframe with the index labels as the thickness
+                    values, the column labels as the band numbers, and
                     the dataframe as the resulting effective bandwidths.
 
 
-    :return:        returns len(3) tuple with [d_set, band_results, m_set]
-                    or the requested dataframe
+    :return:        returns len(3) tuple with [d_set, band_results, m_set].
+                    the rows of the band_results correspond with the d_set and
+                    the columns of the band_results correspond with the m_set.
+                    or the requested dataframe with the band values as column
+                    headers and the thickness values as row headers.
 
     -------------------------------------
-    '''
+    """
 
     if Mcalc is None:
         ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
@@ -605,7 +637,7 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
             Mcalc = read_excel(Mcalc).to_numpy()
 
         else:
-            ErrorMsg = 'Error partitioning input data'
+            ErrorMsg = 'Error partitioning input data from string'
             raise RuntimeError(ErrorMsg)
 
         # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
@@ -720,12 +752,17 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
             m for m in Mcalc[:, 0]
         ])
 
-    elif f_set is float or int and not tuple:
+    elif f_set is float or int and isinstance(f_set, tuple) is False:
         f_set = array([
             m for m in arange(Mcalc[0, 0], Mcalc[-1, 0] + f_set, f_set)
         ])
 
     elif len(f_set) is 2:
+
+        if f_set[0] > f_set[1]:
+            ErrorMsg = "f_set must be of order (start, stop) where 'start' is a value smaller than 'stop'"
+            raise SyntaxError(ErrorMsg)
+
         f_set = array([
             m for m in Mcalc[
                        argmin(abs(f_set[0] - Mcalc[:, 0])):
@@ -734,6 +771,11 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
         ])
 
     elif len(f_set) is 3:
+
+        if f_set[0] > f_set[1]:
+            ErrorMsg = "f_set must be of order (start, stop, [step]) where 'start' is a value smaller than 'stop'"
+            raise SyntaxError(ErrorMsg)
+
         f_set = array([
             m for m in arange(f_set[0], f_set[1] + f_set[2], f_set[2])
         ])
@@ -762,7 +804,7 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
 
     # pushes calculation to the C-level for increased computation performance.
     # see included file titled 'cpfuncs.pyx' for build blueprint
-    band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, threshold)
+    band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
         res = DataFrame(band_results)
