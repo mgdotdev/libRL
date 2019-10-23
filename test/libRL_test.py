@@ -16,8 +16,11 @@ def main():
         multicolumn=True,
         as_dataframe=True
     )
-    return reflection_loss
+
+    return reflection_loss.shape
 
 
 def test_main():
-    assert main.shape == (18, 20)
+    check = main()
+    assert check == (18, 20)
+
