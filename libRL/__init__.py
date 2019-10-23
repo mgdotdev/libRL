@@ -2,7 +2,7 @@
 libRL
 =====
 
-libRL is a Library of functions used for characterizing Microwave Absorption.
+libRL is a library of functions used for characterizing Microwave Absorption.
 
 functions include:
 
@@ -25,29 +25,24 @@ functions include:
 
 Developed at the University of Missouri-Kansas City under NSF grant DMR-1609061
 by Michael Green and Xiaobo Chen.
+
+----------------------------------------------
 """
 
 import cmath
-from libRL import cpfuncs
+from libRL import cpfuncs, refactoring
 
 from numpy import (
-    arange, delete, zeros, abs, array,
-    argmin, float64, errstate, pi, sqrt
+    arange, zeros, abs, array,
+    float64, errstate, pi, sqrt
 )
 
-from pandas import (
-    read_csv, read_excel, DataFrame
-)
-
-from scipy.interpolate import interp1d
+from pandas import DataFrame
 from pathos.multiprocessing import ProcessPool as Pool
-from os.path import splitext
 
 
 def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     """
-
-    RL(Mcalc=None, f_set=None, d_set=None, **kwargs)
 
     the RL function calculates the Reflection Loss based on the mapping
     passed through as the grid variable, done either through multiprocessing
@@ -79,188 +74,97 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     calculated will only be of the values present in the
                     list.
 
-    :param kwargs:  interp='linear' - set to linear if user wants to linear
-                    interp instead of cubic.
-                    multiprocessing=(int) - set to integer value to use
-                    multiprocessing with (int) nodes; set to 0 to use all
-                    nodes.*
+                    ------------------------------
+    :param kwargs:  :interp=:
+                    'linear'; 'cubic'
+
+                    Method for interpolation. Set to linear if user wants to
+                    linear interp instead of cubic spline. Default action
+                    uses cubic spline.
+                    ------------------------------
+
+                    :multiprocessing=:
+                    True; False; 0; 1; 2; ...
+
+                    Method for activating multiprocessing functionality for
+                    faster run times. This **kwarg takes integers and booleans.
+                    Set variable to True or 0 to use all available nodes. Pass
+                    an integer value to use (int) nodes. Will properly handle
+                    'False' as an input though it's equivalent to not even
+                    designating the particular **kwarg.
+
                     * note: if you use the multiprocessing functionality herein
                     while on a Windows computer you ***MUST MUST MUST MUST***
                     provide main module protection via the
                     if __name__ == "__main__":
                     conditional so to negate infinite spawns.
-                    'multicolumn'=True - outputs data in multicolumn form with
-                    either a numpy array of [RL, f, d] iterated over each three
-                    columns, or, if as_dataframe is used, then as a pandas
-                    dataframe with columns of name d and indexes of name f
-                    as_dataframe=True - returns data in a pandas dataframe.
+                    ------------------------------
+
+                    :as_dataframe=:
+                    True; False
+
+                    returns data in a pandas dataframe. This is particularly
+                    useful if multicolumn is also set to true.
+                    ------------------------------
+
+                    :multicolumn=:
+                    True; False
+                    outputs data in multicolumn form with  a numpy array of
+                    [RL, f, d] iterated over each of the three columns.
+                    - or -
+                    if as_dataframe is used, then return value will be a pandas
+                    dataframe with columns of name d and indexes of name f.
+                    ------------------------------
+
 
 
     :return:        returns Nx3 data set of [RL, f, d] by default or an
                     NxM dataframe where N rows for the input frequency values
 
-    -------------------------------------
+    ----------------------------------------------
     """
+    # Mcalc is refactored into a Nx5 numpy array by the file_refactor function from 'refactoring.py'
+    Mcalc = refactoring.file_refactor(Mcalc)
 
-    if Mcalc is None:
-        ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
-        raise RuntimeError(ErrorMsg)
+    # acquire the desired interpolating functions from 'refactoring.py'
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(Mcalc, **kwargs)
 
-    # allows for file location to be passed as the data variable.
-    if isinstance(Mcalc, str) is True:
-        if splitext(Mcalc)[1] == '.csv':
-            Mcalc = read_csv(Mcalc, sep=',').to_numpy()
+    # refactor the data sets in accordance to refactoring protocols in 'refactoring.py'
+    f_set = refactoring.f_set_ref(f_set, Mcalc)
+    d_set = refactoring.d_set_ref(d_set)
 
-        elif splitext(Mcalc)[1] == '.xlsx':
-            Mcalc = read_excel(Mcalc).to_numpy()
-
-        else:
-            ErrorMsg = 'Error partitioning input data from string'
-            raise RuntimeError(ErrorMsg)
-
-        # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
-        # note, if the file contains more/less than 5 columns this fails as the 6th row is
-        # always filled with NaN. That being said, most instruments output a Nx5 data file.
-        x = []
-        for i in arange(Mcalc.shape[0]):
-            for k in arange(Mcalc.shape[1]):
-                if isinstance(Mcalc[i, k], (int, float)) is False or Mcalc[i, k] != Mcalc[i, k]:
-                    x.append(i)
-                    break
-
-        # removes non-data rows from input array to yield the data array
-        Mcalc = delete(Mcalc, x, axis=0)
-
-    if d_set is None:
-        ErrorMsg = 'd_set must be given as a tuple of length 3 (d_st, d_end, d_step) or a list [] of d values/'
-        raise SyntaxError(ErrorMsg)
+    # construct a data grid for mapping from refactored data sets
+    # d *must* be first as list comprehension cycles through f_set
+    # for each d value, and this is deterministic of the structure
+    # of the resultant.
+    grid = array([(m, n)
+                  for n in d_set
+                  for m in f_set
+                  ], dtype=float64)
 
     def G(grid):
         f = grid[0]
         d = grid[1]
-        y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) /
-            (e1f(f) - j * e2f(f)))) * (cmath.tanh(j * (2 * cmath.pi * (f * GHz) * (d * mm) / c) *
-            cmath.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))))) - 1) /
-            ((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) / (e1f(f) - j * e2f(f)))) *
-            (cmath.tanh(j * (2 * cmath.pi * (f * GHz) * (d * mm) / c) * cmath.sqrt(
-            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))))) + 1)))))
+
+        # I know, it's super ugly.
+        y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) /
+            (e1f(f) - cmath.sqrt(-1) * e2f(f)))) * (cmath.tanh(cmath.sqrt(-1) *
+            (2 * cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) *
+            cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) * (e1f(f) - cmath.sqrt(-1) *
+            e2f(f)))))) - 1) / ((1 * (cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) /
+            (e1f(f) - cmath.sqrt(-1) * e2f(f)))) * (cmath.tanh(cmath.sqrt(-1) * (2 *
+            cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) * cmath.sqrt(
+            (mu1f(f) - cmath.sqrt(-1) * mu2f(f)) * (e1f(f) - cmath.sqrt(-1) *
+            e2f(f)))))) + 1)))))
+
+        # return inputted data for documentation and return
+        # the real portion of y because the function is purely real
         return y.real, f, d
 
-    # constants for later use
-    j = cmath.sqrt(-1)
-    c = 299792458
-    GHz = 10 ** 9
-    mm = 10 ** (-3)
-
-    # pass data to a numpy array
-    Mcalc = array(Mcalc)
-
-    # user option to use linear interpolation via a kwarg. Default is cubic spline.
-    # (e1, e2, mu1, mu2) = (Real Permittivity, Complex Permittivity, Real Permeability, Complex Permeability)
-    if 'interp' in kwargs and kwargs['interp'] is 'linear':
-
-        e1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 1], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        e2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 2], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        mu1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 3], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        mu2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 4], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-    else:
-        e1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 1], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        e2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 2], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        mu1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 3], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        mu2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 4], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-    if type(d_set) is list:
-        d_set = array(d_set)
-    else:
-        d_set = arange(d_set[0], d_set[1] + d_set[2], d_set[2])
-
-    # if frequency step value is given, interpolate the results.
-    # Otherwise, the grid is tied to the given data as if the function
-    # was never interpolated, as interpolating functions pass through
-    # all given variables.
-
-    if f_set is None:
-        f_set = Mcalc[:, 0]
-        grid = array([(m, n)
-                      for n in d_set
-                      for m in f_set
-                      ])
-
-    elif f_set is float or int and isinstance(f_set, tuple) is False:
-        f_set = arange(Mcalc[0, 0], Mcalc[-1, 0] + f_set, f_set)
-        grid = array([(m, n)
-                      for n in d_set
-                      for m in f_set
-                      ])
-
-    elif len(f_set) is 2:
-        if f_set[0] > f_set[1]:
-            ErrorMsg = "f_set must be of order (start, stop) where 'start' is a value smaller than 'stop'"
-            raise  SyntaxError(ErrorMsg)
-
-        f_set = Mcalc[argmin(abs(f_set[0] - Mcalc[:, 0])):argmin(abs(f_set[1] - Mcalc[:, 0])), 0]
-        grid = array([(m, n)
-                      for n in d_set
-                      for m in f_set
-                      ])
-
-    elif len(f_set) is 3:
-        if f_set[0] > f_set[1]:
-            ErrorMsg = "f_set must be of order (start, stop, [step]) where 'start' is a value smaller than 'stop'"
-            raise  SyntaxError(ErrorMsg)
-
-        f_set = arange(f_set[0], f_set[1] + f_set[2], f_set[2])
-        grid = array([(m, n)
-                      for n in d_set
-                      for m in f_set
-                      ])
-
-    else:
-        ErrorMsg = 'Error in partitioning frequency values'
-        raise SyntaxError(ErrorMsg)
-
+    # if multiprocessing is given as True or as a zero integer, use all available nodes
     # if multiprocessing is given and is a non-zero integer, use int value for number of nodes
-    # if multiprocessing is given and is the zero integer, use all available nodes
-
+    # if multiprocessing is given as False (for some reason?), or anything else, ignore it.
+    # returns res of Zx3 data where Z is the product of len(f_set) and len(d_set)
     if 'multiprocessing' in kwargs and isinstance(kwargs['multiprocessing'], int) is True:
 
         if kwargs['multiprocessing'] is 0 or True:
@@ -309,8 +213,6 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     """
 
-    CARL(Mcalc=None, f_set=None, params="All", **kwargs)
-
     the CARL (ChAracterization of Reflection Loss) function takes
     a set or list of keywords in the 'params' variable and calculates
     the character values associated with the parameter. See
@@ -332,7 +234,6 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                     with the calculation bound by the given start and
                     end frequencies
                     - if f_set is None, frequency is bound to input data
-                    or:
                     - if f_set is of type list, the frequencies calculate
                     will be only the frequencies represented in the list.
 
@@ -358,155 +259,46 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                     }
                     If no list is passed, the default is to calculate everything.
 
-    :param kwargs:  as_dataframe=True - returns the requested parameters as
-                    a pandas dataframe with column names as the parameter keywords
+                    ------------------------------
+    :param kwargs:  :as_dataframe=:
+                    True; False
+
+                    returns the requested parameters as a pandas dataframe with
+                    column names as the parameter keywords.
+                    ------------------------------
 
 
     :return:        NxY data set of the requested parameters as columns 1 to Y with the input
                     frequency values in column zero to N.
+                    - or -
+                    returns a pandas dataframe with the requested parameters
+                    as column headers, and the frequency values as index headers
 
-    -------------------------------------
+    ----------------------------------------------
     """
 
-    if Mcalc is None:
-        ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 ' \
-                   'numpy array with columns [freq, e1, e2, mu1, mu2]'
-        raise RuntimeError(ErrorMsg)
+    # Mcalc is refactored into a Nx5 numpy array by the file_refactor function in libRL
+    Mcalc = refactoring.file_refactor(Mcalc)
 
-    # allows for file location to be passed as the data variable.
-    if isinstance(Mcalc, str) is True:
-        if splitext(Mcalc)[1] == '.csv':
-            Mcalc = read_csv(Mcalc, sep=',').to_numpy()
+    # acquire the desired interpolating functions from 'refactoring.py'
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(Mcalc, **kwargs)
 
-        elif splitext(Mcalc)[1] == '.xlsx':
-            Mcalc = read_excel(Mcalc).to_numpy()
-
-        else:
-            ErrorMsg = 'Error partitioning input data from string'
-            raise RuntimeError(ErrorMsg)
-
-        # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
-        # note, if the file contains more/less than 5 columns this fails as the 6th row is
-        # always filled with NaN. That being said, most instruments output a Nx5 data file.
-        x = []
-        for i in arange(Mcalc.shape[0]):
-            for k in arange(Mcalc.shape[1]):
-                if isinstance(Mcalc[i, k], (int, float)) is False or Mcalc[i, k] != Mcalc[i, k]:
-                    x.append(i)
-                    break
-
-        # removes non-data rows from input array to yield the data array
-        Mcalc = delete(Mcalc, x, axis=0)
-
-    # constants for later use
-    j = cmath.sqrt(-1)
-    c = 299792458
-    GHz = 10 ** 9
-    Z0 = 376.730313461
-    e0 = 8.854188 * 10 ** (-12)
-
-    # pass data to a numpy array
-    Mcalc = array(Mcalc)
-
-    # user option to use linear interpolation via a kwarg. Default is cubic spline.
-    # (e1, e2, mu1, mu2) = (Real Permittivity, Complex Permittivity, Real Permeability, Complex Permeability)
-    if 'interp' in kwargs and kwargs['interp'] is 'linear':
-
-        e1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 1], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        e2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 2], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        mu1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 3], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        mu2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 4], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-    else:
-        e1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 1], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        e2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 2], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        mu1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 3], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        mu2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 4], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
+    # ignore for when user inputs simulated data which includes
+    # e, mu = (1-j*0) which will throw unnecessary error
     errstate(divide='ignore')
 
-    # if frequency step value is given, interpolate the results.
-    # Otherwise, the grid is tied to the given data as if the function
-    # was never interpolated, as interpolating functions pass through
-    # all given variables.
-
-    if f_set is None:
-        f_set = array([
-            m for m in Mcalc[:, 0]
-        ])
-
-    elif type(f_set) is list:
-        f_set = array(f_set)
-
-    elif f_set is float or int and isinstance(f_set, tuple) is False:
-        f_set = array([
-            m for m in arange(Mcalc[0, 0], Mcalc[-1, 0] + f_set, f_set)
-        ])
-
-    elif len(f_set) is 2:
-
-        if f_set[0] > f_set[1]:
-            ErrorMsg = "f_set must be of order (start, stop) where 'start' is a value smaller than 'stop'"
-            raise SyntaxError(ErrorMsg)
-
-        f_set = array([
-            m for m in Mcalc[
-                       argmin(abs(f_set[0] - Mcalc[:, 0])):
-                       argmin(abs(f_set[1] - Mcalc[:, 0])),
-                       0]
-        ])
-
-    elif len(f_set) is 3:
-
-        if f_set[0] > f_set[1]:
-            ErrorMsg = "f_set must be of order (start, stop, [step]) where 'start' is a value smaller than 'stop'"
-            raise SyntaxError(ErrorMsg)
-
-        f_set = array([
-            m for m in arange(f_set[0], f_set[1] + f_set[2], f_set[2])
-        ])
-
+    # if input is an explicit list, keep the list. Otherwise, refactor as usual.
+    if type(f_set) is list:
+        f_set = array(f_set, dtype=float64)
     else:
-        ErrorMsg = 'Error in partitioning frequency values'
-        raise SyntaxError(ErrorMsg)
+        f_set = refactoring.f_set_ref(f_set, Mcalc)
+
+    # constants
+    j = cmath.sqrt(-1)              # definition of j
+    c = 299792458                   # speed of light
+    GHz = 10 ** 9                   # definition of GHz
+    Z0 = 376.730313461              # intrinsic impedance
+    e0 = 8.854188 * 10 ** (-12)     # permittivity of free space
 
     chars = {
         "tgde": lambda f: e1f(f) / e2f(f),
@@ -530,6 +322,8 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         "Eddy": lambda f: mu2f(f) / (mu1f(f) ** 2 * f)
     }
 
+    # give user option to just calculate everything without forcing them
+    # to type it all. also, don't be case sensitive.
     if params is 'All' or 'all' or params[0] is 'All' or params[0] is 'all':
         params = [
             "tgde", "tgdu", "Qe", "Qu", "Qf",
@@ -539,14 +333,17 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
             "React", "Condt", "Skd", "Eddy"
         ]
 
+    # results matrix, first column reserved for frequency if output to numpy array
     Matrix, names = zeros((f_set.shape[0], len(params) + 1), dtype=float64), ["frequency"]
-    Matrix[:, 0] = f_set[:]
+    Matrix[:, 0] = f_set
 
+    # call the lambda functions from the char dictionary
     for counter, param in enumerate(params, start=1):
         Matrix[:, counter] = chars[param](f_set[:])
         names.append(param)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
+        # whoops, didn't need that first colum after all!
         panda_matrix = DataFrame(Matrix[:, 1:])
         panda_matrix.columns = list(names[1:])
         panda_matrix.index = list(f_set)
@@ -557,8 +354,6 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
 def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     """
-
-    BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
 
     the BARF (Band Analysis for ReFlection loss) function uses Permittivity
     and Permeability data of materials so to determine the effective bandwidth
@@ -580,7 +375,7 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     report data which is compatible with the required format)
 
     :param f_set:   (start, end, [step]) tuple for frequency values in GHz
-                    or:
+                    - or -
                     - if given as tuple of len 3, results are interpolated
                     - if given as tuple of len 2, results are data-derived
                     with the calculation bound by the given start and end
@@ -592,27 +387,38 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     input data.
 
     :param d_set:   (start, end, [step]) tuple for thickness values in mm.
-                    or:
-                    if d_set is of type list, then the thickness values
+                    - or -
+                    - if d_set is of type list, then the thickness values
                     calculated will only be of the values present in the
                     list. (is weird, but whatever.)
 
     :param m_set:   (start, end, [step]) tuple of ints which define the
                     bands to be calculated.
-                    or:
-                    if m_set is given as a list [], the explicitly listed
+                    - or -
+                    - if m_set is given as a list [], the explicitly listed
                     band integers will be calculated.
 
-    :param thrs:    Threshold for evaluation. If RL values are below this
+    :param thrs:    thrs=-10
+
+                    Threshold for evaluation. If RL values are below this
                     threshold value, the point is counted for the band.
                     Default value is -10.
 
-    :param kwargs:  interp='linear' - set to linear if user wants to
-                    linear interp instead of cubic.
-                    as_dataframe=True - formats results into a pandas
+                    ------------------------------
+    :param kwargs:  :interp=:
+                    'linear'; 'cubic'
+
+                    Method for interpolation. Set to linear if user wants to
+                    linear interp instead of cubic spline.
+                    ------------------------------
+                    :as_dataframe=:
+                    True; False
+
+                    Formats results into a pandas
                     dataframe with the index labels as the thickness
                     values, the column labels as the band numbers, and
                     the dataframe as the resulting effective bandwidths.
+                    ------------------------------
 
 
     :return:        returns len(3) tuple with [d_set, band_results, m_set].
@@ -621,188 +427,52 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     or the requested dataframe with the band values as column
                     headers and the thickness values as row headers.
 
-    -------------------------------------
+    ----------------------------------------------
     """
 
-    if Mcalc is None:
-        ErrorMsg = 'Data must be passed as an array which is mappable to an Nx5 numpy array with columns [freq, e1, e2, mu1, mu2]'
-        raise RuntimeError(ErrorMsg)
+    # Mcalc is refactored into a Nx5 numpy array by the file_refactor function in libRL
+    Mcalc = refactoring.file_refactor(Mcalc)
 
-    # allows for file location to be passed as the data variable.
-    if isinstance(Mcalc, str) is True:
-        if splitext(Mcalc)[1] == '.csv':
-            Mcalc = read_csv(Mcalc, sep=',').to_numpy()
+    # refactor the data sets in accordance to refactoring protocols in 'refactoring.py'
+    f_set = refactoring.f_set_ref(f_set, Mcalc)
+    d_set = refactoring.d_set_ref(d_set)
+    m_set = refactoring.m_set_ref(m_set)
 
-        elif splitext(Mcalc)[1] == '.xlsx':
-            Mcalc = read_excel(Mcalc).to_numpy()
+    # acquire the desired interpolating functions from 'refactoring.py'
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(Mcalc, **kwargs)
 
-        else:
-            ErrorMsg = 'Error partitioning input data from string'
-            raise RuntimeError(ErrorMsg)
-
-        # finds all rows in numpy array which aren't a part of the Nx5 data array expected.
-        # note, if the file contains more/less than 5 columns this fails as the 6th row is
-        # always filled with NaN. That being said, most instruments output a Nx5 data file.
-        x = []
-        for i in arange(Mcalc.shape[0]):
-            for k in arange(Mcalc.shape[1]):
-                if isinstance(Mcalc[i, k], (int, float)) is False or Mcalc[i, k] != Mcalc[i, k]:
-                    x.append(i)
-                    break
-
-        # removes non-data rows from input array to yield the data array
-        Mcalc = delete(Mcalc, x, axis=0)
-
-    if d_set is None:
-        ErrorMsg = 'd_set must be given as a tuple of length 3 (d_st, d_end, d_step) or a list [] of d values.'
-        raise SyntaxError(ErrorMsg)
-
-    # constants for later use
-    j = cmath.sqrt(-1)
-    c = 299792458
-    GHz = 10 ** 9
-
-    # pass data to a numpy array
-    Mcalc = array(Mcalc)
-
-    # user option to use linear interpolation via a kwarg. Default is cubic spline.
-    # (e1, e2, mu1, mu2) = (Real Permittivity, Complex Permittivity, Real Permeability, Complex Permeability)
-    if 'interp' in kwargs and kwargs['interp'] is 'linear':
-
-        e1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 1], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        e2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 2], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        mu1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 3], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        mu2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 4], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-    else:
-        e1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 1], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        e2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 2], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        mu1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 3], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        mu2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 4], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
+    # ignore for when user inputs simulated data which includes
+    # e, mu = (1-j*0) which will throw unnecessary error
     errstate(divide='ignore')
 
-    if type(d_set) is list:
-        d_set = array(d_set)
-    else:
-        try:
-            d_set = arange(d_set[0], d_set[1] + d_set[2], d_set[2])
-        except:
-            ErrorMsg = 'd_set must be a tuple type int or float of structure (start, end, step) ' \
-                       'or a list [] of type int or float values.'
-            raise SyntaxError(ErrorMsg)
+    # this time make the permittivity and permeability grid first
+    # so we can push the core of the calculation down to the C-layer
+    # via cython
+    PnPGrid = zeros((f_set.shape[0], 5), dtype=float64)
 
-    # paritition band values
-    if type(m_set) is list:
-        m_set = array(m_set)
-
-    else:
-        try:
-            m_set = arange(m_set[0], m_set[1] + m_set[2], m_set[2])
-        except:
-            ErrorMsg = 'm_set must be a tuple of positive integers of structure (start, end, step) ' \
-                       'or a list [] of integer values.'
-            raise SyntaxError(ErrorMsg)
-
-    # if frequency step value is given, interpolate the results.
-    # Otherwise, the grid is tied to the given data as if the function
-    # was never interpolated, as interpolating functions pass through
-    # all given variables.
-
-    if f_set is None:
-        f_set = array([
-            m for m in Mcalc[:, 0]
-        ])
-
-    elif f_set is float or int and isinstance(f_set, tuple) is False:
-        f_set = array([
-            m for m in arange(Mcalc[0, 0], Mcalc[-1, 0] + f_set, f_set)
-        ])
-
-    elif len(f_set) is 2:
-
-        if f_set[0] > f_set[1]:
-            ErrorMsg = "f_set must be of order (start, stop) where 'start' is a value smaller than 'stop'"
-            raise SyntaxError(ErrorMsg)
-
-        f_set = array([
-            m for m in Mcalc[
-                       argmin(abs(f_set[0] - Mcalc[:, 0])):
-                       argmin(abs(f_set[1] - Mcalc[:, 0])),
-                       0]
-        ])
-
-    elif len(f_set) is 3:
-
-        if f_set[0] > f_set[1]:
-            ErrorMsg = "f_set must be of order (start, stop, [step]) where 'start' is a value smaller than 'stop'"
-            raise SyntaxError(ErrorMsg)
-
-        f_set = array([
-            m for m in arange(f_set[0], f_set[1] + f_set[2], f_set[2])
-        ])
-
-    else:
-        ErrorMsg = 'Error in partitioning frequency values'
-        raise SyntaxError(ErrorMsg)
-
-    PnPGrid = zeros((f_set.shape[0], 5))
-
+    # populate grid accordingly
     PnPGrid[:, 0] = f_set[:]
     PnPGrid[:, 1] = e1f(f_set[:])
     PnPGrid[:, 2] = e2f(f_set[:])
     PnPGrid[:, 3] = mu1f(f_set[:])
     PnPGrid[:, 4] = mu2f(f_set[:])
 
-    mGrid = zeros((f_set.shape[0], m_set.shape[0] * 2))
 
     # to find the 1/2th integer wavelength, NOT quarter.
     def dfind(f, m):
-        return ((c / (f * GHz)) * (1.0 / (sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).real)) * (((2.0 * m) - 2.0) / 4.0)) * 1000
+        y = ((299792458 / (f * 10**9)) * (1.0 / (sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) *
+            (e1f(f) - cmath.sqrt(-1) * e2f(f))).real)) * (((2.0 * m) - 2.0) / 4.0)) * 1000
+        return y
 
+    # make another grid for the band edges
+    mGrid = zeros((f_set.shape[0], m_set.shape[0] * 2), dtype=float64)
+
+    # use the 1/2 integer function to populate it
     for i, m in enumerate(m_set):
         mGrid[:, 2 * i] = dfind(f_set[:], m)
         mGrid[:, 2 * i + 1] = dfind(f_set[:], m + 1)
 
-    # pushes calculation to the C-level for increased computation performance.
+    # push the calculation to the C-level for increased computation performance.
     # see included file titled 'cpfuncs.pyx' for build blueprint
     band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
 

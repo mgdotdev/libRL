@@ -4,8 +4,7 @@ Library of functions used for characterizing Microwave Absorption
 This Library is to include all of the programs, functions, and methods developed at the University of Missouri-Kansas City 
 under NSF grant DMR-1609061.
 
-installation instructions:
-the module can be installed via pip
+The libRL module can be installed via pip
 
         pip install git+https://github.com/GreenScarz/libRL-package
 
