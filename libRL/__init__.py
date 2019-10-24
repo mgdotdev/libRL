@@ -118,8 +118,11 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
 
 
-    :return:        returns Nx3 data set of [RL, f, d] by default or an
-                    NxM dataframe where N rows for the input frequency values
+    :return:        returns Nx3 data set of [RL, f, d] by default
+                    - or -
+                    an NxM dataframe with N rows for the input frequency values
+                    and M columns for the input thickness values, with pandas
+                    dataframe headers/indexes of value f/d respectively.
 
     ----------------------------------------------
     """
