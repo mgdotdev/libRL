@@ -33,7 +33,7 @@ necessary for thorough characterization.
 
 In order to best mitigate these difficulties, presented herein is a Python library
 for reflection loss characterization, designed for open use by the RAM development
-community. The ``libRL`` library contains functions and procedures which take
+community. The libRL library contains functions and procedures which take
 permittivity and permeability data derived from experimentation and calculates the
 various sets of parameters desired for the full characterization of radar-absorbing
 materials. Such calculations include the standard reflection loss over
@@ -48,7 +48,7 @@ functions and the cython library for optimized computation performance.
 
 This library can be installed via pip into the user’s python environment (see README.md
 for details) and imported/used similarly to any other library available in the standard
-library. ``libRL`` includes therein an exhaustive set of methods for customizing the
+library. libRL includes therein an exhaustive set of methods for customizing the
 calculation parameters so to satisfy the broadest of scopes necessary for the RAM
 development community - users are encouraged to consult the docstrings therein for a
 full description of the customizations available.
