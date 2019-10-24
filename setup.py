@@ -34,7 +34,8 @@ setup(
         'numpy',
         'scipy',
         'pandas',
-        'pathos'
+        'pathos',
+        'xlrd',
     ],
 
     project_urls={
