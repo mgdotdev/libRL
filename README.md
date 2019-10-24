@@ -1,7 +1,7 @@
 # libRL
-Library of functions used for characterizing Microwave Absorption
+A Python library for characterizing Microwave Absorption.
 
-This Library is to include all of the programs, functions, and methods developed at the University of Missouri-Kansas City 
+This Library is to include all of the functions and methods developed at the University of Missouri-Kansas City 
 under NSF grant DMR-1609061.
 
 The libRL module can be installed via pip
