@@ -22,7 +22,7 @@ bibliography: paper.bib
 # Summary
 
 Ever since the revelation that reflection loss as a parameter of interest was
-shown to not be the defining characteristic to of radar-absorbing materials (RAM)
+shown to not be the defining characteristic of radar-absorbing materials (RAM)
 [@Green:2019-1; @Green:2019-2; @Green:2019-3], the RAM development community has
 been bereft of the tools necessary to determine the parameters desired by the new
 RAM performance hierarchy. Elucidating the new parameters of interest, such as the
