@@ -40,7 +40,7 @@ materials. Such calculations include the standard reflection loss over
 frequency·thickness grid space, the full list of characterization values defined in
 the recent literature review, *Recent Progress in Nanomaterials for Microwave Absorption*
 [@Green:2019-1], and finally the effective bandwidths for reflection loss, so to
-encapsulate the entirety of cutting-edge analyses for the RAM development. of single
+encapsulate the entirety of cutting-edge analyses for the RAM development of single
 plane-wave absorbers [@Naito:1969; @Naito:1971; @Meena:2010]. These functions have been
 optimized for both user and computation efficiency, making use of both pythons built-in
 functions and the cython library for optimized computation performance.
