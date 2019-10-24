@@ -16,7 +16,7 @@ setup(
     author_email='1mikegrn@gmail.com',
 
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 3 - Beta',
         'Intended Audience :: STEM research',
         'License :: OSI Approved :: GPL3 License',
     ],
