@@ -1,5 +1,5 @@
 ---
-title: 'libRL: A Python library for the characterization of Microwave Absorption'
+title: 'libRL: A Python library for the characterization of microwave absorption'
 tags:
   - Python
   - Materials Chemistry
