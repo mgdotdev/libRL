@@ -4,7 +4,7 @@ A Python library for characterizing Microwave Absorption.
 This Library is to include all of the functions and methods developed at the University of Missouri-Kansas City 
 under NSF grant DMR-1609061.
 
-The libRL module can be installed via pip
+The libRL module can be installed via pip and git
 
         pip install git+https://github.com/GreenScarz/libRL-package
 
