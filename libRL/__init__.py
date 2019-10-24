@@ -431,7 +431,8 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     :return:        returns len(3) tuple with [d_set, band_results, m_set].
                     the rows of the band_results correspond with the d_set and
                     the columns of the band_results correspond with the m_set.
-                    or the requested dataframe with the band values as column
+                    - or -
+                    returns the requested dataframe with the band values as column
                     headers and the thickness values as row headers.
 
     ----------------------------------------------
