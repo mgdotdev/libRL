@@ -26,15 +26,14 @@ shown to not be the defining characteristic of radar-absorbing materials (RAM)
 [@Green:2019-1; @Green:2019-2; @Green:2019-3], the RAM development community has
 been bereft of the tools necessary to determine the parameters desired by the new
 RAM performance hierarchy. Elucidating the new parameters of interest, such as the
-effective bandwidth, require non-trivial derivations and calculations that many labs
+effective bandwidth, requires non-trivial derivations and calculations that many labs
 in the RAM community are simply not prepared to handle, at least not at the scale
 necessary for thorough characterization.
-
 
 In order to best mitigate these difficulties, presented herein is a Python library
 for reflection loss characterization, designed for open use by the RAM development
 community. The libRL library contains functions and procedures which take
-permittivity and permeability data derived from experimentation and calculates the
+permittivity and permeability data derived from experimentation, and calculates the
 various sets of parameters desired for the full characterization of radar-absorbing
 materials. Such calculations include the standard reflection loss over
 frequency·thickness grid space, the full list of characterization values defined in
