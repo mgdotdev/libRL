@@ -309,13 +309,13 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         "Qf": lambda f: ((e1f(f) / e2f(f)) + (mu1f(f) / mu2f(f))) ** -1,
         "ReRefIndx": lambda f: sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).real,
         "ExtCoeff": lambda f: sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).imag,
-        "AtnuCnstNm": lambda f: ((2 * pi * f * GHz * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))) * (c ** -1)).real,
-        "AtnuCnstdB": lambda f: ((2 * pi * f * GHz * sqrt((mu1f(f) - j * mu2f(f)) *
-                                                          (e1f(f) - j * e2f(f)))) * (c ** -1)).real * 8.86588,
-        "PhsCnst": lambda f: ((2 * pi * f * GHz * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))) * (c ** -1)).imag,
+        "AtnuCnstNm": lambda f: ((2 * pi * f * GHz) * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)).real,
+        "AtnuCnstdB": lambda f: (2 * pi * f * GHz * sqrt((mu1f(f) - j * mu2f(f)) *
+                                                          (e1f(f) - j * e2f(f))) * (c ** -1)).real * 8.86588,
+        "PhsCnst": lambda f: ((2 * pi * f * GHz) * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)).imag,
         "PhsVel": lambda f: ((2 * pi * f * GHz) /
-                             ((2 * pi * f * GHz * sqrt((mu1f(f) - j * mu2f(f)) *
-                                                       (e1f(f) - j * e2f(f)))) * (c ** -1))).imag,
+                             (((2 * pi * f * GHz) * sqrt((mu1f(f) - j * mu2f(f)) *
+                                                       (e1f(f) - j * e2f(f))) * (c ** -1))).imag),
         "Res": lambda f: (Z0 * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).real,
         "React": lambda f: (Z0 * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).imag,
         "Condt": lambda f: (2 * pi * f * GHz) * (e0 * e2f(f)),
