@@ -39,11 +39,11 @@ various sets of parameters desired for the full characterization of radar-absorb
 materials. Such calculations include the standard reflection loss over
 frequency·thickness grid space, the full list of characterization values defined in
 the recent literature review, *Recent Progress in Nanomaterials for Microwave Absorption*
-[@Green:2019-1], and finally the effective bandwidths for reflection loss, so to
-encapsulate the entirety of cutting-edge analyses for the RAM development of single
-plane-wave absorbers [@Naito:1969; @Naito:1971; @Meena:2010]. These functions have been
-optimized for both user and computation efficiency, making use of both pythons built-in
-functions and the cython library for optimized computation performance.
+[@Green:2019-1], and finally the effective bandwidths for reflection loss. As such, the
+library encapsulates the entirety of cutting-edge analyses available for the development
+of single plane-wave absorbers [@Naito:1969; @Naito:1971; @Meena:2010]. These functions
+have been optimized for both user and computation efficiency, making use of both pythons
+built-in functions and the cython library for optimized computation performance.
 
 
 This library can be installed via pip into the user’s python environment (see README.md
