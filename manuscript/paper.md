@@ -37,7 +37,7 @@ permittivity and permeability data derived from experimentation and calculates t
 various sets of parameters desired for the full characterization of radar-absorbing
 materials. Such calculations include the standard reflection loss over
 frequency·thickness grid space,the full list of characterization values defined in
-the recent literature review,*Recent Progress in Nanomaterials for Microwave Absorption*
+the recent literature review, *Recent Progress in Nanomaterials for Microwave Absorption*
 [@Green:2019-1], and finally the effective bandwidths for reflection loss, so to
 encapsulate the entirety of cutting-edge analyses for RAM development. These functions
 have been optimized for both user and computation efficiency, making use of both
