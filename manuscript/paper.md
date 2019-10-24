@@ -31,7 +31,7 @@ in the RAM community are simply not prepared to handle, at least not at the scal
 necessary for thorough characterization.
 
 
-In order to best mitigate these difficulties, presented herein is a python module
+In order to best mitigate these difficulties, presented herein is a Python module
 for reflection loss characterization, designed for open use by the RAM development
 community. The ``libRL`` module contains functions and procedures which take
 permittivity and permeability data derived from experimentation and calculates the
@@ -50,8 +50,12 @@ This module can be installed via pip into the user’s python environment (see R
 for details) and imported/used similarly to any other module available in the standard
 library. ``libRL`` includes therein an exhaustive set of methods for customizing the
 calculation parameters so to satisfy the broadest of scopes necessary for the RAM
-development community. Users are encouraged to consult the docstrings therein for a
+development community - users are encouraged to consult the docstrings therein for a
 full description of the customizations available.
+
+# Conflict of interest
+
+Authors declare that there are no conflicts of interest.
 
 # Acknowledgements
 
