@@ -314,11 +314,11 @@ def m_set_ref(m_set):
     """
     # partition band values
     if type(m_set) is list:
-        m_set = array(m_set, dtype=float64)
+        m_set = array(m_set, dtype=int)
 
     else:
         try:
-            m_set = arange(m_set[0], m_set[1] + m_set[2], m_set[2], dtype=float64)
+            m_set = arange(m_set[0], m_set[1] + m_set[2], m_set[2], dtype=int)
         except:
             ErrorMsg = 'm_set must be a tuple of positive integers of structure (start, end, step) ' \
                        'or a list [] of integer values.'
