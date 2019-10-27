@@ -139,58 +139,26 @@ def interpolate(Mcalc, **kwargs):
     ----------------------------------------------
     """
 
+    params = ['e1f', 'e2f', 'mu1f', 'mu2f']
+
     if 'interp' in kwargs and kwargs['interp'] is 'linear':
 
-        e1f = interp1d(
+        param_funcs = {param: interp1d(
             array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 1], dtype=float64),
+            array(Mcalc[:, count], dtype=float64),
             kind='linear', fill_value='extrapolate'
-        )
-
-        e2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 2], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        mu1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 3], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
-
-        mu2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 4], dtype=float64),
-            kind='linear', fill_value='extrapolate'
-        )
+        ) for count, param in enumerate(params, start=1)
+        }
 
     else:
-        e1f = interp1d(
+        param_funcs = {param: interp1d(
             array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 1], dtype=float64),
+            array(Mcalc[:, count], dtype=float64),
             kind='cubic', fill_value='extrapolate'
-        )
+        ) for count, param in enumerate(params, start=1)
+        }
 
-        e2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 2], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        mu1f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 3], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-        mu2f = interp1d(
-            array(Mcalc[:, 0], dtype=float64),
-            array(Mcalc[:, 4], dtype=float64),
-            kind='cubic', fill_value='extrapolate'
-        )
-
-    return e1f, e2f, mu1f, mu2f
+    return param_funcs['e1f'], param_funcs['e2f'], param_funcs['mu1f'], param_funcs['mu2f']
 
 
 def f_set_ref(f_set, Mcalc):
