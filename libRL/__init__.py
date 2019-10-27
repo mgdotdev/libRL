@@ -93,7 +93,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     'False' as an input though it's equivalent to not even
                     designating the particular **kwarg.
 
-                    * note: if you use the multiprocessing functionality herein
+                    NOTE: if you use the multiprocessing functionality herein
                     while on a Windows computer you ***MUST MUST MUST MUST***
                     provide main module protection via the
                     if __name__ == "__main__":
