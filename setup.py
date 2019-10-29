@@ -39,7 +39,7 @@ setup(
     ],
 
     project_urls={
-        'GutHub': 'https://github.com/1mikegrn/libRL',
+        'GitHub': 'https://github.com/1mikegrn/libRL',
         'Website': 'http://www.inorganicexposure.com',
         'Google Scholar': 'https://scholar.google.com/citations?user=DxFljRYAAAAJ&hl=en'
     }
