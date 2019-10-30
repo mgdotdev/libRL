@@ -41,7 +41,7 @@ def main():
         f_set=(1,18),
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],
-        thrs=-20,
+        thrs=-10,
         as_dataframe=True,
     )
 
