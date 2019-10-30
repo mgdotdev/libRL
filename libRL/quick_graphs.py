@@ -57,17 +57,20 @@ def qgRL(results, location):
 
     try:
         fig = plt.figure(dpi=200)
-        ax = fig.add_axes([-0.1, 0.02, 1, 1], projection='3d')
+        ax = fig.add_axes([0.1,0.15, 0.7, 0.75], projection='3d')
+        cbaxes = fig.add_axes([0.80, 0.352, 0.02, 0.378])
+
+        ax.set_proj_type('ortho')
+        ax.zaxis._axinfo['juggled'] = (1, 2, 0)
 
         ax.dist = 13
         ax.view_init(-153, -130)
-        ax.set_proj_type('ortho')
-        ax.zaxis._axinfo['juggled'] = (1, 2, 0)
 
         ax.w_xaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
         ax.w_yaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
         ax.w_zaxis.set_pane_color((1.0, 1.0, 1.0, 1.0))
 
+        ax.tick_params(labelsize=10, pad=0)
         ax.tick_params(axis='z', pad=3)
         ax.set_xlabel('Frequency / GHz', fontsize=12)
         ax.set_ylabel('Thickness / mm', fontsize=12)
@@ -97,10 +100,8 @@ def qgRL(results, location):
             vmax=0
         )
 
-        cbaxes = fig.add_axes([0.80, 0.352, 0.02, 0.378])
-
         cbar1 = plt.colorbar(plot1, cax=cbaxes)
-        cbar1.set_ticks([])
+        cbar1.ax.tick_params(labelsize=10)
 
         cbar1.set_ticks(
             [0, -10, -20, -30,

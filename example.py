@@ -23,29 +23,31 @@ def main():
         multiprocessing=True,
         multicolumn=True,
         as_dataframe=True,
+        quick_graph=True
     )
 
-    print(reflection_loss)
+    # print(reflection_loss)
+    #
+    # characterization = libRL.CARL(
+    #     Mcalc=import_file,
+    #     f_set=(1,10),
+    #     params='all',
+    #     as_dataframe=True
+    # )
+    #
+    # print(characterization)
 
-    characterization = libRL.CARL(
-        Mcalc=import_file,
-        f_set=(1,10),
-        params='all',
-        as_dataframe=True
-    )
+    # band_analysis = libRL.BARF(
+    #     Mcalc=import_file,
+    #     f_set=(1,18),
+    #     d_set=(1,5,0.1),
+    #     m_set=[1,2,3,4,5],
+    #     thrs=-10,
+    #     as_dataframe=True,
+    #     quick_graph=True
+    # )
 
-    print(characterization)
-
-    band_analysis = libRL.BARF(
-        Mcalc=import_file,
-        f_set=(1,18),
-        d_set=(1,5,0.1),
-        m_set=[1,2,3,4,5],
-        thrs=-10,
-        as_dataframe=True,
-    )
-
-    print(band_analysis)
+    # print(band_analysis)
 
 
 if __name__ == "__main__":
