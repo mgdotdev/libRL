@@ -6,25 +6,26 @@ to call/read the docstrings for descriptions and full context on the
 '''
 
 import libRL
-import pandas as pd
+from os import path
 
 
 def main():
 
-    import_file = r'C:\Users\1mike\PycharmProjects\libRL package\test\paraffin_data.csv'
+    import_file = path.abspath(
+        path.dirname(__file__)
+    ) + r'\test\test_data.xlsx'
 
-    # reflection_loss = libRL.RL(
-    #     Mcalc=import_file,
-    #     f_set=(2,18),
-    #     d_set=(0,20,1),
-    #     interp='cubic',
-    #     multiprocessing=True,
-    #     multicolumn=True,
-    #     as_dataframe=True,
-    #     quick_graph=True
-    # )
-    #
-    # print(reflection_loss)
+    reflection_loss = libRL.RL(
+        Mcalc=import_file,
+        f_set=(2,18),
+        d_set=(0,20,1),
+        interp='cubic',
+        multiprocessing=True,
+        multicolumn=True,
+        as_dataframe=True,
+    )
+
+    print(reflection_loss)
 
     characterization = libRL.CARL(
         Mcalc=import_file,
@@ -35,17 +36,16 @@ def main():
 
     print(characterization)
 
-    # band_analysis = libRL.BARF(
-    #     Mcalc=import_file,
-    #     f_set=(1,18),
-    #     d_set=(1,5,0.1),
-    #     m_set=[1,2,3,4,5],
-    #     thrs=-20,
-    #     as_dataframe=True,
-    #     quick_graph=True
-    # )
-    #
-    # print(band_analysis)
+    band_analysis = libRL.BARF(
+        Mcalc=import_file,
+        f_set=(1,18),
+        d_set=(1,5,0.1),
+        m_set=[1,2,3,4,5],
+        thrs=-20,
+        as_dataframe=True,
+    )
+
+    print(band_analysis)
 
 
 if __name__ == "__main__":
