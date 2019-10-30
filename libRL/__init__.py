@@ -6,18 +6,24 @@ libRL is a library of functions used for characterizing Microwave Absorption.
 
 functions include:
 
-    libRL.RL(Mcalc=None, f_set=None, d_set=None, **kwargs)
+    libRL.RL(
+    Mcalc=None, f_set=None, d_set=None, **kwargs
+    )
         - resultants of Reflection Loss over (f, d) gridspace. Yields the
         resulting Reflection Loss results for a given set of permittivity
         and permeability data.
         see libRL.RL? for complete documentation.
 
-    libRL.CARL(Mcalc=None, f_set=None, params="All", **kwargs)
+    libRL.CARL(
+    Mcalc=None, f_set=None, params="All", **kwargs
+    )
         - characterization of Reflection Loss. Yields the calculated results
         of common formulations within the Radar Absorbing Materials field.
         see libRL.CARL? for complete documentation.
 
-    libRL.BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs)
+    libRL.BARF(
+    Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
+    )
         - Band Analysis of Reflection Loss. Uses given set of permittivity and
         permeability data in conjuncture with a requested band set to determine
         the set of frequencies with are below a threshold.
@@ -30,7 +36,7 @@ by Michael Green and Xiaobo Chen.
 """
 
 import cmath
-from libRL import cpfuncs, refactoring
+from libRL import cpfuncs, refactoring, quick_graphs
 
 from numpy import (
     arange, zeros, abs, array,
@@ -73,10 +79,10 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     if d_set is of type list, then the thickness values
                     calculated will only be of the values present in the
                     list.
-
                     ------------------------------
+
     :param kwargs:  :interp=:
-                    'linear'; 'cubic'
+                    ('cubic'); 'linear'
 
                     Method for interpolation. Set to linear if user wants to
                     linear interp instead of cubic spline. Default action
@@ -84,7 +90,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     ------------------------------
 
                     :multiprocessing=:
-                    True; False; 0; 1; 2; ...
+                    (False); True; 0; 1; 2; ...
 
                     Method for activating multiprocessing functionality for
                     faster run times. This **kwarg takes integers and booleans.
@@ -100,15 +106,28 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     conditional so to negate infinite spawns.
                     ------------------------------
 
+                    :quick_graph=:
+                    (False); True, str()
+
+                    saves a *.png graphical image to a specified location. If
+                    set to True, the quick_graph function saves the resulting
+                    graphical image to the location of the input data as
+                    defined by the Mcalc input (assuming that the data was
+                    input via a location string. If not, True throws an
+                    assertion error). The raw string of a file location can
+                    also be passed as the str() argument, if utilized then the
+                    function will save the graph at the specified location.
+                    ------------------------------
+
                     :as_dataframe=:
-                    True; False
+                    (False); True
 
                     returns data in a pandas dataframe. This is particularly
                     useful if multicolumn is also set to true.
                     ------------------------------
 
                     :multicolumn=:
-                    True; False
+                    (False); True
                     outputs data in multicolumn form with  a numpy array of
                     [RL, f, d] iterated over each of the three columns.
                     - or -
@@ -117,25 +136,30 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     ------------------------------
 
 
-
     :return:        returns Nx3 data set of [RL, f, d] by default
                     - or -
                     if multicolumn=True, an NxM dataframe with N rows for the
-                    input frequency values and M columns for the input thickness
-                    values, with pandas dataframe headers/indexes of value
-                    f/d respectively.
-                    else, returns Nx3 data set in pandas dataframe with
-                    columns [RL, f, d]
+                    input frequency values and M columns for the input
+                    thickness values, with pandas dataframe headers/indexes
+                    of value f/d respectively.
+
 
     ----------------------------------------------
     """
-    # Mcalc is refactored into a Nx5 numpy array by the file_refactor function from 'refactoring.py'
+    # Mcalc is refactored into a Nx5 numpy array by the file_refactor
+    # function from 'refactoring.py'
+
+    if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
+        kwargs['quick_graph'] = refactoring.qgref(Mcalc)
+
+
     Mcalc = refactoring.file_refactor(Mcalc)
 
     # acquire the desired interpolating functions from 'refactoring.py'
     e1f, e2f, mu1f, mu2f = refactoring.interpolate(Mcalc, **kwargs)
 
-    # refactor the data sets in accordance to refactoring protocols in 'refactoring.py'
+    # refactor the data sets in accordance to refactoring protocols
+    # in 'refactoring.py'
     f_set = refactoring.f_set_ref(f_set, Mcalc)
     d_set = refactoring.d_set_ref(d_set)
 
@@ -148,30 +172,39 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                   for m in f_set
                   ], dtype=float64)
 
+    # just a constant
+    j = cmath.sqrt(-1)
+
     def G(grid):
         f = grid[0]
         d = grid[1]
 
         # I know, it's super ugly.
-        y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) /
-            (e1f(f) - cmath.sqrt(-1) * e2f(f)))) * (cmath.tanh(cmath.sqrt(-1) *
+        y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) /
+            (e1f(f) - cmath.sqrt(-1) * e2f(f)))) * (cmath.tanh(j *
             (2 * cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) *
-            cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) * (e1f(f) - cmath.sqrt(-1) *
-            e2f(f)))))) - 1) / ((1 * (cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) /
-            (e1f(f) - cmath.sqrt(-1) * e2f(f)))) * (cmath.tanh(cmath.sqrt(-1) * (2 *
+            cmath.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j *
+            e2f(f)))))) - 1) / ((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) /
+            (e1f(f) - j * e2f(f)))) * (cmath.tanh(j * (2 *
             cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) * cmath.sqrt(
-            (mu1f(f) - cmath.sqrt(-1) * mu2f(f)) * (e1f(f) - cmath.sqrt(-1) *
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j *
             e2f(f)))))) + 1)))))
 
         # return inputted data for documentation and return
-        # the real portion of y because the function is purely real
+        # the real portion of y to drop complex portion
+        # of form j*0
         return y.real, f, d
 
-    # if multiprocessing is given as True or as a zero integer, use all available nodes
-    # if multiprocessing is given and is a non-zero integer, use int value for number of nodes
-    # if multiprocessing is given as False (for some reason?), or anything else, ignore it.
-    # returns res of Zx3 data where Z is the product of len(f_set) and len(d_set)
-    if 'multiprocessing' in kwargs and isinstance(kwargs['multiprocessing'], int) is True:
+    # if multiprocessing is given as True or as
+    # a zero integer, use all available nodes
+    # if multiprocessing is given and is a non-zero
+    # integer, use int value for number of nodes
+    # if multiprocessing is given as False (for some
+    # reason?), or anything else, ignore it.
+    # returns res of Zx3 data where Z is the product
+    # of len(f_set) and len(d_set)
+    if 'multiprocessing' in kwargs and isinstance(
+            kwargs['multiprocessing'], int) is True:
 
         if kwargs['multiprocessing'] is 0 or True:
             res = array(Pool().map(G, grid))
@@ -182,14 +215,24 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     else:
         res = array(list(map(G, grid)))
 
-    # formatting option, sometimes professors like 3 columns for each thickness value
+    # takes data derived from computation and the file directory string and
+    # generates a graphical image at the at location.
+    if 'quick_graph' in kwargs and isinstance(
+            kwargs['quick_graph'], str
+            ) is True:
+        quick_graphs.qgRL(results=res, location=kwargs['quick_graph'])
+
+    # formatting option, sometimes professors
+    # like 3 columns for each thickness value
     if 'multicolumn' in kwargs and kwargs['multicolumn'] is True:
 
-        # get frequency values from grid so to normalize the procedure due to the
+        # get frequency values from grid so
+        # to normalize the procedure due to the
         # various frequency input methods
         gridInt = int(grid.shape[0] / d_set.shape[0])
 
-        # zero-array of NxM where N is the frequency values and M is 3 times the
+        # zero-array of NxM where N is the frequency
+        # values and M is 3 times the
         # number of thickness values
         MCres = zeros(
             (gridInt, d_set.shape[0] * 3)
@@ -197,7 +240,9 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
         # map the Zx3 result array to the NxM array
         for i in arange(int(MCres.shape[1] / 3)):
-            MCres[:, 3 * i:3 * i + 3] = res[i * gridInt:(i + 1) * gridInt, 0:3]
+            MCres[:, 3 * i:3 * i + 3] = res[
+                                        i * gridInt:(i + 1) * gridInt, 0:3
+                                        ]
 
         # stick the MultiColumn Array in the place of the results array
         res = MCres
@@ -263,7 +308,8 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                     "Skd",           # Skin Depth
                     "Eddy"           # Eddy Current Loss
                     }
-                    If no list is passed, the default is to calculate everything.
+                    If no list is passed, the default
+                    is to calculate everything.
 
                     ------------------------------
     :param kwargs:  :as_dataframe=:
@@ -274,11 +320,13 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                     ------------------------------
 
 
-    :return:        NxY data set of the requested parameters as columns 1 to Y with the input
+    :return:        NxY data set of the requested
+                    parameters as columns 1 to Y with the input
                     frequency values in column zero to N.
                     - or -
                     returns a pandas dataframe with the requested parameters
-                    as column headers, and the frequency values as index headers
+                    as column headers, and the frequency
+                    values as index headers.
 
     ----------------------------------------------
     """
@@ -309,23 +357,55 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     # and you thought that first function was ugly
     chars = {
         "tgde": lambda f: e1f(f) / e2f(f),
+
         "tgdu": lambda f: mu1f(f) / mu2f(f),
+
         "Qe": lambda f: (e1f(f) / e2f(f)) ** -1,
+
         "Qu": lambda f: (mu1f(f) / mu2f(f)) ** -1,
+
         "Qf": lambda f: ((e1f(f) / e2f(f)) + (mu1f(f) / mu2f(f))) ** -1,
-        "ReRefIndx": lambda f: sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).real,
-        "ExtCoeff": lambda f: sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))).imag,
-        "AtnuCnstNm": lambda f: ((2 * pi * f * GHz) * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)).real,
-        "AtnuCnstdB": lambda f: (2 * pi * f * GHz * sqrt((mu1f(f) - j * mu2f(f)) *
-                                                          (e1f(f) - j * e2f(f))) * (c ** -1)).real * 8.86588,
-        "PhsCnst": lambda f: ((2 * pi * f * GHz) * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)).imag,
-        "PhsVel": lambda f: ((2 * pi * f * GHz) /
-                             (((2 * pi * f * GHz) * sqrt((mu1f(f) - j * mu2f(f)) *
-                                                       (e1f(f) - j * e2f(f))) * (c ** -1))).imag),
-        "Res": lambda f: (Z0 * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).real,
-        "React": lambda f: (Z0 * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))).imag,
+
+        "ReRefIndx": lambda f: sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
+        ).real,
+
+        "ExtCoeff": lambda f: sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
+        ).imag,
+
+        "AtnuCnstNm": lambda f: ((2 * pi * f * GHz) * sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)
+                                 ).real,
+
+        "AtnuCnstdB": lambda f: (2 * pi * f * GHz * sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)
+                                 ).real * 8.86588,
+
+        "PhsCnst": lambda f: ((2 * pi * f * GHz) * sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)
+                              ).imag,
+
+        "PhsVel": lambda f: ((2 * pi * f * GHz) / (
+            ((2 * pi * f * GHz) * sqrt(
+                (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
+            ) * (c ** -1))
+            ).imag),
+
+        "Res": lambda f: (Z0 * sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))
+                          ).real,
+
+        "React": lambda f: (Z0 * sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))
+                            ).imag,
+
         "Condt": lambda f: (2 * pi * f * GHz) * (e0 * e2f(f)),
-        "Skd": lambda f: 1000 / ((2 * pi * f * GHz * sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))) * (c ** -1)).real,
+
+        "Skd": lambda f: 1000 / ((2 * pi * f * GHz * sqrt(
+            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))) * (c ** -1)
+                                 ).real,
+
         "Eddy": lambda f: mu2f(f) / (mu1f(f) ** 2 * f)
     }
 
@@ -340,8 +420,10 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
             "React", "Condt", "Skd", "Eddy"
         ]
 
-    # results matrix, first column reserved for frequency if output to numpy array
-    Matrix, names = zeros((f_set.shape[0], len(params) + 1), dtype=float64), ["frequency"]
+    # results matrix, first column reserved for frequency
+    # if output to numpy array
+    Matrix = zeros((f_set.shape[0], len(params) + 1), dtype=float64)
+    names = ["frequency"]
     Matrix[:, 0] = f_set
 
     # call the lambda functions from the char dictionary
@@ -350,7 +432,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
         names.append(param)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
-        # whoops, didn't need that first colum after all!
+        # whoops, didn't need that first column after all!
         panda_matrix = DataFrame(Matrix[:, 1:])
         panda_matrix.columns = list(names[1:])
         panda_matrix.index = list(f_set)
@@ -364,12 +446,13 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
 
     the BARF (Band Analysis for ReFlection loss) function uses Permittivity
     and Permeability data of materials so to determine the effective bandwidth
-    of Reflection Loss. The effective bandwidth is the span of frequencies where
-    the reflection loss is below some proficiency threshold (standard threshold
-    is -10 dB). Program is computationally taxing; thus, efforts were made to push
-    most of the computation to the C-level for faster run times - the blueprints
-    for such are included in the cpfuncs.pyx file, which was compiled via Cython
-    and the cython_setup.py file. [and yes, I love you 3000]
+    of Reflection Loss. The effective bandwidth is the span of frequencies
+    where the reflection loss is below some proficiency threshold (standard
+    threshold is -10 dB). Program is computationally taxing; thus, efforts
+    were made to push most of the computation to the C-level for faster run
+    times - the blueprints for such are included in the cpfuncs.pyx file,
+    which was compiled via Cython and the cython_setup.py file.
+    [and yes, I love you 3000]
 
     ref: https://doi.org/10.1016/j.jmat.2018.12.005
          https://doi.org/10.1016/j.jmat.2019.07.003
@@ -418,6 +501,20 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     Method for interpolation. Set to linear if user wants to
                     linear interp instead of cubic spline.
                     ------------------------------
+
+                    :quick_graph=:
+                    (False); True, str()
+
+                    saves a *.png graphical image to a specified location. If
+                    set to True, the quick_graph function saves the resulting
+                    graphical image to the location of the input data as
+                    defined by the Mcalc input (assuming that the data was
+                    input via a location string. If not, True throws an
+                    assertion error). The raw string of a file location can
+                    also be passed as the str() argument, if utilized then the
+                    function will save the graph at the specified location.
+                    ------------------------------
+
                     :as_dataframe=:
                     True; False
 
@@ -438,10 +535,17 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     ----------------------------------------------
     """
 
-    # Mcalc is refactored into a Nx5 numpy array by the file_refactor function in libRL
+    # Mcalc is refactored into a Nx5 numpy array by the file_refactor
+    # function from 'refactoring.py'
+    if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
+        kwargs['quick_graph'] = refactoring.qgref(Mcalc)
+
+    # Mcalc is refactored into a Nx5 numpy array by the file_
+    # refactor function in libRL
     Mcalc = refactoring.file_refactor(Mcalc)
 
-    # refactor the data sets in accordance to refactoring protocols in 'refactoring.py'
+    # refactor the data sets in accordance to
+    # refactoring protocols in 'refactoring.py'
     f_set = refactoring.f_set_ref(f_set, Mcalc)
     d_set = refactoring.d_set_ref(d_set)
     m_set = refactoring.m_set_ref(m_set)
@@ -480,9 +584,21 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
         mGrid[:, 2 * i] = dfind(f_set[:], m)
         mGrid[:, 2 * i + 1] = dfind(f_set[:], m + 1)
 
-    # push the calculation to the C-level for increased computation performance.
+    # push the calculation to cython for increased computation performance.
     # see included file titled 'cpfuncs.pyx' for build blueprint
     band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
+
+    # takes data derived from computation and the file directory string and
+    # generates a graphical image at the at location.
+    if 'quick_graph' in kwargs and isinstance(
+            kwargs['quick_graph'], str
+            ) is True:
+        quick_graphs.qgBARF(
+            bands=band_results,
+            d_vals = d_set,
+            m_vals = m_set,
+            location=kwargs['quick_graph']
+        )
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
         res = DataFrame(band_results)

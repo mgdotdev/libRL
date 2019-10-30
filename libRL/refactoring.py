@@ -46,7 +46,7 @@ from pandas import (
 
 from scipy.interpolate import interp1d
 
-from os.path import splitext
+from os.path import splitext, split
 
 
 def file_refactor(Mcalc=None):
@@ -113,6 +113,22 @@ def file_refactor(Mcalc=None):
         Mcalc = delete(Mcalc, x, axis=0)
 
     return Mcalc
+
+
+def qgref(Mcalc):
+    assert isinstance(Mcalc, str) is True, \
+        'To use the True assertion for this **kwarg the user must ' \
+        'pass a valid data file string as the data argument. The user may ' \
+        'also pass a directory location instead.'
+
+    if splitext(split(Mcalc)[1])[1] == '':
+        ErrorMsg = "error parsing out data file."
+        raise SyntaxError(ErrorMsg)
+
+    else:
+        output_location = split(Mcalc)[0]
+
+    return output_location
 
 
 def interpolate(Mcalc, **kwargs):

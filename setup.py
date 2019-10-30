@@ -36,6 +36,7 @@ setup(
         'pandas',
         'pathos',
         'xlrd',
+        'matplotlib'
     ],
 
     project_urls={
