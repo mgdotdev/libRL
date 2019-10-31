@@ -9,7 +9,7 @@ personal use without notice. Granted, You're welcome to use them for
 your own purposes for as long as they serve them to an acceptable degree,
 but if an axis doesn't have the spacing you want or the scale/range doesn't
 fit your specific desires, don't expect an update to tailor the library to your
-liking - at that point, you're better off ust taking the data output and
+liking - at that point, you're better off just taking the data output and
 using matplotlib to generate your own images.
 
 You've been warned... >:D
