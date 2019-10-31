@@ -93,14 +93,14 @@ def file_refactor(Mcalc=None):
             ErrorMsg = 'Error partitioning input data from string'
             raise RuntimeError(ErrorMsg)
 
-        # finds all rows in numpy array which aren't
-        # a part of the Nx5 data array expected.
-        #
-        # NOTE:
-        # if the file contains more/less than
-        # 5 columns this fails as the 6th row is
-        # always filled with NaN. That being said,
-        # most instruments output a Nx5 data file.
+    # finds all rows in numpy array which aren't
+    # a part of the Nx5 data array expected.
+    #
+    # NOTE:
+    # if the file contains more/less than
+    # 5 columns this fails as the 6th row is
+    # always filled with NaN. That being said,
+    # most instruments output a Nx5 data file.
 
     x = []
     for row in arange(Mcalc.shape[0]):
