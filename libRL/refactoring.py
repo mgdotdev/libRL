@@ -102,15 +102,15 @@ def file_refactor(Mcalc=None):
         # always filled with NaN. That being said,
         # most instruments output a Nx5 data file.
 
-        x = []
-        for row in arange(Mcalc.shape[0]):
-            for col in arange(Mcalc.shape[1]):
-                if isinstance(Mcalc[row, col], (int, float)) is False or Mcalc[row, col] != Mcalc[row, col]:
-                    x.append(row)
-                    break
+    x = []
+    for row in arange(Mcalc.shape[0]):
+        for col in arange(Mcalc.shape[1]):
+            if isinstance(Mcalc[row, col], (int, float)) is False or Mcalc[row, col] != Mcalc[row, col]:
+                x.append(row)
+                break
 
-        # removes non-data rows from input array to yield the data array
-        Mcalc = delete(Mcalc, x, axis=0)
+    # removes non-data rows from input array to yield the data array
+    Mcalc = delete(Mcalc, x, axis=0)
 
     return Mcalc
 
