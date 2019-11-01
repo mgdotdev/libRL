@@ -26,16 +26,16 @@ def main():
         quick_graph=True
     )
 
-    # print(reflection_loss)
-    #
-    # characterization = libRL.CARL(
-    #     Mcalc=import_file,
-    #     f_set=(1,10),
-    #     params='all',
-    #     as_dataframe=True
-    # )
-    #
-    # print(characterization)
+    print(reflection_loss)
+
+    characterization = libRL.CARL(
+        Mcalc=import_file,
+        f_set=(1,10),
+        params='all',
+        as_dataframe=True
+    )
+
+    print(characterization)
 
     band_analysis = libRL.BARF(
         Mcalc=import_file,

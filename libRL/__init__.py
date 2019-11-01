@@ -36,13 +36,17 @@ by Michael Green and Xiaobo Chen.
 """
 
 import cmath
-from libRL import cpfuncs, refactoring, quick_graphs
+from libRL import(
+    cpfuncs, refactoring,
+    quick_graphs, pyfuncs
+)
 
 from numpy import (
     arange, zeros, abs, array,
     float64, errstate, pi, sqrt
 )
 
+from sys import platform
 from pandas import DataFrame
 from pathos.multiprocessing import ProcessPool as Pool
 
@@ -387,62 +391,62 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     # and you thought that first function was ugly
     chars = {
-        "tgde": lambda f: e1f(f) / e2f(f),
+        "TGDE": lambda f: e1f(f) / e2f(f),
 
-        "tgdu": lambda f: mu1f(f) / mu2f(f),
+        "TGDU": lambda f: mu1f(f) / mu2f(f),
 
-        "Qe": lambda f: (e1f(f) / e2f(f)) ** -1,
+        "QE": lambda f: (e1f(f) / e2f(f)) ** -1,
 
-        "Qu": lambda f: (mu1f(f) / mu2f(f)) ** -1,
+        "QU": lambda f: (mu1f(f) / mu2f(f)) ** -1,
 
-        "Qf": lambda f: ((e1f(f) / e2f(f)) + (mu1f(f) / mu2f(f))) ** -1,
+        "QF": lambda f: ((e1f(f) / e2f(f)) + (mu1f(f) / mu2f(f))) ** -1,
 
-        "ReRefIndx": lambda f: sqrt(
+        "REREFINDX": lambda f: sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
         ).real,
 
-        "ExtCoeff": lambda f: sqrt(
+        "EXTCOEFF": lambda f: sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
         ).imag,
 
-        "AtnuCnstNm": lambda f: ((2 * pi * f * GHz) * sqrt(
+        "ATNUCNSTNM": lambda f: ((2 * pi * f * GHz) * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)
                                  ).real,
 
-        "AtnuCnstdB": lambda f: (2 * pi * f * GHz * sqrt(
+        "ATNUCNSTDB": lambda f: (2 * pi * f * GHz * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)
                                  ).real * 8.86588,
 
-        "PhsCnst": lambda f: ((2 * pi * f * GHz) * sqrt(
+        "PHSCNST": lambda f: ((2 * pi * f * GHz) * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)
                               ).imag,
 
-        "PhsVel": lambda f: ((2 * pi * f * GHz) / (
+        "PHSVEL": lambda f: ((2 * pi * f * GHz) / (
             ((2 * pi * f * GHz) * sqrt(
                 (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
             ) * (c ** -1))
             ).imag),
 
-        "Res": lambda f: (Z0 * sqrt(
+        "RES": lambda f: (Z0 * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))
                           ).real,
 
-        "React": lambda f: (Z0 * sqrt(
+        "REACT": lambda f: (Z0 * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))
                             ).imag,
 
-        "Condt": lambda f: (2 * pi * f * GHz) * (e0 * e2f(f)),
+        "CONDT": lambda f: (2 * pi * f * GHz) * (e0 * e2f(f)),
 
-        "Skd": lambda f: 1000 / ((2 * pi * f * GHz * sqrt(
+        "SKD": lambda f: 1000 / ((2 * pi * f * GHz * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))) * (c ** -1)
                                  ).real,
 
-        "Eddy": lambda f: mu2f(f) / (mu1f(f) ** 2 * f)
+        "EDDY": lambda f: mu2f(f) / (mu1f(f) ** 2 * f)
     }
 
     # give user option to just calculate everything without forcing them
     # to type it all. also, don't be case sensitive.
-    if params is 'All' or 'all' or params[0] is 'All' or params[0] is 'all':
+    if params.upper() == 'ALL' or params[0].upper() == 'ALL':
         params = [
             "tgde", "tgdu", "Qe", "Qu", "Qf",
             "ReRefIndx", "ExtCoeff",
@@ -450,6 +454,8 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
             "PhsCnst", "PhsVel", "Res",
             "React", "Condt", "Skd", "Eddy"
         ]
+
+    print(params)
 
     # results matrix, first column reserved for frequency
     # if output to numpy array
@@ -459,7 +465,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     # call the lambda functions from the char dictionary
     for counter, param in enumerate(params, start=1):
-        Matrix[:, counter] = chars[param](f_set[:])
+        Matrix[:, counter] = chars[param.upper()](f_set[:])
         names.append(param)
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
@@ -635,7 +641,11 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
 
     # push the calculation to cython for increased computation performance.
     # see included file titled 'cpfuncs.pyx' for build blueprint
-    band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
+    if platform =='win32':
+        band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
+
+    else:
+        band_results = pyfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
 
     # takes data derived from computation and the file directory string and
     # generates a graphical image at the at location.
