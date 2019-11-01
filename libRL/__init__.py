@@ -332,8 +332,8 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                     "Skd",           # Skin Depth
                     "Eddy"           # Eddy Current Loss
                     }
-                    If no list is passed, the default
-                    is to calculate everything.
+
+                    if 'all' (default) is passed, calculate everything.
 
                     ------------------------------
     :param kwargs:  :override=:
@@ -446,7 +446,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     # give user option to just calculate everything without forcing them
     # to type it all. also, don't be case sensitive.
-    if params.upper() == 'ALL' or params[0].upper() == 'ALL':
+    if params == 'all' or 'All' or 'ALL':
         params = [
             "tgde", "tgdu", "Qe", "Qu", "Qf",
             "ReRefIndx", "ExtCoeff",
