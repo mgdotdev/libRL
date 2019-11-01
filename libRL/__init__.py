@@ -95,7 +95,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     uses cubic spline.
                     ------------------------------
 
-                    :override:
+                    :override=:
                     (None); 'chi zero'; 'edp zero'; 'eps set'
 
                     provides response simulation functionality within libRL,
@@ -334,7 +334,18 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                     is to calculate everything.
 
                     ------------------------------
-    :param kwargs:  :as_dataframe=:
+    :param kwargs:  :override=:
+                    (None); 'chi zero'; 'edp zero'; 'eps set'
+
+                    provides response simulation functionality within libRL,
+                    common for discerning which EM parameters are casual for
+                    reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
+                    sets epsilon = (avg(e1)-j*0). Data simulations are
+                    processed before interpolation so the function reflects
+                    the desired simulant.
+                    ------------------------------
+
+                    :as_dataframe=:
                     True; False
 
                     returns the requested parameters as a pandas dataframe with
@@ -353,7 +364,8 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     ----------------------------------------------
     """
 
-    # Mcalc is refactored into a Nx5 numpy array by the file_refactor function in libRL
+    # Mcalc is refactored into a Nx5 numpy array by the file_
+    # refactor function in libRL
     Mcalc = refactoring.file_refactor(Mcalc)
 
     # acquire the desired interpolating functions from 'refactoring.py'
@@ -363,7 +375,8 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
     # e, mu = (1-j*0) which will throw unnecessary error
     errstate(divide='ignore')
 
-    # if input is an explicit list, keep the list. Otherwise, refactor as usual.
+    # if input is an explicit list, keep the list.
+    # Otherwise, refactor as usual.
     if type(f_set) is list:
         f_set = array(f_set, dtype=float64)
     else:
@@ -524,7 +537,18 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     Default value is -10.
 
                     ------------------------------
-    :param kwargs:  :interp=:
+    :param kwargs:  :override=:
+                    (None); 'chi zero'; 'edp zero'; 'eps set'
+
+                    provides response simulation functionality within libRL,
+                    common for discerning which EM parameters are casual for
+                    reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
+                    sets epsilon = (avg(e1)-j*0). Data simulations are
+                    processed before interpolation so the function reflects
+                    the desired simulant.
+                    ------------------------------
+
+                    :interp=:
                     'linear'; 'cubic'
 
                     Method for interpolation. Set to linear if user wants to

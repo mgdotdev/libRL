@@ -49,7 +49,7 @@ from scipy.interpolate import interp1d
 from os.path import splitext, split
 
 
-def file_refactor(Mcalc=None):
+def file_refactor(Mcalc=None, **kwargs):
     """
 
     refactors the given user data into actionable permittivity and
@@ -63,6 +63,17 @@ def file_refactor(Mcalc=None):
                     above and below data array will be automatically
                     avoided by the program (most network analysis instruments
                     report data which is compatible with the required format)
+
+    :param kwargs:  :override=:
+                    (None); 'chi zero'; 'eps set'
+
+                    provides response simulation functionality within libRL,
+                    common for discerning which EM parameters are casual for
+                    reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
+                    sets epsilon = (avg(e1)-j*0). Data simulations are
+                    processed before interpolation so the function reflects
+                    the desired simulant.
+                    ------------------------------
 
 
     :return:        refactored Mcalc data of Nx5 dimensionality in numpy array
@@ -118,6 +129,13 @@ def file_refactor(Mcalc=None):
     # removes non-data rows from input array to yield the data array
     Mcalc = delete(Mcalc, x, axis=0)
 
+    if 'override' in kwargs and kwargs['override'] == 'chi zero':
+        Mcalc[:, 3:5] = array([1, 0])
+
+    elif 'override' in kwargs and kwargs['override'] == 'eps set':
+        avg = average(Mcalc[:,1])
+        Mcalc[:, 1:3] = array([avg, 0])
+
     return Mcalc
 
 
@@ -155,17 +173,6 @@ def interpolate(Mcalc, **kwargs):
                     linear interp instead of cubic spline.
                     ------------------------------
 
-                    :override:
-                    (None); 'chi zero'; 'edp zero'; 'eps set'
-
-                    provides response simulation functionality within libRL,
-                    common for discerning which EM parameters are casual for
-                    reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
-                    sets epsilon = (avg(e1)-j*0). Data simulations are
-                    processed before interpolation so the function reflects
-                    the desired simulant.
-                    ------------------------------
-
 
     :return:        e1f, e2f, mu1f, mu2f
 
@@ -175,12 +182,6 @@ def interpolate(Mcalc, **kwargs):
 
     ----------------------------------------------
     """
-
-    if 'override' in kwargs and kwargs['override'] == 'chi zero':
-        Mcalc[:, 3:5] = array([1, 0])
-
-    elif 'override' in kwargs and kwargs['override'] == 'eps set':
-        Mcalc[:, 1:3] = array([average(Mcalc[:,1]), 0])
 
     params = ['e1f', 'e2f', 'mu1f', 'mu2f']
 
