@@ -37,17 +37,17 @@ def main():
     #
     # print(characterization)
 
-    # band_analysis = libRL.BARF(
-    #     Mcalc=import_file,
-    #     f_set=(1,18),
-    #     d_set=(1,5,0.1),
-    #     m_set=[1,2,3,4,5],
-    #     thrs=-10,
-    #     as_dataframe=True,
-    #     quick_graph=True
-    # )
+    band_analysis = libRL.BARF(
+        Mcalc=import_file,
+        f_set=(1,18),
+        d_set=(1,5,0.1),
+        m_set=[1,2,3,4,5],
+        thrs=-10,
+        as_dataframe=True,
+        quick_graph=True
+    )
 
-    # print(band_analysis)
+    print(band_analysis)
 
 
 if __name__ == "__main__":
