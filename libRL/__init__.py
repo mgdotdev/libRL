@@ -281,7 +281,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     return res
 
 
-def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
+def CARL(Mcalc=None, f_set=None, params="all", **kwargs):
     """
 
     the CARL (ChAracterization of Reflection Loss) function takes
@@ -446,7 +446,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     # give user option to just calculate everything without forcing them
     # to type it all. also, don't be case sensitive.
-    if params == 'all' or 'All' or 'ALL':
+    if params == 'all':
         params = [
             "tgde", "tgdu", "Qe", "Qu", "Qf",
             "ReRefIndx", "ExtCoeff",
