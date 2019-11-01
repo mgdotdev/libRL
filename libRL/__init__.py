@@ -60,21 +60,27 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     ref: https://doi.org/10.1016/j.jmat.2019.07.003
 
-    :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
+    :param Mcalc:   (data)
+
+                    Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
                     name of either a .csv or .xlsx of Nx5 dimensions. Text
                     above and below data array will be automatically
                     avoided by the program (most network analysis instruments
                     report data which is compatible with the required format)
 
-    :param f_set:   (start, end, [step]) tuple for frequency values in GHz
+    :param f_set:   (start, end, [step])
+
+                    tuple for frequency values in GHz
                     - if given as list of len 3, results are interpolated
                     - if given as list of len 2, results are data-derived
                     with the calculation bound by the given start and end
                     frequencies
                     - if f_set is None, frequency is bound to input data
 
-    :param d_set:   (start, end, step) tuple for thickness values in mm.
+    :param d_set:   (start, end, step)
+
+                    tuple for thickness values in mm.
                     - or -
                     if d_set is of type list, then the thickness values
                     calculated will only be of the values present in the
@@ -87,6 +93,17 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     Method for interpolation. Set to linear if user wants to
                     linear interp instead of cubic spline. Default action
                     uses cubic spline.
+                    ------------------------------
+
+                    :override:
+                    (None); 'chi zero'; 'edp zero'; 'eps set'
+
+                    provides response simulation functionality within libRL,
+                    common for discerning which EM parameters are casual for
+                    reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
+                    sets epsilon = (avg(e1)-j*0). Data simulations are
+                    processed before interpolation so the function reflects
+                    the desired simulant.
                     ------------------------------
 
                     :multiprocessing=:
@@ -128,6 +145,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
                     :multicolumn=:
                     (False); True
+
                     outputs data in multicolumn form with  a numpy array of
                     [RL, f, d] iterated over each of the three columns.
                     - or -
@@ -272,14 +290,18 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
 
     ref: https://doi.org/10.1016/j.jmat.2019.07.003
 
-    :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
+    :param Mcalc:   (data)
+
+                    Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
                     name of either a .csv or .xlsx of Nx5 dimensions. Text
                     above and below data array will be automatically
                     avoided by the program (most network analysis instruments
                     report data which is compatible with the required format)
 
-    :param f_set:   (start, end, [step]) tuple for frequency values in GHz
+    :param f_set:   (start, end, [step])
+
+                    tuple for frequency values in GHz
                     - if given as list of len 3, results are interpolated
                     - if given as list of len 2, results are data-derived
                     with the calculation bound by the given start and
@@ -457,14 +479,18 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     ref: https://doi.org/10.1016/j.jmat.2018.12.005
          https://doi.org/10.1016/j.jmat.2019.07.003
 
-    :param Mcalc:   Permittivity and Permeability data of Nx5 dimensions.
+    :param Mcalc:   (data)
+
+                    Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
                     name of either a .csv or .xlsx of Nx5 dimensions. Text
                     above and below data array will be automatically
                     avoided by the program (most network analysis instruments
                     report data which is compatible with the required format)
 
-    :param f_set:   (start, end, [step]) tuple for frequency values in GHz
+    :param f_set:   (start, end, [step])
+
+                    tuple for frequency values in GHz
                     - or -
                     - if given as tuple of len 3, results are interpolated
                     - if given as tuple of len 2, results are data-derived
@@ -476,19 +502,22 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     - if f_set is None (default), frequency is bound to
                     input data.
 
-    :param d_set:   (start, end, [step]) tuple for thickness values in mm.
+    :param d_set:   (start, end, [step])
+
+                    tuple for thickness values in mm.
                     - or -
                     - if d_set is of type list, then the thickness values
                     calculated will only be of the values present in the
                     list. (is weird, but whatever.)
 
-    :param m_set:   (start, end, [step]) tuple of ints which define the
-                    bands to be calculated.
+    :param m_set:   (start, end, [step])
+
+                    tuple of ints which define the bands to be calculated.
                     - or -
                     - if m_set is given as a list [], the explicitly listed
                     band integers will be calculated.
 
-    :param thrs:    thrs=-10
+    :param thrs:    -10
 
                     Threshold for evaluation. If RL values are below this
                     threshold value, the point is counted for the band.
@@ -529,8 +558,8 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     the rows of the band_results correspond with the d_set and
                     the columns of the band_results correspond with the m_set.
                     - or -
-                    returns the requested dataframe with the band values as column
-                    headers and the thickness values as row headers.
+                    returns the requested dataframe with the band values as
+                    column headers and the thickness values as row headers.
 
     ----------------------------------------------
     """
@@ -572,8 +601,10 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
 
     # to find the 1/2th integer wavelength, NOT quarter.
     def dfind(f, m):
-        y = ((299792458 / (f * 10**9)) * (1.0 / (sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) *
-            (e1f(f) - cmath.sqrt(-1) * e2f(f))).real)) * (((2.0 * m) - 2.0) / 4.0)) * 1000
+        y = ((299792458 / (f * 10**9)) * (1.0 / (
+            sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) *
+            (e1f(f) - cmath.sqrt(-1) * e2f(f))).real)) * (
+                ((2.0 * m) - 2.0) / 4.0)) * 1000
         return y
 
     # make another grid for the band edges

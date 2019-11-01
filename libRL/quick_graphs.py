@@ -30,7 +30,7 @@ import mpl_toolkits.mplot3d.axis3d as axis3d
 from matplotlib import rcParams
 
 rcParams['font.family'] = 'Times New Roman'
-rcParams['font.size'] = 8
+rcParams['font.size'] = 12
 rcParams['figure.figsize'] = 4.5, 4
 rcParams['axes.labelpad'] = 10
 rcParams['mathtext.fontset'] = 'stix'
