@@ -455,8 +455,6 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
             "React", "Condt", "Skd", "Eddy"
         ]
 
-    print(params)
-
     # results matrix, first column reserved for frequency
     # if output to numpy array
     Matrix = zeros((f_set.shape[0], len(params) + 1), dtype=float64)
