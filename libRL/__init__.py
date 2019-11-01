@@ -101,9 +101,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     provides response simulation functionality within libRL,
                     common for discerning which EM parameters are casual for
                     reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
-                    sets epsilon = (avg(e1)-j*0). Data simulations are
-                    processed before interpolation so the function reflects
-                    the desired simulant.
+                    sets epsilon = (avg(e1)-j*0).
                     ------------------------------
 
                     :multiprocessing=:
@@ -340,9 +338,7 @@ def CARL(Mcalc=None, f_set=None, params="All", **kwargs):
                     provides response simulation functionality within libRL,
                     common for discerning which EM parameters are casual for
                     reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
-                    sets epsilon = (avg(e1)-j*0). Data simulations are
-                    processed before interpolation so the function reflects
-                    the desired simulant.
+                    sets epsilon = (avg(e1)-j*0).
                     ------------------------------
 
                     :as_dataframe=:
@@ -543,9 +539,7 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     provides response simulation functionality within libRL,
                     common for discerning which EM parameters are casual for
                     reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
-                    sets epsilon = (avg(e1)-j*0). Data simulations are
-                    processed before interpolation so the function reflects
-                    the desired simulant.
+                    sets epsilon = (avg(e1)-j*0).
                     ------------------------------
 
                     :interp=:
