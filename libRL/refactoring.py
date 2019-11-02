@@ -115,17 +115,13 @@ def file_refactor(Mcalc=None, **kwargs):
     # always filled with NaN. That being said,
     # most instruments output a Nx5 data file.
 
-    x = []
-    for row in arange(Mcalc.shape[0]):
-        for col in arange(Mcalc.shape[1]):
-            if isinstance(
-                    Mcalc[row, col], (int, float)
-                    ) is False or Mcalc[row, col] != Mcalc[row, col]:
-                x.append(row)
-                break
+    set_to_del = {row for row in arange(Mcalc.shape[0]) for col in
+                  arange(Mcalc.shape[1]) if
+                  isinstance(Mcalc[row, col], (int, float)) is False
+                  or Mcalc[row, col] != Mcalc[row, col]}
 
     # removes non-data rows from input array to yield the data array
-    Mcalc = delete(Mcalc, x, axis=0)
+    Mcalc = delete(Mcalc, list(set_to_del), axis=0)
 
     if 'override' in kwargs and kwargs['override'] == 'chi zero':
         Mcalc[:, 3:5] = array([1, 0])
@@ -304,7 +300,10 @@ def d_set_ref(d_set):
         d_set = array(d_set, dtype=float64)
     else:
         try:
-            d_set = arange(d_set[0], d_set[1] + d_set[2], d_set[2], dtype=float64)
+            d_set = arange(
+                d_set[0], d_set[1] + d_set[2], d_set[2], dtype=float64
+            )
+
         except:
             ErrorMsg = 'd_set must be a tuple type int or float of ' \
                        'structure (start, end, step) ' \
@@ -315,7 +314,6 @@ def d_set_ref(d_set):
 
 
 def m_set_ref(m_set):
-
     """
 
     refactors the input m_set to the corresponding
