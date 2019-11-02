@@ -39,17 +39,8 @@ import cmath
 from libRL import(
     refactoring,
     quick_graphs, pyfuncs,
+    cpfuncs
 )
-
-try:
-    from libRL import cpfuncs
-except:
-    pass
-
-try:
-    from libRL import cpfuncs_linux
-except:
-    pass
 
 from numpy import (
     arange, zeros, abs, array,
@@ -653,11 +644,6 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     # see included file titled 'cpfuncs.pyx' for build blueprint
     if platform =='win32':
         band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
-
-    elif platform == 'linux':
-        print('check1')
-        band_results = cpfuncs_linux.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
-        print('check2')
 
     else:
         band_results = pyfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
