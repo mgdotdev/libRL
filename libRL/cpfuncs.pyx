@@ -1,6 +1,6 @@
 from numpy import(
 zeros, abs, argmin,
-nan_to_num, where, array
+nan_to_num, where
 )
 
 import cmath
