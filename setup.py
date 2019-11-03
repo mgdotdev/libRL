@@ -24,7 +24,7 @@ setup(
     packages=find_packages(),
 
     package_data={
-        'libRL': ['*.c', '*pyd', '*pyx']
+        'libRL': ['*pyx']
     },
 
     include_package_data=True,
@@ -36,7 +36,8 @@ setup(
         'pandas',
         'pathos',
         'xlrd',
-        'matplotlib'
+        'matplotlib',
+        'cython',
     ],
 
     project_urls={

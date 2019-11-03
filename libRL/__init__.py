@@ -36,10 +36,15 @@ by Michael Green and Xiaobo Chen.
 """
 
 import cmath
+from os import path
+
+here = path.abspath(path.dirname(__file__))
+
+import pyximport; pyximport.install(language_level=3, build_dir=here)
+
 from libRL import(
     refactoring,
-    quick_graphs, pyfuncs,
-    cpfuncs
+    quick_graphs, pyfuncs
 )
 
 from numpy import (
@@ -642,11 +647,8 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     # (only currently available with Windows platforms - working on linux
     # and macOS distributions, see future update)
     # see included file titled 'cpfuncs.pyx' for build blueprint
-    if platform =='win32':
-        band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
 
-    else:
-        band_results = pyfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
+    band_results = pyfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
 
     # takes data derived from computation and the file directory string and
     # generates a graphical image at the at location.
