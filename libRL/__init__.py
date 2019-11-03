@@ -44,7 +44,8 @@ import pyximport; pyximport.install(language_level=3, build_dir=here)
 
 from libRL import(
     refactoring,
-    quick_graphs, pyfuncs
+    quick_graphs,
+    cpfuncs
 )
 
 from numpy import (
@@ -648,7 +649,7 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     # and macOS distributions, see future update)
     # see included file titled 'cpfuncs.pyx' for build blueprint
 
-    band_results = pyfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
+    band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
 
     # takes data derived from computation and the file directory string and
     # generates a graphical image at the at location.
