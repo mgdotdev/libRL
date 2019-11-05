@@ -53,7 +53,6 @@ from numpy import (
     float64, errstate, pi, sqrt
 )
 
-from sys import platform
 from pandas import DataFrame
 from pathos.multiprocessing import ProcessPool as Pool
 
