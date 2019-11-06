@@ -644,8 +644,6 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
         mGrid[:, 2 * i + 1] = dfind(f_set[:], m + 1)
 
     # push the calculation to cython for increased computation performance
-    # (only currently available with Windows platforms - working on linux
-    # and macOS distributions, see future update)
     # see included file titled 'cpfuncs.pyx' for build blueprint
 
     band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
