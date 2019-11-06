@@ -42,7 +42,8 @@ setup(
 
     project_urls={
         'GitHub': 'https://github.com/1mikegrn/libRL',
-        'Website': 'http://www.inorganicexposure.com',
+        'DocSite': 'https://1mikegrn.github.io/DocSite/libRL/',
+        'Personal Blog': 'http://www.inorganicexposure.com',
         'Google Scholar': 'https://scholar.google.com/citations?user=DxFljRYAAAAJ&hl=en'
     }
 )
