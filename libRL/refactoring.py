@@ -136,8 +136,7 @@ def interpolate(Mcalc, **kwargs):
     """
 
     uses SciPy's interpolation module to generate interpolating functions
-    over the input data. Interpolate also handles the override **kwargs
-    for response simulation
+    over the input data.
 
     :param Mcalc:   Permittivity data of Nx5 form where N rows are
                     [frequency, e1, e2, mu1, mu2]
