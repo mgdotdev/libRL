@@ -132,23 +132,6 @@ def file_refactor(Mcalc=None, **kwargs):
 
     return Mcalc
 
-
-def qgref(Mcalc):
-    assert isinstance(Mcalc, str) is True, \
-        'To use the True assertion for this **kwarg the user must ' \
-        'pass a valid data file string as the data argument. The user may ' \
-        'also pass a directory location instead.'
-
-    if splitext(split(Mcalc)[1])[1] == '':
-        ErrorMsg = "error parsing out data file."
-        raise SyntaxError(ErrorMsg)
-
-    else:
-        output_location = split(Mcalc)[0]
-
-    return output_location
-
-
 def interpolate(Mcalc, **kwargs):
     """
 
@@ -345,3 +328,18 @@ def m_set_ref(m_set):
             raise SyntaxError(ErrorMsg)
 
     return m_set
+
+def qgref(Mcalc):
+    assert isinstance(Mcalc, str) is True, \
+        'To use the True assertion for this **kwarg the user must ' \
+        'pass a valid data file string as the data argument. The user may ' \
+        'also pass a directory location instead.'
+
+    if splitext(split(Mcalc)[1])[1] == '':
+        ErrorMsg = "error parsing out data file."
+        raise SyntaxError(ErrorMsg)
+
+    else:
+        output_location = split(Mcalc)[0]
+
+    return output_location
