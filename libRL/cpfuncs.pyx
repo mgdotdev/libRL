@@ -18,10 +18,10 @@ cpdef G(e1, e2, mu1, mu2, f, d):
         (mu1 - cmath.sqrt(-1) * mu2) * (e1 - cmath.sqrt(-1) * e2))))) + 1)))))
     return y.real
 
-cpdef BARC(PnPGrid, mGrid, m_set, d_set, threshold):
+cpdef BARC(PnPGrid, mGrid, m_set, d_set, thrs):
 
     # PnP is the Nx5 grid of (freq, e1, e2, mu1, mu2)
-    # mGrid is the d values associated with the quarter wavelength for the frequencies in PnP
+    # mGrid is the d values associated with the half wavelength for the frequencies in PnP
     # d_set is the d_set values (duh).
 
     cdef int cnt0
@@ -71,15 +71,15 @@ cpdef BARC(PnPGrid, mGrid, m_set, d_set, threshold):
             lower_index = argmin(abs(f_init_low - PnPGrid[:,0]))
 
             # for the freq values within the band boundaries, if the associated
-            # reflection loss is below the threshold, increase the band_count.
-            # band_count starts at -1 because a single point below the threshold
+            # reflection loss is below the thrs, increase the band_count.
+            # band_count starts at -1 because a single point below the thrs
             # doesn't constitute a span.
             band_count = -1
             for val in range(lower_index,upper_index):
                 if G(
                 PnPGrid[val, 1], PnPGrid[val, 2], PnPGrid[val, 3],
                 PnPGrid[val, 4], PnPGrid[val, 0], float(d_set[cnt1])
-                ) < threshold:
+                ) < thrs:
                     band_count += 1
 
             # resultant is the product of the band count and the step size.
