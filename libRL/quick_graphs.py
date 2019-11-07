@@ -3,7 +3,7 @@
 quick and dirty default graphing protocols for RL and BARF functions.
 
 NOTE:
-these functions are deskgned to be technically functional.
+these functions are designed to be *technically* functional.
 Users are welcome to use them for as long as they serve them to an acceptable
 degree, but please note, bug reports to the contents herein must be of a
 'technical' nature, and not artistic. If an axis doesn't have the spacing you
