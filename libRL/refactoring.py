@@ -49,13 +49,13 @@ from scipy.interpolate import interp1d
 from os.path import splitext, split
 
 
-def file_refactor(Mcalc=None, **kwargs):
+def file_refactor(dataFile=None, **kwargs):
     """
 
     refactors the given user data into actionable permittivity and
     permeability data.
 
-    :param Mcalc:   (data)
+    :param dataFile:(data)
 
                     Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
@@ -78,17 +78,21 @@ def file_refactor(Mcalc=None, **kwargs):
 
     ---------------------------------------------
     """
-    if Mcalc is None:
+    if dataFile is None:
         ErrorMsg = 'Data must be passed as an array which is mappable ' \
                    'to an Nx5 numpy array with columns ' \
                    '[freq, e1, e2, mu1, mu2]'
         raise RuntimeError(ErrorMsg)
 
     # allows for file location to be passed as the data variable.
-    if isinstance(Mcalc, str) is True:
+    if isinstance(dataFile, str) is True:
 
-        if splitext(Mcalc)[1] == '.csv':
-            Mcalc = read_csv(Mcalc, sep=',').to_numpy()
+        if splitext(dataFile)[1] == '.csv':
+            Mcalc = read_csv(dataFile, sep=',').to_numpy()
+
+            if Mcalc.shape[1] == 1 \
+                    and "\t" in Mcalc[Mcalc.shape[0]//2][0]:
+                Mcalc = read_csv(dataFile, sep='\t').to_numpy()
 
             # check each position in numpy array
             # if it can be a number, make it a number

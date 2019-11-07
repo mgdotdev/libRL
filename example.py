@@ -11,9 +11,11 @@ from os import path
 
 def main():
 
-    import_file = path.abspath(
-        path.dirname(__file__)
-    ) + r'\test\test_data.xlsx'
+    import_file = path.join(
+        path.abspath(path.dirname(__file__)),
+        'test',
+        'paraffin_data_tab.csv'
+    )
 
     reflection_loss = libRL.RL(
         Mcalc=import_file,

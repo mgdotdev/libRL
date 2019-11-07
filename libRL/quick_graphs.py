@@ -29,7 +29,8 @@ import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axis3d as axis3d
 from matplotlib import rcParams
 
-rcParams['font.family'] = 'Times New Roman'
+rcParams['font.family'] = 'serif'
+rcParams['font.sans-serif'] = ['Bookman']
 rcParams['font.size'] = 12
 rcParams['figure.figsize'] = 4.5, 4
 rcParams['axes.labelpad'] = 10
