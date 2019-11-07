@@ -9,7 +9,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='libRL',
     version='1.0.3',
-    description='Library of functions used for characterizing Microwave Absorption',
+    description='Python library for characterizing Microwave Absorption',
     long_description=long_description,
     url='https://github.com/1mikegrn/libRL',
     author='Michael Green',
