@@ -14,11 +14,12 @@ setup(
     url='https://github.com/1mikegrn/libRL',
     author='Michael Green',
     author_email='1mikegrn@gmail.com',
+    license='GPL-3.0',
 
     classifiers=[
         'Development Status :: 3 - Beta',
         'Intended Audience :: STEM research',
-        'License :: OSI Approved :: GPL3 License',
+        'License :: OSI Approved :: GPL-3.0 License',
     ],
 
     packages=find_packages(),
