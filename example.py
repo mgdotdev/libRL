@@ -46,7 +46,7 @@ def main():
         m_set=[1,2,3,4,5],
         thrs=-10,
         as_dataframe=True,
-        quick_graph=True
+        quick_graph=False
     )
 
     print(band_analysis)
