@@ -9,7 +9,7 @@ from scipy.interpolate import interp1d
 
 # typical RL function, return the real portion to truncate the complex portion
 # (which is always j*0)
-cpdef G(e1, e2, mu1, mu2, f, d):
+cpdef gamma(e1, e2, mu1, mu2, f, d):
     y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1 - cmath.sqrt(-1) * mu2) /
         (e1 - cmath.sqrt(-1) * e2))) * (cmath.tanh(cmath.sqrt(-1) * (2 * cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) *
         cmath.sqrt((mu1 - cmath.sqrt(-1) * mu2) * (e1 - cmath.sqrt(-1) * e2))))) - 1) /
@@ -18,7 +18,7 @@ cpdef G(e1, e2, mu1, mu2, f, d):
         (mu1 - cmath.sqrt(-1) * mu2) * (e1 - cmath.sqrt(-1) * e2))))) + 1)))))
     return y.real
 
-cpdef BARC(PnPGrid, mGrid, m_set, d_set, thrs):
+cpdef band_analysis_cython(PnPGrid, mGrid, m_set, d_set, thrs):
 
     # PnP is the Nx5 grid of (freq, e1, e2, mu1, mu2)
     # mGrid is the d values associated with the half wavelength for the frequencies in PnP
@@ -76,7 +76,7 @@ cpdef BARC(PnPGrid, mGrid, m_set, d_set, thrs):
             # doesn't constitute a span.
             band_count = -1
             for val in range(lower_index,upper_index):
-                if G(
+                if gamma(
                 PnPGrid[val, 1], PnPGrid[val, 2], PnPGrid[val, 3],
                 PnPGrid[val, 4], PnPGrid[val, 0], float(d_set[cnt1])
                 ) < thrs:

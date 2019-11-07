@@ -14,11 +14,11 @@ def main():
     import_file = path.join(
         path.abspath(path.dirname(__file__)),
         'test',
-        'paraffin_data_tab.csv'
+        'test_data.xlsx'
     )
 
-    reflection_loss = libRL.RL(
-        Mcalc=import_file,
+    reflection_loss = libRL.reflection_loss(
+        data=import_file,
         f_set=(2,18),
         d_set=(0,20,1),
         interp='cubic',
@@ -30,8 +30,8 @@ def main():
 
     print(reflection_loss)
 
-    characterization = libRL.CARL(
-        Mcalc=import_file,
+    characterization = libRL.characterization(
+        data=import_file,
         f_set=(1,10),
         params=['eddy'],
         as_dataframe=True
@@ -39,8 +39,8 @@ def main():
 
     print(characterization)
 
-    band_analysis = libRL.BARF(
-        Mcalc=import_file,
+    band_analysis = libRL.band_analysis(
+        data=import_file,
         f_set=(1,18),
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],

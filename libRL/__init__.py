@@ -6,28 +6,28 @@ libRL is a library of functions used for characterizing Microwave Absorption.
 
 functions include:
 
-    libRL.RL(
-    Mcalc=None, f_set=None, d_set=None, **kwargs
+    libRL.reflection_loss(
+    data=None, f_set=None, d_set=None, **kwargs
     )
         - resultants of Reflection Loss over (f, d) gridspace. Yields the
         resulting Reflection Loss results for a given set of permittivity
         and permeability data.
-        see libRL.RL? for complete documentation.
+        see libRL.reflection_loss? for complete documentation.
 
-    libRL.CARL(
-    Mcalc=None, f_set=None, params="All", **kwargs
+    libRL.characterization(
+    data=None, f_set=None, params="All", **kwargs
     )
         - characterization of Reflection Loss. Yields the calculated results
         of common formulations within the Radar Absorbing Materials field.
-        see libRL.CARL? for complete documentation.
+        see libRL.characterization? for complete documentation.
 
-    libRL.BARF(
-    Mcalc=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
+    libRL.band_analysis(
+    data=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
     )
         - Band Analysis of Reflection Loss. Uses given set of permittivity and
         permeability data in conjuncture with a requested band set to determine
         the set of frequencies with are below a threshold.
-        see libRL.BARF? for complete documentation.
+        see libRL.band_analysis? for complete documentation.
 
 Developed at the University of Missouri-Kansas City under NSF grant DMR-1609061
 by Michael Green and Xiaobo Chen.
@@ -39,9 +39,9 @@ full details can be found at https://1mikegrn.github.io/DocSite/libRL/
 import cmath
 from os import path
 
-here = path.abspath(path.dirname(__file__))
-
-import pyximport; pyximport.install(language_level=3, build_dir=here)
+import pyximport; pyximport.install(
+    language_level=3, build_dir=path.abspath(path.dirname(__file__))
+)
 
 from libRL import(
     refactoring,
@@ -58,10 +58,10 @@ from pandas import DataFrame
 from pathos.multiprocessing import ProcessPool as Pool
 
 
-def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
+def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
     """
 
-    the RL function calculates the Reflection Loss based on the mapping
+    the reflection_loss (RL) function calculates the RL based on the mapping
     passed through as the grid variable, done either through multiprocessing
     or through the python built-in map() function. The RL function always
     uses the interpolation function, even though as the function passes
@@ -71,7 +71,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     ref: https://doi.org/10.1016/j.jmat.2019.07.003
 
-    :param Mcalc:   (data)
+    :param data:   (data)
 
                     Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
@@ -138,7 +138,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
                     saves a *.png graphical image to a specified location. If
                     set to True, the quick_graph function saves the resulting
                     graphical image to the location of the input data as
-                    defined by the Mcalc input (assuming that the data was
+                    defined by the data input (assuming that the data was
                     input via a location string. If not, True throws an
                     assertion error). The raw string of a file location can
                     also be passed as the str() argument, if utilized then the
@@ -173,21 +173,20 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
 
     ----------------------------------------------
     """
-    # Mcalc is refactored into a Nx5 numpy array by the file_refactor
+    # data is refactored into a Nx5 numpy array by the file_refactor
     # function from 'refactoring.py'
 
     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
-        kwargs['quick_graph'] = refactoring.qgref(Mcalc)
+        kwargs['quick_graph'] = refactoring.qgref(data)
 
-
-    Mcalc = refactoring.file_refactor(Mcalc)
+    data = refactoring.file_refactor(data)
 
     # acquire the desired interpolating functions from 'refactoring.py'
-    e1f, e2f, mu1f, mu2f = refactoring.interpolate(Mcalc, **kwargs)
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
 
     # refactor the data sets in accordance to refactoring protocols
     # in 'refactoring.py'
-    f_set = refactoring.f_set_ref(f_set, Mcalc)
+    f_set = refactoring.f_set_ref(f_set, data)
     d_set = refactoring.d_set_ref(d_set)
 
     # construct a data grid for mapping from refactored data sets
@@ -202,7 +201,7 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     # just a constant
     j = cmath.sqrt(-1)
 
-    def G(grid):
+    def gamma(grid):
         f = grid[0]
         d = grid[1]
 
@@ -233,21 +232,24 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     if 'multiprocessing' in kwargs and isinstance(
             kwargs['multiprocessing'], int) is True:
 
-        if kwargs['multiprocessing'] is 0 or True:
-            res = array(Pool().map(G, grid))
+        if kwargs['multiprocessing'] is True or kwargs['multiprocessing'] == 0:
+            res = array(Pool().map(gamma, grid))
         elif kwargs['multiprocessing'] > 0:
-            res = array(Pool(nodes=kwargs['multiprocessing']).map(G, grid))
+            res = array(Pool(nodes=kwargs['multiprocessing']).map(gamma, grid))
         else:
-            res = array(list(map(G, grid)))
+            res = array(list(map(gamma, grid)))
     else:
-        res = array(list(map(G, grid)))
+        res = array(list(map(gamma, grid)))
 
     # takes data derived from computation and the file directory string and
     # generates a graphical image at the at location.
     if 'quick_graph' in kwargs and isinstance(
             kwargs['quick_graph'], str
             ) is True:
-        quick_graphs.qgRL(results=res, location=kwargs['quick_graph'])
+
+        quick_graphs.quick_graph_reflection_loss(
+            results=res, location=kwargs['quick_graph']
+            )
 
     # formatting option, sometimes professors
     # like 3 columns for each thickness value
@@ -288,10 +290,10 @@ def RL(Mcalc=None, f_set=None, d_set=None, **kwargs):
     return res
 
 
-def CARL(Mcalc=None, f_set=None, params="all", **kwargs):
+def characterization(data=None, f_set=None, params="all", **kwargs):
     """
 
-    the CARL (ChAracterization of Reflection Loss) function takes
+    the characterization function takes
     a set or list of keywords in the 'params' variable and calculates
     the character values associated with the parameter. See
     10.1016/j.jmat.2019.07.003 for further details and the
@@ -299,7 +301,7 @@ def CARL(Mcalc=None, f_set=None, params="all", **kwargs):
 
     ref: https://doi.org/10.1016/j.jmat.2019.07.003
 
-    :param Mcalc:   (data)
+    :param data:   (data)
 
                     Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
@@ -371,12 +373,12 @@ def CARL(Mcalc=None, f_set=None, params="all", **kwargs):
     ----------------------------------------------
     """
 
-    # Mcalc is refactored into a Nx5 numpy array by the file_
+    # data is refactored into a Nx5 numpy array by the file_
     # refactor function in libRL
-    Mcalc = refactoring.file_refactor(Mcalc)
+    data = refactoring.file_refactor(data)
 
     # acquire the desired interpolating functions from 'refactoring.py'
-    e1f, e2f, mu1f, mu2f = refactoring.interpolate(Mcalc, **kwargs)
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
 
     # ignore for when user inputs simulated data which includes
     # e, mu = (1-j*0) which will throw unnecessary error
@@ -384,10 +386,10 @@ def CARL(Mcalc=None, f_set=None, params="all", **kwargs):
 
     # if input is an explicit list, keep the list.
     # Otherwise, refactor as usual.
-    if type(f_set) is list:
+    if isinstance(f_set, list) is True:
         f_set = array(f_set, dtype=float64)
     else:
-        f_set = refactoring.f_set_ref(f_set, Mcalc)
+        f_set = refactoring.f_set_ref(f_set, data)
 
     # constants
     j = cmath.sqrt(-1)              # definition of j
@@ -483,10 +485,14 @@ def CARL(Mcalc=None, f_set=None, params="all", **kwargs):
     return Matrix, names
 
 
-def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
+def band_analysis(
+        data=None, f_set=None,
+        d_set=None, m_set=None,
+        thrs=-10, **kwargs
+        ):
     """
 
-    the BARF (Band Analysis for ReFlection loss) function uses Permittivity
+    the Band Analysis for ReFlection loss (BARF) function uses Permittivity
     and Permeability data of materials so to determine the effective bandwidth
     of Reflection Loss. The effective bandwidth is the span of frequencies
     where the reflection loss is below some proficiency threshold (standard
@@ -499,7 +505,7 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     ref: https://doi.org/10.1016/j.jmat.2018.12.005
          https://doi.org/10.1016/j.jmat.2019.07.003
 
-    :param Mcalc:   (data)
+    :param data:   (data)
 
                     Permittivity and Permeability data of Nx5 dimensions.
                     Can be a string equivalent to the directory and file
@@ -566,7 +572,7 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
                     saves a *.png graphical image to a specified location. If
                     set to True, the quick_graph function saves the resulting
                     graphical image to the location of the input data as
-                    defined by the Mcalc input (assuming that the data was
+                    defined by the data input (assuming that the data was
                     input via a location string. If not, True throws an
                     assertion error). The raw string of a file location can
                     also be passed as the str() argument, if utilized then the
@@ -593,23 +599,23 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     ----------------------------------------------
     """
 
-    # Mcalc is refactored into a Nx5 numpy array by the file_refactor
+    # data is refactored into a Nx5 numpy array by the file_refactor
     # function from 'refactoring.py'
     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
-        kwargs['quick_graph'] = refactoring.qgref(Mcalc)
+        kwargs['quick_graph'] = refactoring.qgref(data)
 
-    # Mcalc is refactored into a Nx5 numpy array by the file_
+    # data is refactored into a Nx5 numpy array by the file_
     # refactor function in libRL
-    Mcalc = refactoring.file_refactor(Mcalc)
+    data = refactoring.file_refactor(data)
 
     # refactor the data sets in accordance to
     # refactoring protocols in 'refactoring.py'
-    f_set = refactoring.f_set_ref(f_set, Mcalc)
+    f_set = refactoring.f_set_ref(f_set, data)
     d_set = refactoring.d_set_ref(d_set)
     m_set = refactoring.m_set_ref(m_set)
 
     # acquire the desired interpolating functions from 'refactoring.py'
-    e1f, e2f, mu1f, mu2f = refactoring.interpolate(Mcalc, **kwargs)
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
 
     # ignore for when user inputs simulated data which includes
     # e, mu = (1-j*0) which will throw unnecessary error
@@ -626,7 +632,6 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     PnPGrid[:, 2] = e2f(f_set[:])
     PnPGrid[:, 3] = mu1f(f_set[:])
     PnPGrid[:, 4] = mu2f(f_set[:])
-
 
     # to find the 1/2th integer wavelength, NOT quarter.
     def dfind(f, m):
@@ -647,14 +652,16 @@ def BARF(Mcalc=None, f_set=None, d_set=None, m_set=None, thrs=-10, **kwargs):
     # push the calculation to cython for increased computation performance
     # see included file titled 'cpfuncs.pyx' for build blueprint
 
-    band_results = cpfuncs.BARC(PnPGrid, mGrid, m_set, d_set, thrs)
+    band_results = cpfuncs.band_analysis_cython(
+        PnPGrid, mGrid, m_set, d_set, thrs
+    )
 
     # takes data derived from computation and the file directory string and
     # generates a graphical image at the at location.
     if 'quick_graph' in kwargs and isinstance(
             kwargs['quick_graph'], str
             ) is True:
-        quick_graphs.qgBARF(
+        quick_graphs.quick_graph_band_analysis(
             bands=band_results,
             d_vals = d_set,
             m_vals = m_set,
