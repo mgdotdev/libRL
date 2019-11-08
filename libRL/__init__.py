@@ -335,8 +335,10 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
                     will be only the frequencies represented in the list.
 
     :param params:  A list i.e. [] of text arguments for the parameters
-                    the user wants calculated. The available arguments
-                    are: {
+                    the user wants calculated.
+
+                    The available arguments are:
+                    {
                     "tgde",          # dielectric loss tangent
                     "tgdu",          # magnetic loss tangent
                     "Qe",            # dielectric quality factor
@@ -355,7 +357,7 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
                     "Eddy"           # Eddy Current Loss
                     }
 
-                    if 'all' (default) is passed, calculate everything.
+                    - if 'all' (default) is passed, calculate everything.
 
                     ------------------------------
     :param kwargs:  :override=:
@@ -368,7 +370,7 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
                     ------------------------------
 
                     :as_dataframe=:
-                    True; False
+                    (False); True
 
                     returns the requested parameters as a pandas dataframe with
                     column names as the parameter keywords.

@@ -46,7 +46,7 @@ def quick_graph_reflection_loss(results, location):
 
     quick and dirty default graphing protocols for reflection loss.
 
-    :param results:     libRL.RL results of shape Nx3
+    :param results:     libRL.reflection_loss results of shape Nx3
 
     :param location:    string directory location of where to save the
                         resulting graphical image.
@@ -125,9 +125,9 @@ def quick_graph_band_analysis(bands, d_vals, m_vals, location):
     :param bands:       band data passed through from the band_results
                         derived from the cython computation.
 
-    :param d_vals:      d_set from libRL.CARL()
+    :param d_vals:      d_set from libRL.band_analysis()
 
-    :param m_vals:      m_set from libRL.CARL()
+    :param m_vals:      m_set from libRL.band_analysis()
 
     :param location:    string directory location of where to save the
                         resulting graphical image.
