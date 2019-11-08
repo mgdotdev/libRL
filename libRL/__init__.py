@@ -37,9 +37,10 @@ functions include:
     libRL.band_analysis(
     data=None, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs
     )
-        - Band Analysis of Reflection Loss. Uses given set of permittivity and
+        - Band Analysis of Reflection Loss. uses given set of permittivity and
         permeability data in conjuncture with a requested band set to determine
-        the set of frequencies with are below a threshold.
+        the set of frequencies whose reflection losses are below the
+        threshold.
         see libRL.band_analysis? for complete documentation.
 
 Developed at the University of Missouri-Kansas City under NSF grant DMR-1609061

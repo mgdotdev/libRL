@@ -7,13 +7,14 @@ though some exceptions are made when it comes to known error handling.
 
 Docstrings should follow
 [reStructuredText style](http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html)
-so that Sphinx can parse them to make the docs.
+so that once I have my docstring formatter built I can import the files
+in similar fashion to the ones already in the library.
 
 ## PR Submission
-Features should be developed in a branch with a descriptive name and 
-the pull request (PR) submitted into the `develop` branch.
-In order to be merged a PR must be approved by one authorized user and 
-the build must pass.
+Features should be developed in a branch with a descriptive name and the
+pull request (PR) submitted into a `develop` branch. In order to be
+merged a PR must be approved by one authorized user and the build must
+pass.
 
 A passing build requires the following:
 
