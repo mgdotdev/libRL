@@ -2,8 +2,14 @@
 this example file demonstrates how to use the included
 functions available through the libRL library. Users are encouraged
 to call/read the docstrings for descriptions and full context on the
-*args and **kwargs available, or read the documentation available at
+*args and **kwargs available, or read the documentation available the following
+websites:
+
+OverviewK
 https://1mikegrn.github.io/DocSite/libRL/
+
+examples:
+https://1mikegrn.github.io/DocSite/examples/
 '''
 
 import libRL
