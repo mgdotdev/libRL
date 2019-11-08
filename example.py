@@ -34,7 +34,7 @@ def main():
         interp='cubic',
         multiprocessing=True,
         multicolumn=True,
-        as_dataframe=True,
+        as_dataframe=True
     )
 
     print(reflection_loss)
@@ -54,7 +54,7 @@ def main():
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],
         thrs=-10,
-        as_dataframe=True,
+        as_dataframe=True
     )
 
     print(band_analysis)

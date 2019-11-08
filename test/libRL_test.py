@@ -31,7 +31,7 @@ def main():
         d_set=(1,20,1),
         m_set=[1,2,3,4,5],
         thrs=-10,
-        as_dataframe=True,
+        as_dataframe=True
     )
 
     return reflection_loss.shape, characterization.shape, band_analysis.shape
