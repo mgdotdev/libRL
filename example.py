@@ -20,7 +20,7 @@ def main():
     dataset = pd.read_excel(import_file).to_numpy()
 
     reflection_loss = libRL.reflection_loss(
-        data=dataset,
+        data=import_file,
         f_set=(1,18,1),
         d_set=(0,20,1),
         interp='cubic',
