@@ -94,15 +94,6 @@ def file_refactor(dataFile=None, **kwargs):
                     and "\t" in data[data.shape[0]//2][0]:
                 data = read_csv(dataFile, sep='\t').to_numpy()
 
-            # check each position in numpy array
-            # if it can be a number, make it a number
-            for row in range(data.shape[0]):
-                for col in range(data.shape[1]):
-                    try:
-                        data[row, col] = float64(data[row, col])
-                    except:
-                        pass
-
         elif splitext(dataFile)[1] == '.xlsx':
             data = read_excel(dataFile).to_numpy()
 
@@ -112,6 +103,15 @@ def file_refactor(dataFile=None, **kwargs):
 
     else:
         data = dataFile
+
+    # check each position in numpy array
+    # if it can be a number, make it a number
+    for row in range(data.shape[0]):
+        for col in range(data.shape[1]):
+            try:
+                data[row, col] = float64(data[row, col])
+            except:
+                pass
 
     # finds all rows in numpy array which aren't
     # a part of the Nx5 data array expected.
