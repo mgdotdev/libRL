@@ -7,7 +7,7 @@ to call/read the docstrings for descriptions and full context on the
 
 import libRL
 from os import path
-
+import pandas as pd
 
 def main():
 
@@ -17,21 +17,23 @@ def main():
         'test_data.xlsx'
     )
 
+    dataset = pd.read_excel(import_file).to_numpy()
+
     reflection_loss = libRL.reflection_loss(
-        data=import_file,
+        data=dataset,
         f_set=(1,18,1),
         d_set=(0,20,1),
         interp='cubic',
         multiprocessing=True,
         multicolumn=True,
         as_dataframe=True,
-        quick_graph=True
+        quick_graph=False
     )
 
     print(reflection_loss)
 
     characterization = libRL.characterization(
-        data=import_file,
+        data=dataset,
         f_set=(1,18,1),
         params=['eddy'],
         as_dataframe=True
@@ -40,13 +42,13 @@ def main():
     print(characterization)
 
     band_analysis = libRL.band_analysis(
-        data=import_file,
+        data=dataset,
         f_set=(1,18,1),
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],
         thrs=-10,
         as_dataframe=True,
-        quick_graph=True
+        quick_graph=False
     )
 
     print(band_analysis)

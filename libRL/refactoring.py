@@ -85,7 +85,7 @@ def file_refactor(dataFile=None, **kwargs):
         raise RuntimeError(error_msg)
 
     # allows for file location to be passed as the data variable.
-    if isinstance(dataFile, str) is True:
+    elif isinstance(dataFile, str) is True:
 
         if splitext(dataFile)[1] == '.csv':
             data = read_csv(dataFile, sep=',').to_numpy()
