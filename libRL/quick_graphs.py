@@ -1,6 +1,7 @@
 """
 
-quick and dirty default graphing protocols for RL and BARF functions.
+quick and dirty default graphing protocols for reflection_loss and
+band_analysis functions.
 
 NOTE:
 these functions are designed to be *technically* functional.
@@ -20,7 +21,6 @@ to generate sets of graphs in a directory for each parameter, but to be frank,
 it's not too high on my list of priorities.
 
 """
-
 
 from matplotlib import colors
 import matplotlib.pyplot as plt
@@ -114,7 +114,6 @@ def quick_graph_reflection_loss(results, location):
     cbar1.ax.invert_yaxis()
 
     fig.savefig(location + r'\quick_graph RL.png')
-
 
 
 def quick_graph_band_analysis(bands, d_vals, m_vals, location):

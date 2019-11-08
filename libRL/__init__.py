@@ -120,7 +120,7 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
                     ------------------------------
 
                     :override=:
-                    (None); 'chi zero'; 'edp zero'; 'eps set'
+                    (None); 'chi zero'; 'eps set'
 
                     provides response simulation functionality within libRL,
                     common for discerning which EM parameters are casual for
@@ -338,7 +338,7 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
                     the user wants calculated.
 
                     The available arguments are:
-                    {
+                    [
                     "tgde",          # dielectric loss tangent
                     "tgdu",          # magnetic loss tangent
                     "Qe",            # dielectric quality factor
@@ -355,7 +355,7 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
                     "Condt",         # Conductivity
                     "Skd",           # Skin Depth
                     "Eddy"           # Eddy Current Loss
-                    }
+                    ]
 
                     - if 'all' (default) is passed, calculate everything.
 
@@ -513,8 +513,9 @@ def band_analysis(
     where the reflection loss is below some proficiency threshold (standard
     threshold is -10 dB). Program is computationally taxing; thus, efforts
     were made to push most of the computation to the C-level for faster run
-    times - the blueprints for such are included in the cpfuncs.pyx file,
-    which was compiled via Cython and the cython_setup.py file.
+    times - the blueprints for such are included in the cpfuncs.pyx file which
+    is passed through pyximport()
+
     [and yes, I love you 3000]
 
     ref: https://doi.org/10.1016/j.jmat.2018.12.005
@@ -595,7 +596,7 @@ def band_analysis(
                     ------------------------------
 
                     :as_dataframe=:
-                    True; False
+                    (False); True
 
                     Formats results into a pandas
                     dataframe with the index labels as the thickness
