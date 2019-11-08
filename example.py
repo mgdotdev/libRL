@@ -24,11 +24,11 @@ def main():
     :return: nothing
 
     """
-    data = 'https://raw.githubusercontent.com/' \
+    data_url = 'https://raw.githubusercontent.com/' \
            '1mikegrn/libRL-package/master/test/test_data.csv'
 
     reflection_loss = libRL.reflection_loss(
-        data=data,
+        data=data_url,
         f_set=(1,18,1),
         d_set=(0,20,1),
         interp='cubic',
@@ -40,7 +40,7 @@ def main():
     print(reflection_loss)
 
     characterization = libRL.characterization(
-        data=data,
+        data=data_url,
         f_set=(1,18,1),
         params='all',
         as_dataframe=True
@@ -49,7 +49,7 @@ def main():
     print(characterization)
 
     band_analysis = libRL.band_analysis(
-        data=data,
+        data=data_url,
         f_set=(1,18,0.1),
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],
