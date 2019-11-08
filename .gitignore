@@ -1,6 +1,6 @@
 libRL/cpfuncs.c
 libRL/build
-
+jupyter/*
 libRL/lib.win-amd64-3.7
 libRL/temp.win-amd64-3.7
 
