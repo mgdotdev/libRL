@@ -110,6 +110,9 @@ def file_refactor(dataFile=None, **kwargs):
             error_msg = 'Error partitioning input data from string'
             raise RuntimeError(error_msg)
 
+    else:
+        data = dataFile
+
     # finds all rows in numpy array which aren't
     # a part of the Nx5 data array expected.
     #
