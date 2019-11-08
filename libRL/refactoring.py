@@ -228,8 +228,13 @@ def f_set_ref(f_set, data):
     elif len(f_set) is 2:
 
         if f_set[0] > f_set[1]:
-            error_msg = "f_set must be of order (start, stop) where 'start' " \
-                       "is a value smaller than 'stop'"
+            error_msg = "f_set must be of order (start, stop, [step]) where " \
+                        "'start' is a value smaller than 'stop'"
+            raise SyntaxError(error_msg)
+
+        if f_set[0] < data[0,0] or f_set[1] > data[-1,0]:
+            error_msg = "f_set must be of order (start, stop, [step]) where " \
+                        "'start' and 'stop' are within the bounds of the data"
             raise SyntaxError(error_msg)
 
         f_set = array([
@@ -240,6 +245,11 @@ def f_set_ref(f_set, data):
         ], dtype=float64)
 
     elif len(f_set) is 3:
+
+        if f_set[0] < data[0,0] or f_set[1] > data[-1,0]:
+            error_msg = "f_set must be of order (start, stop, [step]) where " \
+                       "'start' and 'stop' are within the bounds of the data"
+            raise SyntaxError(error_msg)
 
         if f_set[0] > f_set[1]:
             error_msg = "f_set must be of order (start, stop, [step]) where " \

@@ -19,7 +19,7 @@ def main():
 
     reflection_loss = libRL.reflection_loss(
         data=import_file,
-        f_set=(2,18),
+        f_set=(1,18,1),
         d_set=(0,20,1),
         interp='cubic',
         multiprocessing=True,
@@ -32,7 +32,7 @@ def main():
 
     characterization = libRL.characterization(
         data=import_file,
-        f_set=(1,10),
+        f_set=(1,18,1),
         params=['eddy'],
         as_dataframe=True
     )
@@ -41,7 +41,7 @@ def main():
 
     band_analysis = libRL.band_analysis(
         data=import_file,
-        f_set=(1,18),
+        f_set=(1,18,1),
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],
         thrs=-10,
