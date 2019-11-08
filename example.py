@@ -24,7 +24,7 @@ def main():
         f_set=(1,18,1),
         d_set=(0,20,1),
         interp='cubic',
-        multiprocessing=True,
+        multiprocessing=False,
         multicolumn=True,
         as_dataframe=True,
         quick_graph=False

@@ -246,7 +246,7 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
     if 'multiprocessing' in kwargs and isinstance(
             kwargs['multiprocessing'], int) is True:
 
-        if kwargs['multiprocessing'] is True or kwargs['multiprocessing'] == 0:
+        if kwargs['multiprocessing'] is True or kwargs['multiprocessing'] is 0:
             res = array(Pool().map(gamma, grid))
         elif kwargs['multiprocessing'] > 0:
             res = array(Pool(nodes=kwargs['multiprocessing']).map(gamma, grid))
