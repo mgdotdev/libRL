@@ -2,53 +2,53 @@
 this example file demonstrates how to use the included
 functions available through the libRL library. Users are encouraged
 to call/read the docstrings for descriptions and full context on the
-*args and **kwargs available.
+*args and **kwargs available, or read the documentation available at
+https://1mikegrn.github.io/DocSite/libRL/
 '''
 
 import libRL
-from os import path
-import pandas as pd
 
 def main():
+    """
 
-    import_file = path.join(
-        path.abspath(path.dirname(__file__)),
-        'test',
-        'test_data.xlsx'
-    )
+    this example script is designed to run a demonstration of each of the
+    available functions in libRL. Data is imported directly from the GitHub
+    repository for convenience. Results are simply printed.
 
-    dataset = pd.read_excel(import_file).to_numpy()
+    :return: nothing
+
+    """
+    data = 'https://raw.githubusercontent.com/' \
+           '1mikegrn/libRL-package/master/test/test_data.csv'
 
     reflection_loss = libRL.reflection_loss(
-        data=import_file,
+        data=data,
         f_set=(1,18,1),
         d_set=(0,20,1),
         interp='cubic',
-        multiprocessing=False,
+        multiprocessing=True,
         multicolumn=True,
         as_dataframe=True,
-        quick_graph=False
     )
 
     print(reflection_loss)
 
     characterization = libRL.characterization(
-        data=dataset,
+        data=data,
         f_set=(1,18,1),
-        params=['eddy'],
+        params='all',
         as_dataframe=True
     )
 
     print(characterization)
 
     band_analysis = libRL.band_analysis(
-        data=dataset,
-        f_set=(1,18,1),
+        data=data,
+        f_set=(1,18,0.1),
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],
         thrs=-10,
         as_dataframe=True,
-        quick_graph=False
     )
 
     print(band_analysis)
