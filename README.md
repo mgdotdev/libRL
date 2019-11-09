@@ -11,7 +11,7 @@ The libRL module can be installed via pip and git
 once installed, simply import the module as normal, and query the
 docstring via libRL? - the docstring includes a list of the available
 functions for use. Full documentation is also available at
-https://1mikegrn.github.io/DocSite/libRL/ 
+https://1mikegrn.github.io/libRL/ 
 
 --------------------------------
 
