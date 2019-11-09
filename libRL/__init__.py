@@ -28,7 +28,7 @@ functions include:
         see libRL.reflection_loss? for complete documentation.
 
     libRL.characterization(
-    data=None, f_set=None, params="All", **kwargs
+    data=None, f_set=None, params="all", **kwargs
     )
         - characterization of Reflection Loss. Yields the calculated results
         of common formulations within the Radar Absorbing Materials field.
@@ -148,7 +148,7 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
                     ------------------------------
 
                     :quick_graph=:
-                    (False); True, str();
+                    (False); True; str();
 
                     saves a *.png graphical image to a specified location. If
                     set to True, the quick_graph function saves the resulting
@@ -161,14 +161,14 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
                     ------------------------------
 
                     :as_dataframe=:
-                    (False); True
+                    (False); True;
 
                     returns data in a pandas dataframe. This is particularly
                     useful if multicolumn is also set to true.
                     ------------------------------
 
                     :multicolumn=:
-                    (False); True
+                    (False); True;
 
                     outputs data in multicolumn form with  a numpy array of
                     [RL, f, d] iterated over each of the three columns.
@@ -363,7 +363,7 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
 
                     ------------------------------
     :param kwargs:  :override=:
-                    (None); 'chi zero'; 'edp zero'; 'eps set'
+                    (None); 'chi zero'; 'eps set';
 
                     provides response simulation functionality within libRL,
                     common for discerning which EM parameters are casual for
@@ -372,7 +372,7 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
                     ------------------------------
 
                     :as_dataframe=:
-                    (False); True
+                    (False); True;
 
                     returns the requested parameters as a pandas dataframe with
                     column names as the parameter keywords.
@@ -578,14 +578,14 @@ def band_analysis(
                     ------------------------------
 
                     :interp=:
-                    'linear'; 'cubic';
+                    ('cubic'); 'linear';
 
                     Method for interpolation. Set to linear if user wants to
                     linear interp instead of cubic spline.
                     ------------------------------
 
                     :quick_graph=:
-                    (False); True, str();
+                    (False); True; str();
 
                     saves a *.png graphical image to a specified location. If
                     set to True, the quick_graph function saves the resulting
