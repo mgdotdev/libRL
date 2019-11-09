@@ -46,7 +46,7 @@ functions include:
 Developed at the University of Missouri-Kansas City under NSF grant DMR-1609061
 by Michael Green and Xiaobo Chen.
 
-full details can be found at https://1mikegrn.github.io/DocSite/libRL/
+full details can be found at https://1mikegrn.github.io/libRL/
 ----------------------------------------------
 """
 

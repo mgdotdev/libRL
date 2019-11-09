@@ -6,7 +6,7 @@ under NSF grant DMR-1609061.
 
 The libRL module can be installed via pip and git
 
-        pip install git+https://github.com/1mikegrn/libRL-package
+        pip install git+https://github.com/1mikegrn/libRL
 
 once installed, simply import the module as normal, and query the
 docstring via libRL? - the docstring includes a list of the available

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Examples - libRL</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Examples";
+    var mkdocs_page_input_path = "examples.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> libRL</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">libRL</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../overview/">Overview</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../library_structure/">Library Structure</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../__init__/">__init__.py</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../cpfuncs/">cpfuncs.pyx</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../refactoring/">refactoring.py</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../quick_graphs/">quick_graphs.py</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Examples</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#windows"> Windows </a></li>
+    
+
+    <li class="toctree-l3"><a href="#linux"> Linux </a></li>
+    
+
+    <li class="toctree-l3"><a href="#macos"> macOS </a></li>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about/">About</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">libRL</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>libRL &raquo;</li>
+        
+      
+    
+    <li>Examples</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1>Examples</h1>
+
+<p>Here we're going to demonstrate how to call the various functions of the
+libRL library - both making use of the main functions as well as calling
+some of the subdirectories that researchers may have interest in.</p>
+<hr />
+<h1 id="windows"><h3> Windows </h3></h1>
+<p>Suppose that from experimentation a researcher has generated a
+'paraffin_data.csv' file of the following structure:</p>
+<pre><code>Transmission Line And Free Space Method 16.0.16092801,,,,
+Agilent Technologies,E5063A,MY54100168,A.03.71,
+,,,,
+Ch 1,,,,
+Ports:, 1 &amp; 2,,,
+Measurement Model:, Reflection/Transmission Mu and Epsilon,,,
+Sample Holder Type:, Coax/TEM,,,
+Sample Holder Length:, 99.700000 mm,,,
+Distance to Sample:, 43.600000 mm,,,
+Sample Thickness:, 3.040000 mm,,,
+...
+...
+...  
+Date:,"Thursday, January 25, 2018 14:10:19",,,
+frequency(GHz),e',e'',u',u''
+1,2.1976,0.062033333,1.0705,0.063966667
+1.34,2.1814,0.0554,1.0681,0.0577
+1.68,2.1444,0.0631,1.0942,0.0339
+2.02,2.132,0.0493,1.0997,0.0364
+2.36,2.1389,0.0457,1.09,0.0281
+...
+...
+...  
+16.98,2.202,0.0513,1.0237,-0.0016
+17.32,2.19738,0.0587,1.023466667,-0.00285
+17.66,2.191617143,0.06263,1.02912381,-0.00323
+18,2.185854286,0.06656,1.034780952,-0.00361
+</code></pre>
+<p>This is a typical Nx5 .csv instrument file that researchers might have
+generated from network analysis (Note: libRL is written to handle
+tab-separated .csv files as well as .xlsx files)</p>
+<p>Let's further suppose that this file is located on the desktop, such
+that the full file path for our data file is the following:</p>
+<p><code> C:\Users\1mike\Desktop\paraffin_data.csv </code></p>
+<p>libRL is designed to parse this data file directly from its
+instrumentation file. To use libRL in RAM analysis, we can simply
+construct the following script in our favorite IDE to calculate, for
+example, the reflection loss (RL) as a unit of decibel defined as:</p>
+<p><span><span class="MathJax_Preview">RL(dB) = 20 \cdot log_{10}\Big|{\frac{Z_{in}(f, d)-1}{Z_{in}(f,
+d)+1}}\Big|</span><script type="math/tex">RL(dB) = 20 \cdot log_{10}\Big|{\frac{Z_{in}(f, d)-1}{Z_{in}(f,
+d)+1}}\Big|</script></span></p>
+<p><span><span class="MathJax_Preview">Z_{in}(f, d) =
+\Big[ \frac{\mu'(f) - j \cdot \mu''(f)}{\epsilon'(f) - j \cdot \epsilon''(f)} \Big]^{\frac{1}{2}}
+\cdot tanh \Big( j \cdot \frac{2\pi f \cdot d}{c}
+\{[\mu'(f) - j \cdot \mu''(f)][\epsilon'(f) - j \cdot \epsilon''(f)] \}
+^{\frac{1}{2}} \Big)</span><script type="math/tex">Z_{in}(f, d) =
+\Big[ \frac{\mu'(f) - j \cdot \mu''(f)}{\epsilon'(f) - j \cdot \epsilon''(f)} \Big]^{\frac{1}{2}}
+\cdot tanh \Big( j \cdot \frac{2\pi f \cdot d}{c}
+\{[\mu'(f) - j \cdot \mu''(f)][\epsilon'(f) - j \cdot \epsilon''(f)] \}
+^{\frac{1}{2}} \Big)</script></span></p>
+<p>can be calculated from the following script:</p>
+<pre><code>import libRL
+
+results = libRL.reflection_loss(
+    data=r'C:\Users\1mike\Desktop\paraffin_data.csv',
+    d_set=[3.04]
+)
+</code></pre>
+<p>This represents the minimal computable function that libRL will
+calculate over. At minimum, the permittivity and permeability data
+should be passed, as well as the thickness parameters for calculation
+[this should
+make intuitive sense, as RL is calculated over an (f, d) grid space].
+The resulting data set is a Nx3 numpy array of the Reflection Loss,
+frequencies, and thicknesses in columns 0, 1, 2 respectively.</p>
+<p>Of course, libRL is designed to do much more than just this minimal
+computation. As permittivity and permeability are farads/meter and
+henries/meter, the thickness parameter is decoupled from experimentation
+and thus can be used to calculate RL of thicknesses not explicitly used
+in measurement. As such, we can pass a <em>tuple</em> of thickness values to
+generate an array in accordance to numpy.arange()</p>
+<pre><code>import libRL
+
+results = libRL.reflection_loss(
+    data=r'C:\Users\1mike\Desktop\paraffin_data.csv',
+    d_set=(0,5,1)
+)
+</code></pre>
+<p>This results in the calculation being mapped over the thickness range of
+0-5 mm (libRL <em>includes</em> the upper bound here) at every step of 1 mm.</p>
+<p>Currently, reflection loss is being calculated using the frequency
+values in the permittivity and permeability data set. libRL has a
+protocol however which allows the user to <em>interploate</em> the data such
+that frequency can be controlled similarly to the thicknesses.</p>
+<pre><code>import libRL
+
+results = libRL.reflection_loss(
+    data=r'C:\Users\1mike\Desktop\paraffin_data.csv',
+    f_set=(1,18,1),
+    d_set=(0,5,1)
+)
+</code></pre>
+<p>Here, the resulting calculation returns a data set calculated over the
+ranges of 1-18 GHz, 0-5 mm at 1 unit intervals. </p>
+<p>To note, libRL allows for <em>interpolation</em> and not <em>extrapolation</em>.
+Attempts to use the interpolating functions outside of your experimental
+bounds throws an error.</p>
+<pre><code>Traceback (most recent call last):
+  File "C:\Users\1mike\PycharmProjects\libRL package\libRL\refactoring.py", line 252, in f_set_ref
+    raise SyntaxError(error_msg)
+SyntaxError: f_set must be of order (start, stop, step) where 'start' and 'stop' are within the bounds of the data
+</code></pre>
+<p>There is a set of keyword arguments which libRL.reflection_loss accepts.
+These keyword areguments are: <br> <br> <code>interp=</code><br>
+<code>multiprocessing=</code> <br> <code>multicolumn=</code> <br>
+<code>as_dataframe=</code> <br> <code>quick_graph=</code> <br></p>
+<p>Descriptions of these keyword arguments can be found in the docstrings.</p>
+<p>The other functions available in the libRL library use the same
+refactoring protocols for data, f_set, d_set, and m_set. They each have
+their own keyword arguments and parameter arguments, so researchers are
+encouraged to look at the documentation provided on this site for each
+of those functions.</p>
+<p>Some of the subdirectory functions available which are of convenient use
+are the <a href="../refactoring/#file_refactor"><code>file_refactor()</code></a> and
+<a href="../refactoring/#interpolate"><code>interpolate()</code></a> functions,
+which can be found in documentation under libRL/refactoring.py. In
+brief, <code>file_refactor()</code> is the protocol libRL uses to parse
+out the file string into actionable data, and <code>interpolate()</code>
+is the protocol libRL uses to generate the interpolation functions over
+the actionable data set.</p>
+<h1 id="linux"><h3> Linux </h3></h1>
+<p><em>this page is still currently under construction. Check back shortly!</em></p>
+<h1 id="macos"><h3> macOS </h3></h1>
+<p><em>this page is still currently under construction. Check back shortly!</em></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../about/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../quick_graphs/" class="btn btn-neutral" title="quick_graphs.py"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../quick_graphs/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../about/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

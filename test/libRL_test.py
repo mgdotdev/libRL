@@ -6,7 +6,7 @@ import libRL
 def main():
 
     data_url = 'https://raw.githubusercontent.com/' \
-           '1mikegrn/libRL-package/master/test/test_data.csv'
+           '1mikegrn/libRL/master/test/test_data.csv'
 
     reflection_loss = libRL.reflection_loss(
         data=data_url,

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>refactoring.py - libRL</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "refactoring.py";
+    var mkdocs_page_input_path = "refactoring.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> libRL</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">libRL</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../overview/">Overview</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../library_structure/">Library Structure</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../__init__/">__init__.py</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../cpfuncs/">cpfuncs.pyx</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">refactoring.py</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#file_refactor">file_refactor</a></li>
+    
+
+    <li class="toctree-l3"><a href="#interpolate">interpolate</a></li>
+    
+
+    <li class="toctree-l3"><a href="#f_set_ref">f_set_ref</a></li>
+    
+
+    <li class="toctree-l3"><a href="#d_set_ref">d_set_ref</a></li>
+    
+
+    <li class="toctree-l3"><a href="#m_set_ref">m_set_ref</a></li>
+    
+
+    <li class="toctree-l3"><a href="#qgref">qgref</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../quick_graphs/">quick_graphs.py</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../examples/">Examples</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about/">About</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">libRL</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>libRL &raquo;</li>
+        
+      
+    
+    <li>refactoring.py</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1><code>refactoring.py</code></h1>
+
+<h1 id="file_refactor"><h3>file_refactor</h3></h1>
+<pre><code>libRL.refactoring.file_refactor(
+    data=None, **kwargs
+)
+</code></pre>
+<p>Refactors the given user data into an actionable permittivity and
+permeability array.</p>
+<pre><code>:param data:   (data)
+</code></pre>
+<p>Permittivity and Permeability data of Nx5 dimensions. Can be a string
+equivalent to the directory and file name of either a .csv or .xlsx of
+Nx5 dimensions. Text above and below data array will be automatically
+avoided by the program (most network analysis instruments report data
+which is compatible with the required format)</p>
+<pre><code>:param kwargs:  :override=:
+                (None); 'chi zero'; 'eps set'
+</code></pre>
+<p>provides response simulation functionality within libRL, common for
+discerning which EM parameters are casual for reflection loss. 'chi
+zero' sets mu = (1 - j·0). 'eps set' sets <br> epsilon = (avg(e1)-j·0).</p>
+<pre><code>:return:        (data)
+</code></pre>
+<p>refactored data data of Nx5 dimensionality in numpy array</p>
+<h1 id="interpolate"><h3>interpolate</h3></h1>
+<pre><code>libRL.refactoring.file_refactor(
+    data=None, **kwargs
+)
+</code></pre>
+<p>uses SciPy's interpolation module to generate interpolating functions
+over the input data.</p>
+<pre><code>:param data:   (data)
+</code></pre>
+<p>Permittivity data of Nx5 form where N rows are 
+[frequency, e1, e2, mu1, mu2]</p>
+<pre><code>:param kwargs:  :interp=:
+                ('cubic'); 'linear'
+</code></pre>
+<p>Method for interpolation. Set to linear if user wants to linear interp
+instead of cubic spline.</p>
+<pre><code>:return:        e1f, e2f, mu1f, mu2f
+</code></pre>
+<p>returns four functions for Real Permittivity,
+Complex Permittivity, Real Permeability, and
+Complex Permeability respectively</p>
+<h1 id="f_set_ref"><h3>f_set_ref</h3></h1>
+<pre><code>libRL.refactoring.file_refactor(
+    f_set, data
+)
+</code></pre>
+<p>refactors the input f_set to the corresponding
+Nx1 numpy array.</p>
+<pre><code>:param f_set:   (start, end, [step])
+</code></pre>
+<p>tuple for frequency values in GHz</p>
+<P>
+- or - 
+</P>
+
+<ul>
+<li>if given as tuple of len 3, results are interpolated</li>
+<li>if given as tuple of len 2, results are data-derived
+with the calculation bound by the given start and end
+frequencies from the tuple</li>
+<li>is given as int or float of len 1, results are
+interpolated over the entire data set with a step size
+of the given tuple value.</li>
+<li>if f_set is None (default), frequency is bound to
+input data.</li>
+</ul>
+<p><space></p>
+<pre><code>:param data:   (data)
+</code></pre>
+<p>uses data as reference as frequencies are
+experimentally determined.</p>
+<pre><code>:return:        f_set
+</code></pre>
+<p>refactored f_set of type Nx1 numpy array.</p>
+<h1 id="d_set_ref"><h3>d_set_ref</h3></h1>
+<pre><code>libRL.refactoring.file_refactor(
+    d_set
+)
+</code></pre>
+<p>refactors the input d_set to the corresponding Nx1 numpy array.</p>
+<pre><code>:param d_set:   (start, end, [step])
+</code></pre>
+<p>tuple for thickness values in mm.</p>
+<P>
+- or - 
+</P>
+
+<p>if d_set is of type list, then the thickness values
+calculated will only be of the values present in the
+list.</p>
+<pre><code>:return:        d_set
+</code></pre>
+<p>refactored d_set of type Nx1 numpy array.</p>
+<h1 id="m_set_ref"><h3>m_set_ref</h3></h1>
+<pre><code>libRL.refactoring.file_refactor(
+    m_set
+)
+</code></pre>
+<p>refactors the input m_set to the corresponding Nx1 numpy array.</p>
+<pre><code>:param m_set:   (start, end, [step])
+</code></pre>
+<p>tuple of ints which define the bands to be calculated.</p>
+<P>
+- or - 
+</P>
+
+<p>if m_set is given as a list [], the explicitly listed
+band integers will be calculated.</p>
+<p><space></p>
+<pre><code>:return:        m_set
+</code></pre>
+<p>refactored m_set of type Nx1 numpy array.</p>
+<h1 id="qgref"><h3>qgref</h3></h1>
+<pre><code>libRL.refactoring.qgref(
+    data
+)
+</code></pre>
+<p>grabs the passed directory location for image saving</p>
+<pre><code>:param data:   (r'C:\file_directory')
+</code></pre>
+<p>Accepts data as a variable before data refactoring to the permittivity
+and permeability array. As such, if data is passed as a file location,
+qgref grabs the directory string from the file location and saves
+resulting images at the directory. Else, the directory must be passed
+directly.</p>
+<pre><code>:return:        output_location
+</code></pre>
+<p>output directory for subsequent graphical figures.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../quick_graphs/" class="btn btn-neutral float-right" title="quick_graphs.py">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../cpfuncs/" class="btn btn-neutral" title="cpfuncs.pyx"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../cpfuncs/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../quick_graphs/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

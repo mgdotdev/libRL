@@ -1,0 +1,24 @@
+site_name: 'libRL'
+
+theme: readthedocs
+
+nav:
+    - Home: index.md
+
+    - libRL:
+
+        - Overview: overview.md
+        - Library Structure: library_structure.md
+        - __init__.py: __init__.md
+        - cpfuncs.pyx: cpfuncs.md
+        - refactoring.py: refactoring.md
+        - quick_graphs.py: quick_graphs.md
+        - Examples: examples.md
+
+    - About: about.md
+
+markdown_extensions:
+    - pymdownx.arithmatex
+
+extra_javascript:
+    - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML

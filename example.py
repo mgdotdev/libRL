@@ -6,10 +6,10 @@ to call/read the docstrings for descriptions and full context on the
 websites:
 
 Overview:
-https://1mikegrn.github.io/DocSite/libRL/
+https://1mikegrn.github.io/libRL/
 
 examples:
-https://1mikegrn.github.io/DocSite/examples/
+https://1mikegrn.github.io/examples/
 '''
 
 import libRL
@@ -25,7 +25,7 @@ def main():
 
     """
     data_url = 'https://raw.githubusercontent.com/' \
-           '1mikegrn/libRL-package/master/test/test_data.csv'
+           '1mikegrn/libRL/master/test/test_data.csv'
 
     reflection_loss = libRL.reflection_loss(
         data=data_url,
