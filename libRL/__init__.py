@@ -97,6 +97,7 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
     :param f_set:   (start, end, [step])
 
                     tuple for frequency values in GHz
+                    - or -
                     - if given as list of len 3, results are interpolated
                     - if given as list of len 2, results are data-derived
                     with the calculation bound by the given start and end
@@ -107,13 +108,13 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
 
                     tuple for thickness values in mm.
                     - or -
-                    if d_set is of type list, then the thickness values
+                    - if d_set is of type list, then the thickness values
                     calculated will only be of the values present in the
                     list.
                     ------------------------------
 
     :param kwargs:  :interp=:
-                    ('cubic'); 'linear'
+                    ('cubic'); 'linear';
 
                     Method for interpolation. Set to linear if user wants to
                     linear interp instead of cubic spline. Default action
@@ -121,7 +122,7 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
                     ------------------------------
 
                     :override=:
-                    (None); 'chi zero'; 'eps set'
+                    (None); 'chi zero'; 'eps set';
 
                     provides response simulation functionality within libRL,
                     common for discerning which EM parameters are casual for
@@ -130,7 +131,7 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
                     ------------------------------
 
                     :multiprocessing=:
-                    (False); True; 0; 1; 2; ...
+                    (False); True; 0; 1; 2; ...;
 
                     Method for activating multiprocessing functionality for
                     faster run times. This **kwarg takes integers and booleans.
@@ -147,7 +148,7 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
                     ------------------------------
 
                     :quick_graph=:
-                    (False); True, str()
+                    (False); True, str();
 
                     saves a *.png graphical image to a specified location. If
                     set to True, the quick_graph function saves the resulting
@@ -568,7 +569,7 @@ def band_analysis(
 
                     ------------------------------
     :param kwargs:  :override=:
-                    (None); 'chi zero'; 'edp zero'; 'eps set'
+                    (None); 'chi zero';  'eps set';
 
                     provides response simulation functionality within libRL,
                     common for discerning which EM parameters are casual for
@@ -577,14 +578,14 @@ def band_analysis(
                     ------------------------------
 
                     :interp=:
-                    'linear'; 'cubic'
+                    'linear'; 'cubic';
 
                     Method for interpolation. Set to linear if user wants to
                     linear interp instead of cubic spline.
                     ------------------------------
 
                     :quick_graph=:
-                    (False); True, str()
+                    (False); True, str();
 
                     saves a *.png graphical image to a specified location. If
                     set to True, the quick_graph function saves the resulting
@@ -597,7 +598,7 @@ def band_analysis(
                     ------------------------------
 
                     :as_dataframe=:
-                    (False); True
+                    (False); True;
 
                     Formats results into a pandas
                     dataframe with the index labels as the thickness

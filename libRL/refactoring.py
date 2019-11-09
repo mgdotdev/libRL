@@ -65,7 +65,7 @@ def file_refactor(dataFile=None, **kwargs):
                     report data which is compatible with the required format)
 
     :param kwargs:  :override=:
-                    (None); 'chi zero'; 'eps set'
+                    (None); 'chi zero'; 'eps set';
 
                     provides response simulation functionality within libRL,
                     common for discerning which EM parameters are casual for
@@ -150,7 +150,7 @@ def interpolate(data, **kwargs):
 
                     ------------------------------
     :param kwargs:  :interp=:
-                    ('cubic'); 'linear'
+                    ('cubic'); 'linear';
 
                     Method for interpolation. Set to linear if user wants to
                     linear interp instead of cubic spline.
