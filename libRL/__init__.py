@@ -173,14 +173,15 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
                     outputs data in multicolumn form with  a numpy array of
                     [RL, f, d] iterated over each of the three columns.
                     - or -
-                    if as_dataframe is used, then return value will be a pandas
-                    dataframe with columns of name d and indexes of name f.
+                    - if as_dataframe is used, then return value will be a
+                    pandas dataframe with columns of name d and indexes of
+                    name f.
                     ------------------------------
 
 
     :return:        returns Nx3 data set of [RL, f, d] by default
                     - or -
-                    if multicolumn=True, an NxM dataframe with N rows for the
+                    - if multicolumn=True, an NxM dataframe with N rows for the
                     input frequency values and M columns for the input
                     thickness values, with pandas dataframe headers/indexes
                     of value f/d respectively.
@@ -328,6 +329,7 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
     :param f_set:   (start, end, [step])
 
                     tuple for frequency values in GHz
+                    - or -
                     - if given as list of len 3, results are interpolated
                     - if given as list of len 2, results are data-derived
                     with the calculation bound by the given start and
@@ -359,7 +361,7 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
                     "Eddy"           # Eddy Current Loss
                     ]
 
-                    - if 'all' (default) is passed, calculate everything.
+                    if 'all' (default) is passed, calculate everything.
 
                     ------------------------------
     :param kwargs:  :override=:
