@@ -72,7 +72,10 @@ from pandas import DataFrame
 from pathos.multiprocessing import ProcessPool as Pool
 
 
-def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
+def reflection_loss(
+        data=None, f_set=None,
+        d_set=None, **kwargs
+):
     """
 
     the reflection_loss (RL) function calculates the RL based on the mapping
@@ -306,7 +309,10 @@ def reflection_loss(data=None, f_set=None, d_set=None, **kwargs):
     return res
 
 
-def characterization(data=None, f_set=None, params="all", **kwargs):
+def characterization(
+        data=None, f_set=None,
+        params="all", **kwargs
+):
     """
 
     the characterization function takes
