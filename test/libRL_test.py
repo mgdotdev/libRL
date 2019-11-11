@@ -41,3 +41,6 @@ def test_main():
     check = main()
     assert check == ((18, 20), (18, 16), (20, 5))
 
+
+if __name__ == "__main__":
+    test_main()
