@@ -1,4 +1,6 @@
 """
+:code:`quick_graphs.py`
+=======================
 
 quick and dirty default graphing protocols for reflection_loss and
 band_analysis functions.
@@ -45,14 +47,41 @@ rcParams['ytick.major.size'], rcParams['xtick.major.size'] = tck, tck
 def quick_graph_reflection_loss(results, location):
     """
 
-    quick and dirty default graphing protocols for reflection loss.
+    quick and dirty default graphing protocols for the band analysis.
 
-    :param results:     libRL.reflection_loss results of shape Nx3
+                    ---------------------------------------
+::
 
-    :param location:    string directory location of where to save the
-                        resulting graphical image.
+    :param bands:       (data)
 
-    :return:            None.
+band data passed through from the band_results derived from the cython
+computation.
+
+                    ---------------------------------------
+::
+
+    :param d_vals:      d_set
+
+d_set from libRL.band_analysis()
+
+                    ---------------------------------------
+::
+
+    :param m_vals:      m_set
+
+m_set from libRL.band_analysis()
+
+                    ---------------------------------------
+::
+
+    :param location:    (file directory)
+
+string directory location of where to save the resulting graphical image.
+
+                    ---------------------------------------
+::
+
+    :return:            (None)
     """
 
     fig = plt.figure(dpi=200)

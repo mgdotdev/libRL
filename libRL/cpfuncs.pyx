@@ -1,3 +1,12 @@
+"""
+:code:`cpfuncs.pyx`
+==================
+
+Cython protocols for computing the effective bandwidth with ulgy
+for loops
+
+"""
+
 from numpy import(
 zeros, abs, argmin,
 nan_to_num, where
@@ -19,19 +28,76 @@ cpdef gamma(e1, e2, mu1, mu2, f, d):
     return y.real
 
 cpdef band_analysis_cython(PnPGrid, mGrid, m_set, d_set, thrs):
+    """
 
-    # PnP is the Nx5 grid of (freq, e1, e2, mu1, mu2)
-    # mGrid is the d values associated with the half wavelength for the frequencies in PnP
-    # d_set is the d_set values (duh).
+The band_analysis_cython function determines the band analysis of materials
+by tallying the frequency points which satisfy the threshold, and summing
+the span of their frequencies.
+
+                    ---------------------------------------
+::
+
+    :param PnPgrid:     (data)
+
+PnPgrid is a pre-processed permittivity & permeability array passed from
+libRL.CARL of shape Nx5 of [freq, e1, e2, mu1, mu2].
+
+                    ---------------------------------------
+::
+
+    :param mGrid:       (array)
+
+mGrid is a numpy array of d_values calculated from a modified
+quarter-wavelength function determined from the frequency values of the
+PnPgrid.
+
+                    ---------------------------------------
+::
+
+    :param m_set:       m_set
+
+m_set is a numpy array of bands passed through from
+libRL.refactoring.m_set_ref()
+
+                    ---------------------------------------
+::
+
+    :param d_set:       d_set
+
+d_set is a numpy array of thickness values passed through from
+libRL.refactoring.d_set_ref()
+
+                    ---------------------------------------
+::
+
+    :param thrs:        thrs
+
+thrs is the threshold value to test Reflection loss against for each (f, d)
+point in the response field, passed through directly from
+libRL.band_analysis()
+
+                    ---------------------------------------
+::
+
+    :return:            res
+
+returns a NxM array of the N thicknesses along band M which respond have
+reflection loss values below the threshold.
+    """
 
     cdef int cnt0
     cdef int cnt1
 
-    # you're going to get an annoying warning from the interpolation of the lower
-    # first bound, because in d(f) the result of 2m-2 is 0 for m being 1, the first
-    # band. This is of no consequence to  the actual calculation though since the
-    # included computation corrects for this instance by pushing the starting freq
-    # value to PnPGrid[0,0] when the requested frequency is outside the data range.
+    # you're going to get an annoying warning
+    # from the interpolation of the lower
+    # first bound, because in d(f) the result of
+    # 2m-2 is 0 for m being 1, the first
+    # band. This is of no consequence to  the
+    # actual calculation though since the
+    # included computation corrects for this
+    # instance by pushing the starting freq
+    # value to PnPGrid[0,0] when the requested
+    # frequency is outside the data range.
 
     warnings.filterwarnings('ignore')
 

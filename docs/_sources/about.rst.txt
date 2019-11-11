@@ -1,3 +1,6 @@
+About
+=====
+
 Michael Green is a PhD candidate under the supervision of Dr. Xiaobo
 Chen at the University of Missouri–Kansas City, Department of Chemistry.
 He received his Bachelors of Science in chemistry with a minor in
@@ -7,8 +10,9 @@ Science in chemistry from the University of Missouri–Kansas City in
 modeling, and application of nanomaterials in light/matter interactions,
 focusing on photolysis, photocatalysis, and microwave absorption, as
 well as short-range matter/matter interactions with a focus in physical
-adsorption. 
-         
+adsorption.
+
+::
+
         Contact:
             magwwc@mail.umkc.edu
-

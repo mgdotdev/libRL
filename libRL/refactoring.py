@@ -1,38 +1,50 @@
 """
+:code:`refactoring.py`
+=====================
+
 refactoring.py provides the data refactoring protocols for the
 libRL module.
 
 functions include:
 
+::
+
     refactoring.file_refactor(data=None):
-        - resultant is the processed Nx5 data array of
-        [frequency, e1, e2, mu1, mu2]. Gives the user
-        options for inputting data, from a file location
-        string to the data array already formatted.
+
+resultant is the processed Nx5 data array of [frequency, e1, e2, mu1, mu2].
+Gives the user options for inputting data, from a file location string to the
+data array already formatted.
+
+::
 
     refactoring.interpolate(data, **kwargs):
-        - resultant is the four scipy-derived interpolating
-        functions for e1, e2, mu1, and mu2. Default is
-        cubic spline interpolation (piece-wise 3rd order
-        polynomials) but user has the option to override
-        with linear interpolation.
+
+
+resultant is the four scipy-derived interpolating functions for e1, e2, mu1,
+and mu2. Default is cubic spline interpolation (piece-wise 3rd order
+polynomials) but user has the option to override with linear interpolation.
+
+::
 
     refactoring.f_set_ref(f_set, data):
-        - resultant is the Nx1 array of frequency values
-        determined from user inputs.
-        see refactoring.f_set_ref? for complete documentation
+
+resultant is the Nx1 array of frequency values determined from user inputs.
+see refactoring.f_set_ref? for complete documentation
+
+::
 
     refactoring.d_set_ref(f_set):
-        - resultant is the Nx1 array of thickness values
-        determined from user inputs.
-        see refactoring.d_set_ref? for complete documentation
+
+resultant is the Nx1 array of thickness values determined from user inputs.
+see refactoring.d_set_ref? for complete documentation
+
+::
 
     refactoring.m_set_ref(m_set):
-        - resultant is the Nx1 array of band values
-        determined from user inputs.
-        see refactoring.m_set_ref? for complete documentation
 
----------------------------------------------
+resultant is the Nx1 array of band values determined from user inputs.
+see refactoring.m_set_ref? for complete documentation
+
 """
 
 from numpy import (
@@ -52,31 +64,36 @@ from os.path import splitext, split
 def file_refactor(dataFile=None, **kwargs):
     """
 
-    refactors the given user data into actionable permittivity and
-    permeability data.
+refactors the given user data into actionable permittivity and permeability
+data.
 
-    :param dataFile:(data)
+                    ---------------------------------------
+::
 
-                    Permittivity and Permeability data of Nx5 dimensions.
-                    Can be a string equivalent to the directory and file
-                    name of either a .csv or .xlsx of Nx5 dimensions. Text
-                    above and below data array will be automatically
-                    avoided by the program (most network analysis instruments
-                    report data which is compatible with the required format)
+    :param dataFile:(file_path)
 
-    :param kwargs:  :override=:
-                    (None); 'chi zero'; 'eps set';
+Permittivity and Permeability data of Nx5 dimensions. Can be a string
+equivalent to the directory and file name of either a .csv or .xlsx of Nx5
+dimensions. Text above and below data array will be automatically avoided by
+the program (most network analysis instruments report data which is compatible
+with the required format).
 
-                    provides response simulation functionality within libRL,
-                    common for discerning which EM parameters are casual for
-                    reflection loss. 'chi zero' sets mu = (1 - j*0). 'eps set'
-                    sets epsilon = (avg(e1)-j*0).
-                    ------------------------------
+                    ---------------------------------------
+::
 
+    :param kwargs:  override=
+                    (None); 'chi zero', 'eps set'
 
-    :return:        refactored data data of Nx5 dimensionality in numpy array
+provides response simulation functionality within libRL, common for discerning
+which EM parameters are casual for reflection loss. 'chi zero' sets
+mu = (1 - j*0). 'eps set' sets epsilon = (avg(e1)-j*0).
 
-    ---------------------------------------------
+                    ---------------------------------------
+::
+
+    :return:        data
+
+refactored data set of Nx5 dimensionality in numpy array
     """
     if dataFile is None:
         error_msg = 'Data must be passed as an array which is mappable ' \
@@ -142,28 +159,32 @@ def file_refactor(dataFile=None, **kwargs):
 def interpolate(data, **kwargs):
     """
 
-    uses SciPy's interpolation module to generate interpolating functions
-    over the input data.
+uses SciPy's interpolation module to generate interpolating functions over the
+input data.
 
-    :param data:   Permittivity data of Nx5 form where N rows are
-                    [frequency, e1, e2, mu1, mu2]
+                    ---------------------------------------
+::
 
-                    ------------------------------
+    :param data:   (data)
+
+Permittivity data of Nx5 form where N rows are [frequency, e1, e2, mu1, mu2]
+
+                    ---------------------------------------
+::
+
     :param kwargs:  :interp=:
-                    ('cubic'); 'linear';
+                    ('cubic'); 'linear'
 
-                    Method for interpolation. Set to linear if user wants to
-                    linear interp instead of cubic spline.
-                    ------------------------------
+Method for interpolation. Set to linear if user wants to linear interp instead
+of cubic spline.
 
+                    ---------------------------------------
+::
 
     :return:        e1f, e2f, mu1f, mu2f
 
-                    returns four functions for Real Permittivity,
-                    Complex Permittivity, Real Permeability, and
-                    Complex Permeability respectively
-
-    ----------------------------------------------
+returns four functions for Real Permittivity, Complex Permittivity, Real
+Permeability, and Complex Permeability respectively
     """
 
     params = ['e1f', 'e2f', 'mu1f', 'mu2f']
@@ -191,32 +212,35 @@ def interpolate(data, **kwargs):
 def f_set_ref(f_set, data):
     """
 
-    refactors the input f_set to the corresponding
-    Nx1 numpy array.
+refactors the input f_set to the corresponding Nx1 numpy array.
+
+                    ---------------------------------------
+::
 
     :param f_set:   (start, end, [step])
 
-                    tuple for frequency values in GHz
-                    - or -
-                    - if given as tuple of len 3, results are interpolated
-                    - if given as tuple of len 2, results are data-derived
-                    with the calculation bound by the given start and end
-                    frequencies from the tuple
-                    - is given as int or float of len 1, results are
-                    interpolated over the entire data set with a step size
-                    of the given tuple value.
-                    - if f_set is None (default), frequency is bound to
-                    input data.
+tuple for frequency values in GHz
+
+- if given as tuple of len 3, results are interpolated
+- if given as tuple of len 2, results are data-derived with the calculation
+  bound by the given start and end frequencies from the tuple
+- is given as int or float of len 1, results are interpolated over the entire
+  data set with a step size of the given tuple value.
+- if f_set is None (default), frequency is bound to input data.
+
+                    ---------------------------------------
+::
 
     :param data:   (data)
 
-                    uses data as reference as frequencies are
-                    experimentally determined.
+uses data as reference as frequencies are experimentally determined.
 
+                    ---------------------------------------
+::
 
-    :return:        refactored f_set of Nx1 numpy array
+    :return:        f_set
 
-    ----------------------------------------------
+refactored f_set of Nx1 numpy array
     """
     if f_set is None:
         f_set = array([
@@ -271,24 +295,26 @@ def f_set_ref(f_set, data):
 
 
 def d_set_ref(d_set):
-
     """
 
-    refactors the input d_set to the corresponding
-    Nx1 numpy array.
+refactors the input d_set to the corresponding Nx1 numpy array.
+
+                    ---------------------------------------
+::
 
     :param d_set:   (start, end, [step])
 
-                    tuple for thickness values in mm.
-                    - or -
-                    if d_set is of type list, then the thickness values
-                    calculated will only be of the values present in the
-                    list.
+tuple for thickness values in mm.
 
+- if d_set is of type list, then the thickness values calculated will only be
+  of the values present in the list.
 
-    :return:        refactored d_set of Nx1 numpy array
+                    ---------------------------------------
+::
 
-    ----------------------------------------------
+    :return:        d_set
+
+refactored d_set of Nx1 numpy array
     """
     if d_set is None:
         error_msg = 'd_set must be given as a tuple of length 3 ' \
@@ -316,21 +342,23 @@ def d_set_ref(d_set):
 def m_set_ref(m_set):
     """
 
-    refactors the input m_set to the corresponding
-    Nx1 numpy array.
+refactors the input m_set to the corresponding Nx1 numpy array.
+
+                    ---------------------------------------
+::
 
     :param m_set:   (start, end, [step])
 
-                    tuple of ints which define the bands to be calculated.
-                    - or -
-                    if m_set is given as a list [], the explicitly listed
-                    band integers will be calculated.
+tuple of ints which define the bands to be calculated.
 
+- if m_set is given as a list [], the explicitly listed band integers will
+  be calculated.
+
+                    ---------------------------------------
+::
 
     :return:        refactored m_set of Nx1 numpy array
-
-    ----------------------------------------------
-    """
+  """
     # partition band values
     if type(m_set) is list:
         m_set = array(m_set, dtype=int)

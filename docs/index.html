@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>LibRL: A python library for the characterization of Microwave Absorption &mdash; libRL 1.0.4 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> libRL
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">LibRL: A python library for the characterization of Microwave Absorption</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#library-structure">Library Structure</a></li>
+<li><a class="reference internal" href="#librl">LibRL</a></li>
+<li><a class="reference internal" href="#examples">Examples</a><ul>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#macos">macOS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#about">About</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">libRL</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>LibRL: A python library for the characterization of Microwave Absorption</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="librl-a-python-library-for-the-characterization-of-microwave-absorption">
+<h1>LibRL: A python library for the characterization of Microwave Absorption<a class="headerlink" href="#librl-a-python-library-for-the-characterization-of-microwave-absorption" title="Permalink to this headline">¶</a></h1>
+<p>This site is a docstring repository for the libRL library, written by
+Michael Green at the University of Missouri-Kansas City.</p>
+<p>Use the tabs on the left-hand side of the page to navigate to the
+various document sections.</p>
+<p>Research was supported by the National Science Foundation under grant
+NSF-1609061.</p>
+<p><strong>Connect:</strong></p>
+<p>Michael Green
+<a class="reference external" href="https://github.com/1mikegrn">&#64;Github</a>
+<a class="reference external" href="https://stackoverflow.com/users/10881573/michael-green?tab=profile">&#64;StackOverflow</a></p>
+</div>
+<div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>The libRL library can be installed via pip and git</p>
+<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/1mikegrn/libRL</span></code></p>
+<p>Where the setup file will automatically check dependencies and install
+to the main module library. Once installed, simply import the module as
+normal via <code class="code docutils literal notranslate"><span class="pre">import</span> <span class="pre">libRL</span></code>, and query the docstring via libRL? - the
+docstring includes a list of the available functions for use.</p>
+<p>The library includes the following main-level functions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">libRL</span><span class="o">.</span><span class="n">reflection_loss</span><span class="p">(</span>
+<span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.reflection_loss()</span></code> computes the resultants of Reflection Loss
+over (f, d) gridspace.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">libRL</span><span class="o">.</span><span class="n">characterization</span><span class="p">(</span>
+<span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.characterization()</span></code> yields the calculated results of common
+formulations within the Radar Absorbing Materials field.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">libRL</span><span class="o">.</span><span class="n">band_analysis</span><span class="p">(</span>
+<span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">m_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.band_analysis()</span></code> uses given set of permittivity and permeability data
+in conjuncture with a requested band set to determine the set of frequencies
+whose reflection losses are below the threshold.</p>
+</div>
+<div class="section" id="library-structure">
+<h1>Library Structure<a class="headerlink" href="#library-structure" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">libRL</span><span class="o">/</span>
+    <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>         <span class="c1"># initial executable</span>
+    <span class="n">refactoring</span><span class="o">.</span><span class="n">py</span>      <span class="c1"># Data processing protocols</span>
+    <span class="n">cpfunc</span><span class="o">.</span><span class="n">pyx</span>          <span class="c1"># cython protocols</span>
+    <span class="n">quick_graphs</span><span class="o">.</span><span class="n">py</span>     <span class="c1"># data visualization protocols</span>
+</pre></div>
+</div>
+<p>the main libRL functions are all accessible via the modules
+<code class="code docutils literal notranslate"><span class="pre">__init__.py</span></code> method, which are called directly from libRL.</p>
+</div>
+<div class="section" id="librl">
+<h1>LibRL<a class="headerlink" href="#librl" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>Here we’re going to demonstrate how to call the various functions of the
+libRL library - both making use of the main functions as well as calling
+some of the subdirectories that researchers may have interest in.</p>
+<div class="section" id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>Suppose that from experimentation a researcher has generated a
+‘paraffin_data.csv’ file of the following structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Transmission</span> <span class="n">Line</span> <span class="n">And</span> <span class="n">Free</span> <span class="n">Space</span> <span class="n">Method</span> <span class="mf">16.0</span><span class="o">.</span><span class="mi">16092801</span><span class="p">,,,,</span>
+<span class="n">Agilent</span> <span class="n">Technologies</span><span class="p">,</span><span class="n">E5063A</span><span class="p">,</span><span class="n">MY54100168</span><span class="p">,</span><span class="n">A</span><span class="o">.</span><span class="mf">03.71</span><span class="p">,</span>
+<span class="p">,,,,</span>
+<span class="n">Ch</span> <span class="mi">1</span><span class="p">,,,,</span>
+<span class="n">Ports</span><span class="p">:,</span> <span class="mi">1</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="p">,,,</span>
+<span class="n">Measurement</span> <span class="n">Model</span><span class="p">:,</span> <span class="n">Reflection</span><span class="o">/</span><span class="n">Transmission</span> <span class="n">Mu</span> <span class="ow">and</span> <span class="n">Epsilon</span><span class="p">,,,</span>
+<span class="n">Sample</span> <span class="n">Holder</span> <span class="n">Type</span><span class="p">:,</span> <span class="n">Coax</span><span class="o">/</span><span class="n">TEM</span><span class="p">,,,</span>
+<span class="n">Sample</span> <span class="n">Holder</span> <span class="n">Length</span><span class="p">:,</span> <span class="mf">99.700000</span> <span class="n">mm</span><span class="p">,,,</span>
+<span class="n">Distance</span> <span class="n">to</span> <span class="n">Sample</span><span class="p">:,</span> <span class="mf">43.600000</span> <span class="n">mm</span><span class="p">,,,</span>
+<span class="n">Sample</span> <span class="n">Thickness</span><span class="p">:,</span> <span class="mf">3.040000</span> <span class="n">mm</span><span class="p">,,,</span>
+<span class="o">...</span>
+<span class="o">...</span>
+<span class="o">...</span>
+<span class="n">Date</span><span class="p">:,</span><span class="s2">&quot;Thursday, January 25, 2018 14:10:19&quot;</span><span class="p">,,,</span>
+<span class="n">frequency</span><span class="p">(</span><span class="n">GHz</span><span class="p">),</span><span class="n">e</span><span class="s1">&#39;,e&#39;&#39;,u&#39;</span><span class="p">,</span><span class="sa">u</span><span class="s1">&#39;&#39;</span>
+<span class="mi">1</span><span class="p">,</span><span class="mf">2.1976</span><span class="p">,</span><span class="mf">0.062033333</span><span class="p">,</span><span class="mf">1.0705</span><span class="p">,</span><span class="mf">0.063966667</span>
+<span class="mf">1.34</span><span class="p">,</span><span class="mf">2.1814</span><span class="p">,</span><span class="mf">0.0554</span><span class="p">,</span><span class="mf">1.0681</span><span class="p">,</span><span class="mf">0.0577</span>
+<span class="mf">1.68</span><span class="p">,</span><span class="mf">2.1444</span><span class="p">,</span><span class="mf">0.0631</span><span class="p">,</span><span class="mf">1.0942</span><span class="p">,</span><span class="mf">0.0339</span>
+<span class="mf">2.02</span><span class="p">,</span><span class="mf">2.132</span><span class="p">,</span><span class="mf">0.0493</span><span class="p">,</span><span class="mf">1.0997</span><span class="p">,</span><span class="mf">0.0364</span>
+<span class="mf">2.36</span><span class="p">,</span><span class="mf">2.1389</span><span class="p">,</span><span class="mf">0.0457</span><span class="p">,</span><span class="mf">1.09</span><span class="p">,</span><span class="mf">0.0281</span>
+<span class="o">...</span>
+<span class="o">...</span>
+<span class="o">...</span>
+<span class="mf">16.98</span><span class="p">,</span><span class="mf">2.202</span><span class="p">,</span><span class="mf">0.0513</span><span class="p">,</span><span class="mf">1.0237</span><span class="p">,</span><span class="o">-</span><span class="mf">0.0016</span>
+<span class="mf">17.32</span><span class="p">,</span><span class="mf">2.19738</span><span class="p">,</span><span class="mf">0.0587</span><span class="p">,</span><span class="mf">1.023466667</span><span class="p">,</span><span class="o">-</span><span class="mf">0.00285</span>
+<span class="mf">17.66</span><span class="p">,</span><span class="mf">2.191617143</span><span class="p">,</span><span class="mf">0.06263</span><span class="p">,</span><span class="mf">1.02912381</span><span class="p">,</span><span class="o">-</span><span class="mf">0.00323</span>
+<span class="mi">18</span><span class="p">,</span><span class="mf">2.185854286</span><span class="p">,</span><span class="mf">0.06656</span><span class="p">,</span><span class="mf">1.034780952</span><span class="p">,</span><span class="o">-</span><span class="mf">0.00361</span>
+</pre></div>
+</div>
+<p>This is a typical Nx5 .csv instrument file that researchers might have
+generated from network analysis (Note: libRL is written to handle
+tab-separated .csv files as well as .xlsx files)</p>
+<p>Let’s further suppose that this file is located on the desktop, such
+that the full file path for our data file is the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="mi">1</span><span class="n">mike</span>\<span class="n">Desktop</span>\<span class="n">paraffin_data</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>libRL is designed to parse this data file directly from its
+instrumentation file. To use libRL in RAM analysis, we can simply
+construct the following script in our favorite IDE to calculate, for
+example, the reflection loss (RL) as a unit of decibel defined as:</p>
+<div class="math notranslate nohighlight">
+\[RL(dB) = 20 \cdot log_{10}\Bigg|{\frac{Z_{in}(f, d)-1}{Z_{in}(f,
+d)+1}}\Bigg|\]</div>
+<div class="math notranslate nohighlight">
+\[Z_{in}(f, d) =
+\Bigg[ \frac{\mu'(f) - j \cdot \mu''(f)}{\epsilon'(f) - j \cdot \epsilon''(f)} \Bigg]^{\frac{1}{2}}
+\cdot tanh \Bigg( j \cdot \frac{2\pi f \cdot d}{c}
+\{[\mu'(f) - j \cdot \mu''(f)][\epsilon'(f) - j \cdot \epsilon''(f)] \}
+^{\frac{1}{2}} \Bigg)\]</div>
+<p>can be calculated from the following script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">libRL</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">libRL</span><span class="o">.</span><span class="n">reflection_loss</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;C:\Users\1mike\Desktop\paraffin_data.csv&#39;</span><span class="p">,</span>
+    <span class="n">d_set</span><span class="o">=</span><span class="p">[</span><span class="mf">3.04</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This represents the minimal computable function that libRL will
+calculate over. At minimum, the permittivity and permeability data
+should be passed, as well as the thickness parameters for calculation
+[this should make intuitive sense, as RL is calculated over an
+(f, d) grid space]. The resulting data set is a Nx3 numpy array
+of the Reflection Loss, frequencies, and thicknesses in columns
+0, 1, 2 respectively.</p>
+<p>Of course, libRL is designed to do much more than just this minimal
+computation. As permittivity and permeability are farads/meter and
+henries/meter, the thickness parameter is decoupled from experimentation
+and thus can be used to calculate RL of thicknesses not explicitly used
+in measurement. As such, we can pass a <em>tuple</em> of thickness values to
+generate an array in accordance to numpy.arange()</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">libRL</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">libRL</span><span class="o">.</span><span class="n">reflection_loss</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;C:\Users\1mike\Desktop\paraffin_data.csv&#39;</span><span class="p">,</span>
+    <span class="n">d_set</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This results in the calculation being mapped over the thickness range of
+0-5 mm (libRL <em>includes</em> the upper bound here) at every step of 1 mm.</p>
+<p>Currently, reflection loss is being calculated using the frequency
+values in the permittivity and permeability data set. libRL has a
+protocol however which allows the user to <em>interploate</em> the data such
+that frequency can be controlled similarly to the thicknesses.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">libRL</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">libRL</span><span class="o">.</span><span class="n">reflection_loss</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;C:\Users\1mike\Desktop\paraffin_data.csv&#39;</span><span class="p">,</span>
+    <span class="n">f_set</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">d_set</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, the resulting calculation returns a data set calculated over the
+ranges of 1-18 GHz, 0-5 mm at 1 unit intervals.</p>
+<p>To note, libRL allows for <em>interpolation</em> and not <em>extrapolation</em>.
+Attempts to use the interpolating functions outside of your experimental
+bounds throws an error.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;C:\Users</span><span class="se">\1</span><span class="s2">mike\PycharmProjects\libRL\libRL</span><span class="se">\r</span><span class="s2">efactoring.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">252</span><span class="p">,</span> <span class="ow">in</span> <span class="n">f_set_ref</span>
+    <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+<span class="ne">SyntaxError</span><span class="p">:</span> <span class="n">f_set</span> <span class="n">must</span> <span class="n">be</span> <span class="n">of</span> <span class="n">order</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span> <span class="n">where</span> <span class="s1">&#39;start&#39;</span> <span class="ow">and</span> <span class="s1">&#39;stop&#39;</span> <span class="n">are</span> <span class="n">within</span> <span class="n">the</span> <span class="n">bounds</span> <span class="n">of</span> <span class="n">the</span> <span class="n">data</span>
+</pre></div>
+</div>
+<p>There is a set of keyword arguments which libRL.reflection_loss accepts.
+These keyword areguments are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">interp</span><span class="o">=</span>
+<span class="n">multiprocessing</span><span class="o">=</span>
+<span class="n">multicolumn</span><span class="o">=</span>
+<span class="n">as_dataframe</span><span class="o">=</span>
+<span class="n">quick_graph</span><span class="o">=</span>
+</pre></div>
+</div>
+<p>Descriptions of these keyword arguments can be found in the docstrings.</p>
+<p>The other functions available in the libRL library use the same
+refactoring protocols for data, f_set, d_set, and m_set. They each have
+their own keyword arguments and parameter arguments, so researchers are
+encouraged to look at the documentation provided on this site for each
+of those functions.</p>
+<p>Some of the subdirectory functions available which are of convenient use
+are the <code class="code docutils literal notranslate"><span class="pre">file_refactor()</span></code> and <code class="code docutils literal notranslate"><span class="pre">interpolate()</span></code> functions,
+which can be found in documentation under libRL/refactoring.py. In
+<code class="code docutils literal notranslate"><span class="pre">file_refactor()</span></code> is the protocol libRL uses to parse
+out the file string into actionable data, and <code class="code docutils literal notranslate"><span class="pre">interpolate()</span></code>
+is the protocol libRL uses to generate the interpolation functions over
+the actionable data set.</p>
+</div>
+<div class="section" id="linux">
+<h2>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<p><em>this page is still currently under construction. Check back shortly!</em></p>
+</div>
+<div class="section" id="macos">
+<h2>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h2>
+<p><em>this page is still currently under construction. Check back shortly!</em></p>
+</div>
+</div>
+<div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<p>Michael Green is a PhD candidate under the supervision of Dr. Xiaobo
+Chen at the University of Missouri–Kansas City, Department of Chemistry.
+He received his Bachelors of Science in chemistry with a minor in
+mathematics from the University of Idaho in 2016, and his Masters of
+Science in chemistry from the University of Missouri–Kansas City in
+2019. His research interests include the development, characterization,
+modeling, and application of nanomaterials in light/matter interactions,
+focusing on photolysis, photocatalysis, and microwave absorption, as
+well as short-range matter/matter interactions with a focus in physical
+adsorption.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Contact</span><span class="p">:</span>
+    <span class="n">magwwc</span><span class="nd">@mail</span><span class="o">.</span><span class="n">umkc</span><span class="o">.</span><span class="n">edu</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Michael Green
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
