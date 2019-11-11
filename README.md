@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/1mikegrn/libRL.svg?branch=master)](https://travis-ci.com/1mikegrn/libRL)
+
 # libRL
 A Python library for characterizing Microwave Absorption.
 
