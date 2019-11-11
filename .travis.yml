@@ -6,8 +6,6 @@ python:
 
 cache: pip
 
-before_install: cd test
 install: "pip install -r requirements.txt"
 
-# before_script: cd test
-script: python libRL_test.py
+script: python example.py
