@@ -22,6 +22,7 @@ it's not too high on my list of priorities.
 
 """
 
+from os import path
 from matplotlib import colors
 import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axis3d as axis3d
@@ -113,7 +114,7 @@ def quick_graph_reflection_loss(results, location):
 
     cbar1.ax.invert_yaxis()
 
-    fig.savefig(location + r'\quick_graph RL.png')
+    fig.savefig(path.join(location, 'quick_graph RL.png'))
 
 
 def quick_graph_band_analysis(bands, d_vals, m_vals, location):
@@ -157,6 +158,4 @@ def quick_graph_band_analysis(bands, d_vals, m_vals, location):
 
     plt.tight_layout()
 
-    print(location)
-
-    fig.savefig(location + r'\quick_graph BARF.png')
+    fig.savefig(path.join(location, 'quick_graph RL.png'))
