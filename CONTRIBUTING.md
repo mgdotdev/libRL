@@ -7,8 +7,8 @@ though some exceptions are made when it comes to known error handling.
 
 Docstrings should follow
 [reStructuredText style](http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html)
-so that once I have my docstring formatter built I can import the files
-in similar fashion to the ones already in the library.
+in a similar structure to the docstrings currently present in libRL so
+to maintain homogeneity in the sphinx website. 
 
 ## PR Submission
 Features should be developed in a branch with a descriptive name and the

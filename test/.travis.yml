@@ -8,4 +8,4 @@ cache: pip
 
 install: "pip install -r requirements.txt"
 
-script: python test\libRL_test.py
+script: python libRL_test.py
