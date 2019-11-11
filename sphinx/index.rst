@@ -1,11 +1,11 @@
 
-LibRL: A python library for the characterization of Microwave Absorption
+libRL: A python library for the characterization of Microwave Absorption
 ========================================================================
 
 .. include:: main_page.rst
 
 
-LibRL
+libRL
 =====
 
 .. automodule:: libRL.__init__
