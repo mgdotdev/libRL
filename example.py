@@ -9,7 +9,7 @@ Overview:
 https://1mikegrn.github.io/libRL/
 
 examples:
-https://1mikegrn.github.io/examples/
+https://1mikegrn.github.io/libRL/#examples
 '''
 
 import libRL
@@ -17,9 +17,9 @@ import libRL
 def main():
     """
 
-    this example script is designed to run a demonstration of each of the
-    available functions in libRL. Data is imported directly from the GitHub
-    repository for convenience. Results are simply printed.
+this example script is designed to run a demonstration of each of the
+available functions in libRL. Data is imported directly from the GitHub
+repository for convenience. Results are simply printed.
 
     :return: nothing
 
