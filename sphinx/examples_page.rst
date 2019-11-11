@@ -50,7 +50,7 @@ that the full file path for our data file is the following:
 
 ::
 
-    C:\Users\1mike\Desktop\paraffin_data.csv </code>
+    C:\Users\1mike\Desktop\paraffin_data.csv
 
 libRL is designed to parse this data file directly from its
 instrumentation file. To use libRL in RAM analysis, we can simply
@@ -158,7 +158,8 @@ encouraged to look at the documentation provided on this site for each
 of those functions.
 
 Some of the subdirectory functions available which are of convenient use
-are the :code:`file_refactor()` and :code:`interpolate()` functions,
+are the :func:`libRL.refactoring.file_refactor` and
+:func:`libRL.refactoring.interpolate` functions,
 which can be found in documentation under libRL/refactoring.py. In
 :code:`file_refactor()` is the protocol libRL uses to parse
 out the file string into actionable data, and :code:`interpolate()`
