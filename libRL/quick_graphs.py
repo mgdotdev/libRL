@@ -151,18 +151,39 @@ def quick_graph_band_analysis(bands, d_vals, m_vals, location):
 
     quick and dirty default graphing protocols for the band analysis.
 
-    :param bands:       band data passed through from the band_results
-                        derived from the cython computation.
+                    ---------------------------------------
+::
 
-    :param d_vals:      d_set from libRL.band_analysis()
+    :param bands:       (data)
 
-    :param m_vals:      m_set from libRL.band_analysis()
+band data passed through from the band_results derived from the cython
+computation.
 
-    :param location:    string directory location of where to save the
-                        resulting graphical image.
+                    ---------------------------------------
+::
 
+    :param d_vals:      d_set
 
-    :return:            None.
+d_set from libRL.band_analysis()
+
+                    ---------------------------------------
+::
+
+    :param m_vals:      m_set
+
+m_set from libRL.band_analysis()
+
+                    ---------------------------------------
+::
+
+    :param location:    (file directory)
+
+string directory location of where to save the resulting graphical image.
+
+                    ---------------------------------------
+::
+
+    :return:            (None)
     """
 
 
