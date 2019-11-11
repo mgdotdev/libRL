@@ -8,16 +8,16 @@ LibRL: A python library for the characterization of Microwave Absorption
 LibRL
 =====
 
-.. automodule:: Sandbox.__init__
+.. automodule:: libRL.__init__
    :members: reflection_loss, characterization, band_analysis
 
-.. automodule:: Sandbox.cpfuncs
+.. automodule:: libRL.cpfuncs
    :members:
 
-.. automodule:: Sandbox.refactoring
+.. automodule:: libRL.refactoring
    :members: file_refactor, interpolate, f_set_ref, d_set_ref, m_set_ref, qgref
 
-.. automodule:: Sandbox.quick_graphs
+.. automodule:: libRL.quick_graphs
    :members:
 
 .. include:: /examples_page.rst

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LibRL: A python library for the characterization of Microwave Absorption &mdash; sandbox 1 documentation</title>
+  <title>LibRL: A python library for the characterization of Microwave Absorption &mdash; libRL 1.0.4 documentation</title>
   
 
   
@@ -50,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> sandbox
+            <a href="#" class="icon icon-home"> libRL
           
 
           
@@ -85,7 +85,7 @@
 <li><a class="reference internal" href="#">LibRL: A python library for the characterization of Microwave Absorption</a></li>
 <li><a class="reference internal" href="#getting-started">Getting Started</a></li>
 <li><a class="reference internal" href="#library-structure">Library Structure</a></li>
-<li><a class="reference internal" href="#module-Sandbox.__init__">LibRL</a><ul>
+<li><a class="reference internal" href="#module-libRL.__init__">LibRL</a><ul>
 <li><a class="reference internal" href="#init-py"><code class="code docutils literal notranslate"><span class="pre">__init__.py</span></code></a></li>
 <li><a class="reference internal" href="#cpfuncs-pyx"><code class="code docutils literal notranslate"><span class="pre">cpfuncs.pyx</span></code></a></li>
 <li><a class="reference internal" href="#refactoring-py"><code class="code docutils literal notranslate"><span class="pre">refactoring.py</span></code></a></li>
@@ -114,7 +114,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">sandbox</a>
+          <a href="#">libRL</a>
         
       </nav>
 
@@ -191,21 +191,21 @@ docstring includes a list of the available functions for use.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="#Sandbox.__init__.reflection_loss" title="Sandbox.__init__.reflection_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.reflection_loss()</span></code></a> computes the resultants of Reflection Loss
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.reflection_loss()</span></code> computes the resultants of Reflection Loss
 over (f, d) gridspace.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">libRL</span><span class="o">.</span><span class="n">characterization</span><span class="p">(</span>
 <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="#Sandbox.__init__.characterization" title="Sandbox.__init__.characterization"><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.characterization()</span></code></a> yields the calculated results of common
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.characterization()</span></code> yields the calculated results of common
 formulations within the Radar Absorbing Materials field.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">libRL</span><span class="o">.</span><span class="n">band_analysis</span><span class="p">(</span>
 <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">m_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="#Sandbox.__init__.band_analysis" title="Sandbox.__init__.band_analysis"><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.band_analysis()</span></code></a> uses given set of permittivity and permeability data
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">Sandbox.__init__.band_analysis()</span></code> uses given set of permittivity and permeability data
 in conjuncture with a requested band set to determine the set of frequencies
 whose reflection losses are below the threshold.</p>
 </div>
@@ -221,8 +221,8 @@ whose reflection losses are below the threshold.</p>
 <p>the main libRL functions are all accessible via the modules
 <code class="code docutils literal notranslate"><span class="pre">__init__.py</span></code> method, which are called directly from libRL.</p>
 </div>
-<div class="section" id="module-Sandbox.__init__">
-<span id="librl"></span><h1>LibRL<a class="headerlink" href="#module-Sandbox.__init__" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-libRL.__init__">
+<span id="librl"></span><h1>LibRL<a class="headerlink" href="#module-libRL.__init__" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="init-py">
 <h2><code class="code docutils literal notranslate"><span class="pre">__init__.py</span></code><a class="headerlink" href="#init-py" title="Permalink to this headline">¶</a></h2>
 <p>libRL is a library of functions used for characterizing Microwave Absorption.</p>
@@ -258,8 +258,8 @@ see libRL.band_analysis? for complete documentation.</p>
 by Michael Green and Xiaobo Chen.</p>
 <p>full details can be found at <a class="reference external" href="https://1mikegrn.github.io/libRL/">https://1mikegrn.github.io/libRL/</a></p>
 <dl class="function">
-<dt id="Sandbox.__init__.reflection_loss">
-<code class="sig-prename descclassname">Sandbox.__init__.</code><code class="sig-name descname">reflection_loss</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">f_set=None</em>, <em class="sig-param">d_set=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.__init__.reflection_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.__init__.reflection_loss">
+<code class="sig-prename descclassname">libRL.__init__.</code><code class="sig-name descname">reflection_loss</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">f_set=None</em>, <em class="sig-param">d_set=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.__init__.reflection_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>The reflection_loss (RL) function calculates the RL based on the mapping
 passed through as the grid variable, done either through multiprocessing
 or through the python built-in map() function. The RL function always
@@ -380,8 +380,8 @@ headers/indexes of value f/d respectively.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="Sandbox.__init__.characterization">
-<code class="sig-prename descclassname">Sandbox.__init__.</code><code class="sig-name descname">characterization</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">f_set=None</em>, <em class="sig-param">params='all'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.__init__.characterization" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.__init__.characterization">
+<code class="sig-prename descclassname">libRL.__init__.</code><code class="sig-name descname">characterization</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">f_set=None</em>, <em class="sig-param">params='all'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.__init__.characterization" title="Permalink to this definition">¶</a></dt>
 <dd><p>The characterization function takes a set or list of keywords in the ‘params’
 variable and calculates the character values associated with the parameter. See
 10.1016/j.jmat.2019.07.003 for further details and the function comments below
@@ -474,8 +474,8 @@ parameters as column headers, and the frequency values as index headers.</p></li
 </dd></dl>
 
 <dl class="function">
-<dt id="Sandbox.__init__.band_analysis">
-<code class="sig-prename descclassname">Sandbox.__init__.</code><code class="sig-name descname">band_analysis</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">f_set=None</em>, <em class="sig-param">d_set=None</em>, <em class="sig-param">m_set=None</em>, <em class="sig-param">thrs=-10</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.__init__.band_analysis" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.__init__.band_analysis">
+<code class="sig-prename descclassname">libRL.__init__.</code><code class="sig-name descname">band_analysis</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">f_set=None</em>, <em class="sig-param">d_set=None</em>, <em class="sig-param">m_set=None</em>, <em class="sig-param">thrs=-10</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.__init__.band_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Band Analysis for ReFlection loss (BARF) function uses Permittivity
 and Permeability data of materials so to determine the effective bandwidth
 of Reflection Loss. The effective bandwidth is the span of frequencies
@@ -599,13 +599,13 @@ band values as column headers and the thickness values as row headers.</p></li>
 </dd></dl>
 
 </div>
-<span class="target" id="module-Sandbox.cpfuncs"></span><div class="section" id="cpfuncs-pyx">
+<span class="target" id="module-libRL.cpfuncs"></span><div class="section" id="cpfuncs-pyx">
 <h2><code class="code docutils literal notranslate"><span class="pre">cpfuncs.pyx</span></code><a class="headerlink" href="#cpfuncs-pyx" title="Permalink to this headline">¶</a></h2>
 <p>Cython protocols for computing the effective bandwidth with ulgy
 for loops</p>
 <dl class="function">
-<dt id="Sandbox.cpfuncs.band_analysis_cython">
-<code class="sig-prename descclassname">Sandbox.cpfuncs.</code><code class="sig-name descname">band_analysis_cython</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.cpfuncs.band_analysis_cython" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.cpfuncs.band_analysis_cython">
+<code class="sig-prename descclassname">libRL.cpfuncs.</code><code class="sig-name descname">band_analysis_cython</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#libRL.cpfuncs.band_analysis_cython" title="Permalink to this definition">¶</a></dt>
 <dd><p>The band_analysis_cython function determines the band analysis of materials
 by tallying the frequency points which satisfy the threshold, and summing
 the span of their frequencies.</p>
@@ -656,7 +656,7 @@ reflection loss values below the threshold.</p>
 </dd></dl>
 
 </div>
-<span class="target" id="module-Sandbox.refactoring"></span><div class="section" id="refactoring-py">
+<span class="target" id="module-libRL.refactoring"></span><div class="section" id="refactoring-py">
 <h2><code class="code docutils literal notranslate"><span class="pre">refactoring.py</span></code><a class="headerlink" href="#refactoring-py" title="Permalink to this headline">¶</a></h2>
 <p>refactoring.py provides the data refactoring protocols for the
 libRL module.</p>
@@ -689,8 +689,8 @@ see refactoring.d_set_ref? for complete documentation</p>
 <p>resultant is the Nx1 array of band values determined from user inputs.
 see refactoring.m_set_ref? for complete documentation</p>
 <dl class="function">
-<dt id="Sandbox.refactoring.file_refactor">
-<code class="sig-prename descclassname">Sandbox.refactoring.</code><code class="sig-name descname">file_refactor</code><span class="sig-paren">(</span><em class="sig-param">dataFile=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.refactoring.file_refactor" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.refactoring.file_refactor">
+<code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">file_refactor</code><span class="sig-paren">(</span><em class="sig-param">dataFile=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.file_refactor" title="Permalink to this definition">¶</a></dt>
 <dd><p>refactors the given user data into actionable permittivity and permeability
 data.</p>
 <blockquote>
@@ -721,8 +721,8 @@ mu = (1 - j*0). ‘eps set’ sets epsilon = (avg(e1)-j*0).</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="Sandbox.refactoring.interpolate">
-<code class="sig-prename descclassname">Sandbox.refactoring.</code><code class="sig-name descname">interpolate</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.refactoring.interpolate" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.refactoring.interpolate">
+<code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">interpolate</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.interpolate" title="Permalink to this definition">¶</a></dt>
 <dd><p>uses SciPy’s interpolation module to generate interpolating functions over the
 input data.</p>
 <blockquote>
@@ -749,8 +749,8 @@ Permeability, and Complex Permeability respectively</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="Sandbox.refactoring.f_set_ref">
-<code class="sig-prename descclassname">Sandbox.refactoring.</code><code class="sig-name descname">f_set_ref</code><span class="sig-paren">(</span><em class="sig-param">f_set</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.refactoring.f_set_ref" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.refactoring.f_set_ref">
+<code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">f_set_ref</code><span class="sig-paren">(</span><em class="sig-param">f_set</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.f_set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>refactors the input f_set to the corresponding Nx1 numpy array.</p>
 <blockquote>
 <div></div></blockquote>
@@ -782,8 +782,8 @@ data set with a step size of the given tuple value.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="Sandbox.refactoring.d_set_ref">
-<code class="sig-prename descclassname">Sandbox.refactoring.</code><code class="sig-name descname">d_set_ref</code><span class="sig-paren">(</span><em class="sig-param">d_set</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.refactoring.d_set_ref" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.refactoring.d_set_ref">
+<code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">d_set_ref</code><span class="sig-paren">(</span><em class="sig-param">d_set</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.d_set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>refactors the input d_set to the corresponding Nx1 numpy array.</p>
 <blockquote>
 <div></div></blockquote>
@@ -805,8 +805,8 @@ of the values present in the list.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="Sandbox.refactoring.m_set_ref">
-<code class="sig-prename descclassname">Sandbox.refactoring.</code><code class="sig-name descname">m_set_ref</code><span class="sig-paren">(</span><em class="sig-param">m_set</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.refactoring.m_set_ref" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.refactoring.m_set_ref">
+<code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">m_set_ref</code><span class="sig-paren">(</span><em class="sig-param">m_set</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.m_set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>refactors the input m_set to the corresponding Nx1 numpy array.</p>
 <blockquote>
 <div></div></blockquote>
@@ -827,7 +827,7 @@ be calculated.</p>
 </dd></dl>
 
 </div>
-<span class="target" id="module-Sandbox.quick_graphs"></span><div class="section" id="quick-graphs-py">
+<span class="target" id="module-libRL.quick_graphs"></span><div class="section" id="quick-graphs-py">
 <h2><code class="code docutils literal notranslate"><span class="pre">quick_graphs.py</span></code><a class="headerlink" href="#quick-graphs-py" title="Permalink to this headline">¶</a></h2>
 <p>quick and dirty default graphing protocols for reflection_loss and
 band_analysis functions.</p>
@@ -846,8 +846,29 @@ of customization inherent to the function. I may add a feature at a later date
 to generate sets of graphs in a directory for each parameter, but to be frank,
 it’s not too high on my list of priorities.</p>
 <dl class="function">
-<dt id="Sandbox.quick_graphs.quick_graph_band_analysis">
-<code class="sig-prename descclassname">Sandbox.quick_graphs.</code><code class="sig-name descname">quick_graph_band_analysis</code><span class="sig-paren">(</span><em class="sig-param">bands</em>, <em class="sig-param">d_vals</em>, <em class="sig-param">m_vals</em>, <em class="sig-param">location</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.quick_graphs.quick_graph_band_analysis" title="Permalink to this definition">¶</a></dt>
+<dt id="libRL.quick_graphs.quick_graph_band_analysis">
+<code class="sig-prename descclassname">libRL.quick_graphs.</code><code class="sig-name descname">quick_graph_band_analysis</code><span class="sig-paren">(</span><em class="sig-param">bands</em>, <em class="sig-param">d_vals</em>, <em class="sig-param">m_vals</em>, <em class="sig-param">location</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.quick_graphs.quick_graph_band_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>quick and dirty default graphing protocols for the band analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bands</strong> – band data passed through from the band_results
+derived from the cython computation.</p></li>
+<li><p><strong>d_vals</strong> – d_set from libRL.band_analysis()</p></li>
+<li><p><strong>m_vals</strong> – m_set from libRL.band_analysis()</p></li>
+<li><p><strong>location</strong> – string directory location of where to save the
+resulting graphical image.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="libRL.quick_graphs.quick_graph_reflection_loss">
+<code class="sig-prename descclassname">libRL.quick_graphs.</code><code class="sig-name descname">quick_graph_reflection_loss</code><span class="sig-paren">(</span><em class="sig-param">results</em>, <em class="sig-param">location</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.quick_graphs.quick_graph_reflection_loss" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>quick and dirty default graphing protocols for the band analysis.</p>
 <blockquote>
@@ -870,31 +891,6 @@ computation.</p>
 </pre></div>
 </div>
 <p>m_set from libRL.band_analysis()</p>
-<blockquote>
-<div></div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">location</span><span class="p">:</span>    <span class="p">(</span><span class="n">file</span> <span class="n">directory</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>string directory location of where to save the resulting graphical image.</p>
-<blockquote>
-<div></div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>            <span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="Sandbox.quick_graphs.quick_graph_reflection_loss">
-<code class="sig-prename descclassname">Sandbox.quick_graphs.</code><code class="sig-name descname">quick_graph_reflection_loss</code><span class="sig-paren">(</span><em class="sig-param">results</em>, <em class="sig-param">location</em><span class="sig-paren">)</span><a class="headerlink" href="#Sandbox.quick_graphs.quick_graph_reflection_loss" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>quick and dirty default graphing protocols for reflection loss.</p>
-<blockquote>
-<div></div></blockquote>
-</div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">results</span><span class="p">:</span>     <span class="p">[</span><span class="n">RL</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">d</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>libRL.reflection_loss results of shape Nx3</p>
 <blockquote>
 <div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">location</span><span class="p">:</span>    <span class="p">(</span><span class="n">file</span> <span class="n">directory</span><span class="p">)</span>
@@ -1096,7 +1092,7 @@ adsorption.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, mg
+        &copy; Copyright 2019, Michael Green
 
     </p>
   </div>
