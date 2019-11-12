@@ -60,10 +60,6 @@ scopes necessary for the RAM development community - users are
 encouraged to consult the docstrings therein for a full description of
 the customizations available.
 
-# Conflict of interest
-
-Authors declare that there are no conflicts of interest.
-
 # Acknowledgements
 
 M. G. and X. C. appreciate the support from the U.S. National Science
@@ -73,5 +69,9 @@ Missouri Research Board. They also wish to extend many thanks to
 [Kevin Appelbaum](https://github.com/kjappelbaum) and
 [Mathieu Doucet](https://github.com/mdoucet) for their participation in
 peer review.
+
+# Conflict of interest
+
+Authors declare that there are no conflicts of interest.
 
 # References
