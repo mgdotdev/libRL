@@ -52,7 +52,7 @@ computation performance.
 
 
 This library can be installed via pip into the user’s python environment
-(see the library [Docs](https://1mikegrn.github.io/libRL/) for details)
+(see the library [docs](https://1mikegrn.github.io/libRL/) for details)
 and imported/used similarly to any other module available in the
 standard library. libRL includes therein an exhaustive set of methods
 for customizing the calculation parameters so to satisfy the broadest of
