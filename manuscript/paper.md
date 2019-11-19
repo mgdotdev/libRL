@@ -51,14 +51,14 @@ pythons built-in functions and the cython library for optimized
 computation performance.
 
 
-This library can be installed via pip into the user’s python environment
-(see the library [docs](https://1mikegrn.github.io/libRL/) for details)
-and imported/used similarly to any other module available in the
-standard library. libRL includes therein an exhaustive set of methods
-for customizing the calculation parameters so to satisfy the broadest of
-scopes necessary for the RAM development community - users are
-encouraged to consult the docstrings therein for a full description of
-the customizations available.
+This library can be installed via `pip` and `git` into the user’s python
+environment (see the library [docs](https://1mikegrn.github.io/libRL/)
+for details) and imported/used similarly to any other module available
+in the standard library. libRL includes therein an exhaustive set of
+methods for customizing the calculation parameters so to satisfy the
+broadest of scopes necessary for the RAM development community - users
+are encouraged to consult the docstrings therein for a full description
+of the customizations available.
 
 # Acknowledgements
 
