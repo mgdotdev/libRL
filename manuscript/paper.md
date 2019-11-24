@@ -66,7 +66,7 @@ M. G. and X. C. appreciate the support from the U.S. National Science
 Foundation (DMR-1609061), the School of Biological and Chemical Sciences
 at the University of Missouri−Kansas City, and the University of
 Missouri Research Board. They also wish to extend many thanks to
-[Kevin Appelbaum](https://github.com/kjappelbaum) and
+[Kevin Jablonka](https://github.com/kjappelbaum) and
 [Mathieu Doucet](https://github.com/mdoucet) for their participation in
 peer review.
 
