@@ -16,7 +16,12 @@ Michael Green
 Getting Started
 ===============
 
-The libRL library can be installed via pip and git
+If you're new to Python, the easiest way to get started is through the
+`Anaconda <https://www.anaconda.com/distribution/>`_ distribution.
+Installation instructions for the three major operating systems can be found
+in the JCE-Supplemental for `pyGC <https://github.com/1mikegrn/pyGC>`_
+
+From your command prompt, the libRL library can be installed via pip and git
 
 :code:`pip install git+https://github.com/1mikegrn/libRL`
 
