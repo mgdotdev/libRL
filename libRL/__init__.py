@@ -163,7 +163,7 @@ computer you ***MUST MUST MUST MUST*** provide main module protection via the
     :param kwargs:  quick_graph=
                     (False); True, str()
 
-Saves a *.png graphical image to a specified location. If set to True, the
+Saves a `.png` graphical image to a specified location. If set to True, the
 quick_graph function saves the resulting graphical image to the location of the
 input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
@@ -618,7 +618,7 @@ of cubic spline.
     :param kwargs:   quick_graph=
                     (False); True, str()
 
-saves a *.png graphical image to a specified location. If set to True, the
+saves a `.png` graphical image to a specified location. If set to True, the
 quick_graph function saves the resulting graphical image to the location of the
 input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
