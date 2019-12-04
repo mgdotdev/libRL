@@ -5,4 +5,3 @@ sphinx/_build
 sphinx/_static
 sphinx/_templates
 __pycache__
-test
