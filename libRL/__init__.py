@@ -96,7 +96,6 @@ is simply for simplicity.
 
 ref: https://doi.org/10.1016/j.jmat.2019.07.003
 
-                    ---------------------------------------
 ::
 
     :param data:   (data)
@@ -107,7 +106,6 @@ dimensions. Text above and below data array will be automatically avoided by
 the program (most network analysis instruments report data which is compatible
 with the required format)
 
-                    ---------------------------------------
 ::
 
     :param f_set:   (start, end, [step])
@@ -119,7 +117,6 @@ tuple for frequency values in GHz
   bound by the given start and end frequencies
 - if f_set is None, frequency is bound to input data
 
-                    ---------------------------------------
 ::
 
     :param d_set:   (start, end, step)
@@ -129,7 +126,6 @@ tuple for thickness values in mm.
 - if d_set is of type list, then the thickness values calculated will only be
   of the values present in the list.
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  interp=
@@ -138,7 +134,6 @@ tuple for thickness values in mm.
 Method for interpolation. Set to linear if user wants to linear interp instead
 of cubic spline. Default action uses cubic spline.
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  override=
@@ -148,7 +143,6 @@ provides response simulation functionality within libRL, common for discerning
 which EM parameters are casual for reflection loss. 'chi zero' sets
 mu = (1 - j*0). 'eps set' sets epsilon = (avg(e1)-j*0).
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  multiprocessing=
@@ -164,7 +158,6 @@ NOTE: if you use the multiprocessing functionality herein while on a Windows
 computer you ***MUST MUST MUST MUST*** provide main module protection via the
 :code:`if __name__ == "__main__":` conditional so to negate infinite spawns.
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  quick_graph=
@@ -177,19 +170,17 @@ location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
 function will save the graph at the specified location.
 
-                    ---------------------------------------
 ::
 
-    :param kwargs:  as_dataframe=:
+    :param kwargs:  as_dataframe=
                     (False); True
 
 returns data in a pandas dataframe. This is particularly useful if multicolumn
 is also set to true.
 
-                     ---------------------------------------
 ::
 
-    :param kwargs:  multicolumn=:
+    :param kwargs:  multicolumn=
                     (False); True
 
 outputs data in multicolumn form with  a numpy array of [RL, f, d] iterated
@@ -198,7 +189,6 @@ over each of the three columns.
 - if as_dataframe is used, then return value will be a pandas dataframe with
   columns of name d and indexes of name f.
 
-                    ---------------------------------------
 ::
 
     :return:        [RL, f, d]
@@ -339,7 +329,6 @@ for a full list of :code:`param` arguments.
 
 ref: https://doi.org/10.1016/j.jmat.2019.07.003
 
-                    ---------------------------------------
 ::
 
     :param data:   (data)
@@ -351,7 +340,6 @@ above and below data array will be automatically
 avoided by the program (most network analysis instruments
 report data which is compatible with the required format)
 
-                    ---------------------------------------
 ::
 
     :param f_set:   (start, end, [step])
@@ -366,10 +354,7 @@ end frequencies
 - if f_set is of type list, the frequencies calculate
 will be only the frequencies represented in the list.
 
-                    ---------------------------------------
-::
-
-    :param params:  list()
+::  :param params:  list()
 
 A list i.e. [] of text arguments for the parameters the user wants calculated.
 
@@ -398,7 +383,6 @@ The available arguments are:
 
 - if 'all' (default) is passed, calculate everything.
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  override=
@@ -408,7 +392,6 @@ provides response simulation functionality within libRL, common for discerning
 which EM parameters are casual for reflection loss. 'chi zero' sets mu =
 (1 - j*0). 'eps set' sets epsilon = (avg(e1)-j*0).
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  as_dataframe=
@@ -417,7 +400,6 @@ which EM parameters are casual for reflection loss. 'chi zero' sets mu =
 returns the requested parameters as a pandas dataframe with column names as the
 parameter keywords.
 
-                    ---------------------------------------
 ::
 
     :return:        (results)
@@ -563,7 +545,6 @@ ref: https://doi.org/10.1016/j.jmat.2018.12.005
 
 ref: https://doi.org/10.1016/j.jmat.2019.07.003
 
-                    ---------------------------------------
 ::
 
     :param data:    (data)
@@ -574,7 +555,6 @@ dimensions. Text above and below data array will be automatically avoided by
 the program (most network analysis instruments report data which is compatible
 with the required format)
 
-                    ---------------------------------------
 ::
 
     :param f_set:   (start, end, [step])
@@ -591,7 +571,6 @@ tuple for frequency values in GHz
 
 - if f_set is None (default), frequency is bound to input data.
 
-                    ---------------------------------------
 ::
 
     :param d_set:   (start, end, [step])
@@ -601,7 +580,6 @@ tuple for thickness values in mm.
 - if d_set is of type list, then the thickness values calculated will only be
   of the values present in the list. (is weird, but whatever.)
 
-                    ---------------------------------------
 ::
 
     :param m_set:   (start, end, [step])
@@ -611,7 +589,6 @@ tuple of ints which define the bands to be calculated.
 - if m_set is given as a list [], the explicitly listed band integers will be
   calculated.
 
-                    ---------------------------------------
 ::
 
     :param thrs:    -10
@@ -619,7 +596,6 @@ tuple of ints which define the bands to be calculated.
 Threshold for evaluation. If RL values are below this threshold value, the
 point is counted for the band. Default value is -10.
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  override=
@@ -629,7 +605,6 @@ provides response simulation functionality within libRL, common for discerning
 which EM parameters are casual for reflection loss. 'chi zero' sets mu =
 (1 - j*0). 'eps set' sets epsilon = (avg(e1)-j*0).
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  interp=
@@ -638,7 +613,6 @@ which EM parameters are casual for reflection loss. 'chi zero' sets mu =
 Method for interpolation. Set to linear if user wants to linear interp instead
 of cubic spline.
 
-                    ---------------------------------------
 ::
 
     :param kwargs:   quick_graph=
@@ -651,7 +625,6 @@ location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
 function will save the graph at the specified location.
 
-                    ---------------------------------------
 ::
 
     :param kwargs:   as_dataframe=
@@ -661,7 +634,6 @@ Formats results into a pandas dataframe with the index labels as the thickness
 values, the column labels as the band numbers, and the dataframe as the
 resulting effective bandwidths.
 
-                    ---------------------------------------
 ::
 
     :return:        (d_set, band_results, m_set)

@@ -1,6 +1,6 @@
 """
 :code:`cpfuncs.pyx`
-==================
+===================
 
 Cython protocols for computing the effective bandwidth with ulgy
 for loops
@@ -34,7 +34,6 @@ The band_analysis_cython function determines the band analysis of materials
 by tallying the frequency points which satisfy the threshold, and summing
 the span of their frequencies.
 
-                    ---------------------------------------
 ::
 
     :param PnPgrid:     (data)
@@ -42,7 +41,6 @@ the span of their frequencies.
 PnPgrid is a pre-processed permittivity & permeability array passed from
 libRL.CARL of shape Nx5 of [freq, e1, e2, mu1, mu2].
 
-                    ---------------------------------------
 ::
 
     :param mGrid:       (array)
@@ -51,7 +49,6 @@ mGrid is a numpy array of d_values calculated from a modified
 quarter-wavelength function determined from the frequency values of the
 PnPgrid.
 
-                    ---------------------------------------
 ::
 
     :param m_set:       m_set
@@ -59,7 +56,6 @@ PnPgrid.
 m_set is a numpy array of bands passed through from
 libRL.refactoring.m_set_ref()
 
-                    ---------------------------------------
 ::
 
     :param d_set:       d_set
@@ -67,7 +63,6 @@ libRL.refactoring.m_set_ref()
 d_set is a numpy array of thickness values passed through from
 libRL.refactoring.d_set_ref()
 
-                    ---------------------------------------
 ::
 
     :param thrs:        thrs
@@ -76,7 +71,6 @@ thrs is the threshold value to test Reflection loss against for each (f, d)
 point in the response field, passed through directly from
 libRL.band_analysis()
 
-                    ---------------------------------------
 ::
 
     :return:            res

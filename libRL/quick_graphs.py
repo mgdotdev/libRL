@@ -49,7 +49,6 @@ def quick_graph_reflection_loss(results, location):
 
     quick and dirty default graphing protocols for the band analysis.
 
-                    ---------------------------------------
 ::
 
     :param bands:       (data)
@@ -57,28 +56,24 @@ def quick_graph_reflection_loss(results, location):
 band data passed through from the band_results derived from the cython
 computation.
 
-                    ---------------------------------------
 ::
 
     :param d_vals:      d_set
 
 d_set from libRL.band_analysis()
 
-                    ---------------------------------------
 ::
 
     :param m_vals:      m_set
 
 m_set from libRL.band_analysis()
 
-                    ---------------------------------------
 ::
 
     :param location:    (file directory)
 
 string directory location of where to save the resulting graphical image.
 
-                    ---------------------------------------
 ::
 
     :return:            (None)
@@ -151,7 +146,6 @@ def quick_graph_band_analysis(bands, d_vals, m_vals, location):
 
     quick and dirty default graphing protocols for the band analysis.
 
-                    ---------------------------------------
 ::
 
     :param bands:       (data)
@@ -159,28 +153,24 @@ def quick_graph_band_analysis(bands, d_vals, m_vals, location):
 band data passed through from the band_results derived from the cython
 computation.
 
-                    ---------------------------------------
 ::
 
     :param d_vals:      d_set
 
 d_set from libRL.band_analysis()
 
-                    ---------------------------------------
 ::
 
     :param m_vals:      m_set
 
 m_set from libRL.band_analysis()
 
-                    ---------------------------------------
 ::
 
     :param location:    (file directory)
 
 string directory location of where to save the resulting graphical image.
 
-                    ---------------------------------------
 ::
 
     :return:            (None)

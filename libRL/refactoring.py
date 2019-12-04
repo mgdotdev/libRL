@@ -1,6 +1,6 @@
 """
 :code:`refactoring.py`
-=====================
+======================
 
 refactoring.py provides the data refactoring protocols for the
 libRL module.
@@ -67,7 +67,6 @@ def file_refactor(dataFile=None, **kwargs):
 refactors the given user data into actionable permittivity and permeability
 data.
 
-                    ---------------------------------------
 ::
 
     :param dataFile:(file_path)
@@ -78,7 +77,6 @@ dimensions. Text above and below data array will be automatically avoided by
 the program (most network analysis instruments report data which is compatible
 with the required format).
 
-                    ---------------------------------------
 ::
 
     :param kwargs:  override=
@@ -88,7 +86,6 @@ provides response simulation functionality within libRL, common for discerning
 which EM parameters are casual for reflection loss. 'chi zero' sets
 mu = (1 - j*0). 'eps set' sets epsilon = (avg(e1)-j*0).
 
-                    ---------------------------------------
 ::
 
     :return:        data
@@ -162,23 +159,20 @@ def interpolate(data, **kwargs):
 uses SciPy's interpolation module to generate interpolating functions over the
 input data.
 
-                    ---------------------------------------
 ::
 
     :param data:   (data)
 
 Permittivity data of Nx5 form where N rows are [frequency, e1, e2, mu1, mu2]
 
-                    ---------------------------------------
 ::
 
-    :param kwargs:  :interp=:
+    :param kwargs:  interp=
                     ('cubic'); 'linear'
 
 Method for interpolation. Set to linear if user wants to linear interp instead
 of cubic spline.
 
-                    ---------------------------------------
 ::
 
     :return:        e1f, e2f, mu1f, mu2f
@@ -214,7 +208,6 @@ def f_set_ref(f_set, data):
 
 refactors the input f_set to the corresponding Nx1 numpy array.
 
-                    ---------------------------------------
 ::
 
     :param f_set:   (start, end, [step])
@@ -228,14 +221,12 @@ tuple for frequency values in GHz
   data set with a step size of the given tuple value.
 - if f_set is None (default), frequency is bound to input data.
 
-                    ---------------------------------------
 ::
 
     :param data:   (data)
 
 uses data as reference as frequencies are experimentally determined.
 
-                    ---------------------------------------
 ::
 
     :return:        f_set
@@ -299,7 +290,6 @@ def d_set_ref(d_set):
 
 refactors the input d_set to the corresponding Nx1 numpy array.
 
-                    ---------------------------------------
 ::
 
     :param d_set:   (start, end, [step])
@@ -309,7 +299,6 @@ tuple for thickness values in mm.
 - if d_set is of type list, then the thickness values calculated will only be
   of the values present in the list.
 
-                    ---------------------------------------
 ::
 
     :return:        d_set
@@ -344,7 +333,6 @@ def m_set_ref(m_set):
 
 refactors the input m_set to the corresponding Nx1 numpy array.
 
-                    ---------------------------------------
 ::
 
     :param m_set:   (start, end, [step])
@@ -354,7 +342,6 @@ tuple of ints which define the bands to be calculated.
 - if m_set is given as a list [], the explicitly listed band integers will
   be calculated.
 
-                    ---------------------------------------
 ::
 
     :return:        refactored m_set of Nx1 numpy array

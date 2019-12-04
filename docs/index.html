@@ -272,8 +272,6 @@ through the points associated with the input data, solving for the
 function at the associated frequencies yields the data point. This
 is simply for simplicity.</p>
 <p>ref: <a class="reference external" href="https://doi.org/10.1016/j.jmat.2019.07.003">https://doi.org/10.1016/j.jmat.2019.07.003</a></p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">data</span><span class="p">:</span>   <span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -282,31 +280,23 @@ equivalent to the directory and file name of either a .csv or .xlsx of Nx5
 dimensions. Text above and below data array will be automatically avoided by
 the program (most network analysis instruments report data which is compatible
 with the required format)</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">f_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>tuple for frequency values in GHz</p>
-<ul>
+<ul class="simple">
 <li><p>if given as list of len 3, results are interpolated</p></li>
 <li><p>if given as list of len 2, results are data-derived with the calculation
 bound by the given start and end frequencies</p></li>
-<li><p>if f_set is None, frequency is bound to input data</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+<li><p>if f_set is None, frequency is bound to input data</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">d_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>tuple for thickness values in mm.</p>
-<ul>
+<ul class="simple">
 <li><p>if d_set is of type list, then the thickness values calculated will only be
-of the values present in the list.</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+of the values present in the list.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">interp</span><span class="o">=</span>
                 <span class="p">(</span><span class="s1">&#39;cubic&#39;</span><span class="p">);</span> <span class="s1">&#39;linear&#39;</span>
@@ -314,8 +304,6 @@ of the values present in the list.</p>
 </div>
 <p>Method for interpolation. Set to linear if user wants to linear interp instead
 of cubic spline. Default action uses cubic spline.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">override</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">None</span><span class="p">);</span> <span class="s1">&#39;chi zero&#39;</span><span class="p">,</span> <span class="s1">&#39;eps set&#39;</span>
 </pre></div>
@@ -323,8 +311,6 @@ of cubic spline. Default action uses cubic spline.</p>
 <p>provides response simulation functionality within libRL, common for discerning
 which EM parameters are casual for reflection loss. ‘chi zero’ sets
 mu = (1 - j*0). ‘eps set’ sets epsilon = (avg(e1)-j*0).</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">multiprocessing</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">...</span>
 </pre></div>
@@ -337,8 +323,6 @@ particular kwarg.</p>
 <p>NOTE: if you use the multiprocessing functionality herein while on a Windows
 computer you <strong>*MUST MUST MUST MUST*</strong> provide main module protection via the
 <code class="code docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;:</span></code> conditional so to negate infinite spawns.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_graph</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
 </pre></div>
@@ -349,28 +333,21 @@ input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
 function will save the graph at the specified location.</p>
-<blockquote>
-<div></div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">as_dataframe</span><span class="o">=</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">as_dataframe</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span>
 </pre></div>
 </div>
 <p>returns data in a pandas dataframe. This is particularly useful if multicolumn
 is also set to true.</p>
-<blockquote>
-<div></div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">multicolumn</span><span class="o">=</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">multicolumn</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span>
 </pre></div>
 </div>
 <p>outputs data in multicolumn form with  a numpy array of [RL, f, d] iterated
 over each of the three columns.</p>
-<ul>
+<ul class="simple">
 <li><p>if as_dataframe is used, then return value will be a pandas dataframe with
-columns of name d and indexes of name f.</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+columns of name d and indexes of name f.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="p">[</span><span class="n">RL</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">d</span><span class="p">]</span>
 </pre></div>
@@ -391,8 +368,6 @@ variable and calculates the character values associated with the parameter. See
 10.1016/j.jmat.2019.07.003 for further details and the function comments below
 for a full list of <code class="code docutils literal notranslate"><span class="pre">param</span></code> arguments.</p>
 <p>ref: <a class="reference external" href="https://doi.org/10.1016/j.jmat.2019.07.003">https://doi.org/10.1016/j.jmat.2019.07.003</a></p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">data</span><span class="p">:</span>   <span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -402,8 +377,6 @@ name of either a .csv or .xlsx of Nx5 dimensions. Text
 above and below data array will be automatically
 avoided by the program (most network analysis instruments
 report data which is compatible with the required format)</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">f_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -416,11 +389,7 @@ end frequencies
 - if f_set is None, frequency is bound to input data
 - if f_set is of type list, the frequencies calculate
 will be only the frequencies represented in the list.</p>
-<blockquote>
-<div></div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">params</span><span class="p">:</span>  <span class="nb">list</span><span class="p">()</span>
-</pre></div>
-</div>
+<p>::  :param params:  list()</p>
 <p>A list i.e. [] of text arguments for the parameters the user wants calculated.</p>
 <p>The available arguments are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
@@ -443,11 +412,8 @@ will be only the frequencies represented in the list.</p>
 <span class="p">]</span>
 </pre></div>
 </div>
-<ul>
-<li><p>if ‘all’ (default) is passed, calculate everything.</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+<ul class="simple">
+<li><p>if ‘all’ (default) is passed, calculate everything.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">override</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">None</span><span class="p">);</span> <span class="s1">&#39;chi zero&#39;</span> <span class="s1">&#39;eps set&#39;</span>
@@ -456,16 +422,12 @@ will be only the frequencies represented in the list.</p>
 <p>provides response simulation functionality within libRL, common for discerning
 which EM parameters are casual for reflection loss. ‘chi zero’ sets mu =
 (1 - j*0). ‘eps set’ sets epsilon = (avg(e1)-j*0).</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">as_dataframe</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span>
 </pre></div>
 </div>
 <p>returns the requested parameters as a pandas dataframe with column names as the
 parameter keywords.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -496,8 +458,6 @@ is passed through pyximport()</p>
 </div></blockquote>
 <p>ref: <a class="reference external" href="https://doi.org/10.1016/j.jmat.2018.12.005">https://doi.org/10.1016/j.jmat.2018.12.005</a></p>
 <p>ref: <a class="reference external" href="https://doi.org/10.1016/j.jmat.2019.07.003">https://doi.org/10.1016/j.jmat.2019.07.003</a></p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">data</span><span class="p">:</span>    <span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -506,52 +466,39 @@ equivalent to the directory and file name of either a .csv or .xlsx of Nx5
 dimensions. Text above and below data array will be automatically avoided by
 the program (most network analysis instruments report data which is compatible
 with the required format)</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">f_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>tuple for frequency values in GHz</p>
-<ul>
+<ul class="simple">
 <li><p>if given as tuple of len 3, results are interpolated</p></li>
 <li><p>if given as tuple of len 2, results are data-derived with the calculation
 bound by the given start and end frequencies from the tuple</p></li>
 <li><p>if given as int or float of len 1, results are interpolated over the entire
 data set with a step size of the given tuple value.</p></li>
-<li><p>if f_set is None (default), frequency is bound to input data.</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+<li><p>if f_set is None (default), frequency is bound to input data.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">d_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>tuple for thickness values in mm.</p>
-<ul>
+<ul class="simple">
 <li><p>if d_set is of type list, then the thickness values calculated will only be
-of the values present in the list. (is weird, but whatever.)</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+of the values present in the list. (is weird, but whatever.)</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">m_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>tuple of ints which define the bands to be calculated.</p>
-<ul>
+<ul class="simple">
 <li><p>if m_set is given as a list [], the explicitly listed band integers will be
-calculated.</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+calculated.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">thrs</span><span class="p">:</span>    <span class="o">-</span><span class="mi">10</span>
 </pre></div>
 </div>
 <p>Threshold for evaluation. If RL values are below this threshold value, the
 point is counted for the band. Default value is -10.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">override</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">None</span><span class="p">);</span> <span class="s1">&#39;chi zero&#39;</span><span class="p">,</span>  <span class="s1">&#39;eps set&#39;</span>
 </pre></div>
@@ -559,16 +506,12 @@ point is counted for the band. Default value is -10.</p>
 <p>provides response simulation functionality within libRL, common for discerning
 which EM parameters are casual for reflection loss. ‘chi zero’ sets mu =
 (1 - j*0). ‘eps set’ sets epsilon = (avg(e1)-j*0).</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">interp</span><span class="o">=</span>
                 <span class="p">(</span><span class="s1">&#39;cubic&#39;</span><span class="p">);</span> <span class="s1">&#39;linear&#39;</span>
 </pre></div>
 </div>
 <p>Method for interpolation. Set to linear if user wants to linear interp instead
 of cubic spline.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>   <span class="n">quick_graph</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
 </pre></div>
@@ -579,8 +522,6 @@ input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
 function will save the graph at the specified location.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>   <span class="n">as_dataframe</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span>
 </pre></div>
@@ -588,8 +529,6 @@ function will save the graph at the specified location.</p>
 <p>Formats results into a pandas dataframe with the index labels as the thickness
 values, the column labels as the band numbers, and the dataframe as the
 resulting effective bandwidths.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="p">(</span><span class="n">d_set</span><span class="p">,</span> <span class="n">band_results</span><span class="p">,</span> <span class="n">m_set</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -613,45 +552,33 @@ for loops</p>
 <dd><p>The band_analysis_cython function determines the band analysis of materials
 by tallying the frequency points which satisfy the threshold, and summing
 the span of their frequencies.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">PnPgrid</span><span class="p">:</span>     <span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>PnPgrid is a pre-processed permittivity &amp; permeability array passed from
 libRL.CARL of shape Nx5 of [freq, e1, e2, mu1, mu2].</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">mGrid</span><span class="p">:</span>       <span class="p">(</span><span class="n">array</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>mGrid is a numpy array of d_values calculated from a modified
 quarter-wavelength function determined from the frequency values of the
 PnPgrid.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">m_set</span><span class="p">:</span>       <span class="n">m_set</span>
 </pre></div>
 </div>
 <p>m_set is a numpy array of bands passed through from
 libRL.refactoring.m_set_ref()</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">d_set</span><span class="p">:</span>       <span class="n">d_set</span>
 </pre></div>
 </div>
 <p>d_set is a numpy array of thickness values passed through from
 libRL.refactoring.d_set_ref()</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">thrs</span><span class="p">:</span>        <span class="n">thrs</span>
 </pre></div>
 </div>
 <p>thrs is the threshold value to test Reflection loss against for each (f, d)
 point in the response field, passed through directly from
 libRL.band_analysis()</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>            <span class="n">res</span>
 </pre></div>
 </div>
@@ -697,8 +624,6 @@ see refactoring.m_set_ref? for complete documentation</p>
 <code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">file_refactor</code><span class="sig-paren">(</span><em class="sig-param">dataFile=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.file_refactor" title="Permalink to this definition">¶</a></dt>
 <dd><p>refactors the given user data into actionable permittivity and permeability
 data.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">dataFile</span><span class="p">:(</span><span class="n">file_path</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -707,8 +632,6 @@ equivalent to the directory and file name of either a .csv or .xlsx of Nx5
 dimensions. Text above and below data array will be automatically avoided by
 the program (most network analysis instruments report data which is compatible
 with the required format).</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">override</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">None</span><span class="p">);</span> <span class="s1">&#39;chi zero&#39;</span><span class="p">,</span> <span class="s1">&#39;eps set&#39;</span>
 </pre></div>
@@ -716,8 +639,6 @@ with the required format).</p>
 <p>provides response simulation functionality within libRL, common for discerning
 which EM parameters are casual for reflection loss. ‘chi zero’ sets
 mu = (1 - j*0). ‘eps set’ sets epsilon = (avg(e1)-j*0).</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="n">data</span>
 </pre></div>
 </div>
@@ -729,22 +650,16 @@ mu = (1 - j*0). ‘eps set’ sets epsilon = (avg(e1)-j*0).</p>
 <code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">interpolate</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.interpolate" title="Permalink to this definition">¶</a></dt>
 <dd><p>uses SciPy’s interpolation module to generate interpolating functions over the
 input data.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">data</span><span class="p">:</span>   <span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Permittivity data of Nx5 form where N rows are [frequency, e1, e2, mu1, mu2]</p>
-<blockquote>
-<div></div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="p">:</span><span class="n">interp</span><span class="o">=</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">interp</span><span class="o">=</span>
                 <span class="p">(</span><span class="s1">&#39;cubic&#39;</span><span class="p">);</span> <span class="s1">&#39;linear&#39;</span>
 </pre></div>
 </div>
 <p>Method for interpolation. Set to linear if user wants to linear interp instead
 of cubic spline.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="n">e1f</span><span class="p">,</span> <span class="n">e2f</span><span class="p">,</span> <span class="n">mu1f</span><span class="p">,</span> <span class="n">mu2f</span>
 </pre></div>
 </div>
@@ -756,29 +671,22 @@ Permeability, and Complex Permeability respectively</p>
 <dt id="libRL.refactoring.f_set_ref">
 <code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">f_set_ref</code><span class="sig-paren">(</span><em class="sig-param">f_set</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.f_set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>refactors the input f_set to the corresponding Nx1 numpy array.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">f_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>tuple for frequency values in GHz</p>
-<ul>
+<ul class="simple">
 <li><p>if given as tuple of len 3, results are interpolated</p></li>
 <li><p>if given as tuple of len 2, results are data-derived with the calculation
 bound by the given start and end frequencies from the tuple</p></li>
 <li><p>is given as int or float of len 1, results are interpolated over the entire
 data set with a step size of the given tuple value.</p></li>
-<li><p>if f_set is None (default), frequency is bound to input data.</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+<li><p>if f_set is None (default), frequency is bound to input data.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">data</span><span class="p">:</span>   <span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>uses data as reference as frequencies are experimentally determined.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="n">f_set</span>
 </pre></div>
 </div>
@@ -789,18 +697,13 @@ data set with a step size of the given tuple value.</p></li>
 <dt id="libRL.refactoring.d_set_ref">
 <code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">d_set_ref</code><span class="sig-paren">(</span><em class="sig-param">d_set</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.d_set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>refactors the input d_set to the corresponding Nx1 numpy array.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">d_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>tuple for thickness values in mm.</p>
-<ul>
+<ul class="simple">
 <li><p>if d_set is of type list, then the thickness values calculated will only be
-of the values present in the list.</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+of the values present in the list.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="n">d_set</span>
 </pre></div>
@@ -812,18 +715,13 @@ of the values present in the list.</p>
 <dt id="libRL.refactoring.m_set_ref">
 <code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">m_set_ref</code><span class="sig-paren">(</span><em class="sig-param">m_set</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.m_set_ref" title="Permalink to this definition">¶</a></dt>
 <dd><p>refactors the input m_set to the corresponding Nx1 numpy array.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">m_set</span><span class="p">:</span>   <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>tuple of ints which define the bands to be calculated.</p>
-<ul>
+<ul class="simple">
 <li><p>if m_set is given as a list [], the explicitly listed band integers will
-be calculated.</p>
-<blockquote>
-<div></div></blockquote>
-</li>
+be calculated.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="n">refactored</span> <span class="n">m_set</span> <span class="n">of</span> <span class="n">Nx1</span> <span class="n">numpy</span> <span class="n">array</span>
 </pre></div>
@@ -854,34 +752,24 @@ it’s not too high on my list of priorities.</p>
 <code class="sig-prename descclassname">libRL.quick_graphs.</code><code class="sig-name descname">quick_graph_band_analysis</code><span class="sig-paren">(</span><em class="sig-param">bands</em>, <em class="sig-param">d_vals</em>, <em class="sig-param">m_vals</em>, <em class="sig-param">location</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.quick_graphs.quick_graph_band_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>quick and dirty default graphing protocols for the band analysis.</p>
-<blockquote>
-<div></div></blockquote>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">bands</span><span class="p">:</span>       <span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>band data passed through from the band_results derived from the cython
 computation.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">d_vals</span><span class="p">:</span>      <span class="n">d_set</span>
 </pre></div>
 </div>
 <p>d_set from libRL.band_analysis()</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">m_vals</span><span class="p">:</span>      <span class="n">m_set</span>
 </pre></div>
 </div>
 <p>m_set from libRL.band_analysis()</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">location</span><span class="p">:</span>    <span class="p">(</span><span class="n">file</span> <span class="n">directory</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>string directory location of where to save the resulting graphical image.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>            <span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -892,34 +780,24 @@ computation.</p>
 <code class="sig-prename descclassname">libRL.quick_graphs.</code><code class="sig-name descname">quick_graph_reflection_loss</code><span class="sig-paren">(</span><em class="sig-param">results</em>, <em class="sig-param">location</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.quick_graphs.quick_graph_reflection_loss" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>quick and dirty default graphing protocols for the band analysis.</p>
-<blockquote>
-<div></div></blockquote>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">bands</span><span class="p">:</span>       <span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>band data passed through from the band_results derived from the cython
 computation.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">d_vals</span><span class="p">:</span>      <span class="n">d_set</span>
 </pre></div>
 </div>
 <p>d_set from libRL.band_analysis()</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">m_vals</span><span class="p">:</span>      <span class="n">m_set</span>
 </pre></div>
 </div>
 <p>m_set from libRL.band_analysis()</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">location</span><span class="p">:</span>    <span class="p">(</span><span class="n">file</span> <span class="n">directory</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>string directory location of where to save the resulting graphical image.</p>
-<blockquote>
-<div></div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>            <span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
