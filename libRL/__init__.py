@@ -28,7 +28,7 @@ functions include:
 resultants of Reflection Loss over (f, d) gridspace. Yields the
 resulting Reflection Loss results for a given set of permittivity
 and permeability data.
-see libRL.reflection_loss? for complete documentation.
+see the DocStrings for complete documentation.
 
 ::
 
@@ -38,7 +38,7 @@ see libRL.reflection_loss? for complete documentation.
 
 characterization of Reflection Loss. Yields the calculated results
 of common formulations within the Radar Absorbing Materials field.
-see libRL.characterization? for complete documentation.
+see the DocStrings for complete documentation.
 
 ::
 
@@ -50,7 +50,7 @@ Band Analysis of Reflection Loss. uses given set of permittivity and
 permeability data in conjuncture with a requested band set to determine
 the set of frequencies whose reflection losses are below the
 threshold.
-see libRL.band_analysis? for complete documentation.
+see the DocStrings for complete documentation.
 
 Developed at the University of Missouri-Kansas City under NSF grant DMR-1609061
 by Michael Green and Xiaobo Chen.
