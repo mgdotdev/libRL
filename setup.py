@@ -8,7 +8,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='libRL',
-    version='1.0.3',
+    version='1.1.1',
     description='Python library for characterizing Microwave Absorption',
     long_description=long_description,
     url='https://github.com/1mikegrn/libRL',
@@ -25,7 +25,7 @@ setup(
     packages=find_packages(),
 
     package_data={
-        'libRL': ['*pyx']
+        'libRL': ['*.pyx', '*.pyd']
     },
 
     include_package_data=True,
