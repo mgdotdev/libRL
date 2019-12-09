@@ -59,17 +59,7 @@ full details can be found at https://1mikegrn.github.io/libRL/
 """
 
 import cmath
-from os import path
-
-import pyximport; pyximport.install(
-    language_level=3, build_dir=path.abspath(path.dirname(__file__))
-)
-
-from libRL import(
-    refactoring,
-    quick_graphs,
-    cpfuncs
-)
+from os import path, name
 
 from numpy import (
     arange, zeros, abs, array,
@@ -79,6 +69,31 @@ from numpy import (
 from pandas import DataFrame
 from pathos.multiprocessing import ProcessPool as Pool
 
+from libRL import(
+    refactoring,
+    quick_graphs
+)
+
+# some users having issues with pyximport compiling if they don't have
+# a compiler installed to the OS path - so far seems to be only a windows 
+# issue, so we'll just provide the compiled .pyd file.
+
+if name == 'nt':
+    from libRL import cpfuncs
+
+else:
+    import pyximport; pyximport.install(
+        language_level=3,
+        build_dir=path.abspath(path.dirname(__file__))
+    )
+
+    from libRL import cpfuncs_raw as cpfuncs
+
+# except:
+#     print('bypass')
+#     from libRL import cpfuncs_bk as cpfuncs
+
+# from libRL import cpfuncs_bk as cpfuncs
 
 def reflection_loss(
         data=None, f_set=None,

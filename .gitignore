@@ -1,5 +1,7 @@
 libRL/lib.win-amd64-3.7
 libRL/temp.win-amd64-3.7
+libRL/lib.win-amd64-3.8
+libRL/temp.win-amd64-3.8
 site/
 sphinx/_build
 sphinx/_static

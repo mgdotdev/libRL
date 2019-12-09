@@ -24,8 +24,7 @@ repository for convenience. Results are simply printed.
     :return: nothing
 
     """
-    data_url = 'https://raw.githubusercontent.com/' \
-           '1mikegrn/libRL/master/test/test_data.csv'
+    data_url = 'https://raw.githubusercontent.com/1mikegrn/libRL/master/test/test_data.csv'
 
     reflection_loss = libRL.reflection_loss(
         data=data_url,

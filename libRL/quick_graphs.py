@@ -17,10 +17,10 @@ your own images.
 
 P.S.
 
-ATM, quick_graphs doesn't support libRL.CARL because of the sheer level
-of customization inherent to the function. I may add a feature at a later date
-to generate sets of graphs in a directory for each parameter, but to be frank,
-it's not too high on my list of priorities.
+ATM, quick_graphs doesn't support libRL.characterization because of the sheer 
+level of customization inherent to the function. I may add a feature at a 
+later date to generate sets of graphs in a directory for each parameter, 
+but to be frank, it's not too high on my list of priorities.
 
 """
 
