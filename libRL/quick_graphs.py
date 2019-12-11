@@ -197,4 +197,4 @@ string directory location of where to save the resulting graphical image.
 
     pyplot.tight_layout()
 
-    fig.savefig(path.join(location, 'quick_graph RL.png'))
+    fig.savefig(path.join(location, 'quick graph band_analysis.png'))
