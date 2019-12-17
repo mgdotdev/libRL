@@ -453,9 +453,9 @@ frequency values in column zero to N.
 
     # and you thought that first function was ugly
     chars = {
-        "TGDE": lambda f: e1f(f) / e2f(f),
+        "TGDE": lambda f: e2f(f) / e1f(f),
 
-        "TGDU": lambda f: mu1f(f) / mu2f(f),
+        "TGDU": lambda f: mu2f(f) / mu1f(f),
 
         "QE": lambda f: (e1f(f) / e2f(f)) ** -1,
 
@@ -686,14 +686,13 @@ correspond with the m_set.
     # this time make the permittivity and permeability grid first
     # so we can push the core of the calculation down to the C-layer
     # via cython
-    PnPGrid = zeros((f_set.shape[0], 5), dtype=float64)
-
-    # populate grid accordingly
-    PnPGrid[:, 0] = f_set[:]
-    PnPGrid[:, 1] = e1f(f_set[:])
-    PnPGrid[:, 2] = e2f(f_set[:])
-    PnPGrid[:, 3] = mu1f(f_set[:])
-    PnPGrid[:, 4] = mu2f(f_set[:])
+    PnPGrid = array([
+        f_set[:],
+        e1f(f_set[:]),
+        e2f(f_set[:]),
+        mu1f(f_set[:]),
+        mu2f(f_set[:])
+        ]).transpose()
 
     # to find the 1/2th integer wavelength, NOT quarter.
     def dfind(f, m):

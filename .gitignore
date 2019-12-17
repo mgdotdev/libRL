@@ -8,3 +8,4 @@ sphinx/_static
 sphinx/_templates
 __pycache__
 .vscode/
+.idea/
