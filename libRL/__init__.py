@@ -164,9 +164,9 @@ mu = (1 - j*0). 'eps set' sets epsilon = (avg(e1)-j*0).
                     (False); True, 0, 1, 2, ...
 
 Method for activating multiprocessing functionality for faster run times. This
-kwarg takes integers and booleans. Set variable to True or 0 to use all
-available nodes. Pass an integer value to use (int) nodes. Will properly handle
-'False' as an input though it's equivalent to not even designating the
+kwarg takes integers and booleans. Set variable to True to use all
+available nodes. Pass an integer value >1 to use (int) nodes. Will properly 
+handle 'False' as an input though it's equivalent to not even designating the
 particular kwarg.
 
 NOTE: if you use the multiprocessing functionality herein while on a Windows
@@ -262,23 +262,20 @@ returns Nx3 data set of [RL, f, d] by default
         # of form j*0
         return y.real, f, d
 
-    # if multiprocessing is given as True or as
-    # a zero integer, use all available nodes
+    # if multiprocessing is given as True use all available nodes
     # if multiprocessing is given and is a non-zero
     # integer, use int value for number of nodes
-    # if multiprocessing is given as False (for some
-    # reason?), or anything else, ignore it.
+    # if multiprocessing is given as anything else, ignore it.
     # returns res of Zx3 data where Z is the product
     # of len(f_set) and len(d_set)
-    if 'multiprocessing' in kwargs and isinstance(
-            kwargs['multiprocessing'], int) is True:
 
-        if kwargs['multiprocessing'] is True or kwargs['multiprocessing'] is 0:
+    if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
+
+        if kwargs['multiprocessing'] is True:
             res = array(Pool().map(gamma, grid))
-        elif kwargs['multiprocessing'] > 0:
-            res = array(Pool(nodes=kwargs['multiprocessing']).map(gamma, grid))
         else:
-            res = array(list(map(gamma, grid)))
+            res = array(Pool(nodes=int(kwargs['multiprocessing'])).map(gamma, grid))
+        
     else:
         res = array(list(map(gamma, grid)))
 

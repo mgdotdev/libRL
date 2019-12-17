@@ -239,7 +239,7 @@ whose reflection losses are below the threshold.</p>
 <p>resultants of Reflection Loss over (f, d) gridspace. Yields the
 resulting Reflection Loss results for a given set of permittivity
 and permeability data.
-see libRL.reflection_loss? for complete documentation.</p>
+see the DocStrings for complete documentation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">libRL</span><span class="o">.</span><span class="n">characterization</span><span class="p">(</span>
 <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
@@ -247,7 +247,7 @@ see libRL.reflection_loss? for complete documentation.</p>
 </div>
 <p>characterization of Reflection Loss. Yields the calculated results
 of common formulations within the Radar Absorbing Materials field.
-see libRL.characterization? for complete documentation.</p>
+see the DocStrings for complete documentation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">libRL</span><span class="o">.</span><span class="n">band_analysis</span><span class="p">(</span>
 <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">m_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span>
@@ -257,7 +257,7 @@ see libRL.characterization? for complete documentation.</p>
 permeability data in conjuncture with a requested band set to determine
 the set of frequencies whose reflection losses are below the
 threshold.
-see libRL.band_analysis? for complete documentation.</p>
+see the DocStrings for complete documentation.</p>
 <p>Developed at the University of Missouri-Kansas City under NSF grant DMR-1609061
 by Michael Green and Xiaobo Chen.</p>
 <p>full details can be found at <a class="reference external" href="https://1mikegrn.github.io/libRL/">https://1mikegrn.github.io/libRL/</a></p>
@@ -316,9 +316,9 @@ mu = (1 - j*0). ‘eps set’ sets epsilon = (avg(e1)-j*0).</p>
 </pre></div>
 </div>
 <p>Method for activating multiprocessing functionality for faster run times. This
-kwarg takes integers and booleans. Set variable to True or 0 to use all
-available nodes. Pass an integer value to use (int) nodes. Will properly handle
-‘False’ as an input though it’s equivalent to not even designating the
+kwarg takes integers and booleans. Set variable to True to use all
+available nodes. Pass an integer value &gt;1 to use (int) nodes. Will properly 
+handle ‘False’ as an input though it’s equivalent to not even designating the
 particular kwarg.</p>
 <p>NOTE: if you use the multiprocessing functionality herein while on a Windows
 computer you <strong>*MUST MUST MUST MUST*</strong> provide main module protection via the
@@ -743,10 +743,10 @@ update to tailor the library to your personal, artistic liking - at that point,
 you’re better off just taking the data output and using matplotlib to generate
 your own images.</p>
 <p>P.S.</p>
-<p>ATM, quick_graphs doesn’t support libRL.CARL because of the sheer level
-of customization inherent to the function. I may add a feature at a later date
-to generate sets of graphs in a directory for each parameter, but to be frank,
-it’s not too high on my list of priorities.</p>
+<p>ATM, quick_graphs doesn’t support libRL.characterization because of the sheer 
+level of customization inherent to the function. I may add a feature at a 
+later date to generate sets of graphs in a directory for each parameter, 
+but to be frank, it’s not too high on my list of priorities.</p>
 <dl class="function">
 <dt id="libRL.quick_graphs.quick_graph_band_analysis">
 <code class="sig-prename descclassname">libRL.quick_graphs.</code><code class="sig-name descname">quick_graph_band_analysis</code><span class="sig-paren">(</span><em class="sig-param">bands</em>, <em class="sig-param">d_vals</em>, <em class="sig-param">m_vals</em>, <em class="sig-param">location</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.quick_graphs.quick_graph_band_analysis" title="Permalink to this definition">¶</a></dt>
