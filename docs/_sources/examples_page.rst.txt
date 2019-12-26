@@ -148,6 +148,7 @@ These keyword areguments are:
     multicolumn=
     as_dataframe=
     quick_graph=
+    quick_save=
 
 Descriptions of these keyword arguments can be found in the docstrings.
 

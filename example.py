@@ -26,23 +26,28 @@ repository for convenience. Results are simply printed.
     """
     data_url = 'https://raw.githubusercontent.com/1mikegrn/libRL/master/test/test_data.csv'
 
+    data_url =  r'D:\Research and Teaching\University of Missouri-Kansas City\Dr. Xiaobo Chen\Microwave Absorption\Data\Mo132 {C}\Mo132_2.csv'
+
     reflection_loss = libRL.reflection_loss(
         data=data_url,
-        f_set=(1,18,1),
-        d_set=(0,20,1),
+        f_set=(1,18,0.1),
+        d_set=(0,20,0.1),
         interp='cubic',
-        multiprocessing=1,
+        multiprocessing=True,
         multicolumn=True,
-        as_dataframe=True
+        as_dataframe=True,
+        quick_graph=True,
+        quick_save=True
     )
 
     print(reflection_loss)
 
     characterization = libRL.characterization(
         data=data_url,
-        f_set=(1,18,1),
+        f_set=(1,18,0.1),
         params='all',
-        as_dataframe=True
+        as_dataframe=True,
+        quick_save=True
     )
 
     print(characterization)
@@ -53,7 +58,9 @@ repository for convenience. Results are simply printed.
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],
         thrs=-10,
-        as_dataframe=True
+        as_dataframe=True,
+        quick_graph=True,
+        quick_save=True
     )
 
     print(band_analysis)

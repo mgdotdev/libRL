@@ -349,6 +349,16 @@ over each of the three columns.</p>
 <li><p>if as_dataframe is used, then return value will be a pandas dataframe with
 columns of name d and indexes of name f.</p></li>
 </ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_save</span><span class="o">=</span>
+            <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Saves the results to an excel file for external reference. If set to True, the
+quick_save function saves the resulting excel file to the location of the
+input data as defined by the data input (assuming that the data was input via a
+location string. If not, True throws an assertion error). The raw string of a
+file location can also be passed as the str() argument, if utilized then the
+function will save the excel file at the specified location.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="p">[</span><span class="n">RL</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">d</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -428,6 +438,16 @@ which EM parameters are casual for reflection loss. ‘chi zero’ sets mu =
 </div>
 <p>returns the requested parameters as a pandas dataframe with column names as the
 parameter keywords.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_save</span><span class="o">=</span>
+            <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Saves the results to an excel file for external reference. If set to True, the
+quick_save function saves the resulting excel file to the location of the
+input data as defined by the data input (assuming that the data was input via a
+location string. If not, True throws an assertion error). The raw string of a
+file location can also be passed as the str() argument, if utilized then the
+function will save the excel file at the specified location.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -529,6 +549,16 @@ function will save the graph at the specified location.</p>
 <p>Formats results into a pandas dataframe with the index labels as the thickness
 values, the column labels as the band numbers, and the dataframe as the
 resulting effective bandwidths.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_save</span><span class="o">=</span>
+            <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Saves the results to an excel file for external reference. If set to True, the
+quick_save function saves the resulting excel file to the location of the
+input data as defined by the data input (assuming that the data was input via a
+location string. If not, True throws an assertion error). The raw string of a
+file location can also be passed as the str() argument, if utilized then the
+function will save the excel file at the specified location.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="p">(</span><span class="n">d_set</span><span class="p">,</span> <span class="n">band_results</span><span class="p">,</span> <span class="n">m_set</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -726,6 +756,20 @@ be calculated.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="k">return</span><span class="p">:</span>        <span class="n">refactored</span> <span class="n">m_set</span> <span class="n">of</span> <span class="n">Nx1</span> <span class="n">numpy</span> <span class="n">array</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="libRL.refactoring.qref">
+<code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">qref</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.qref" title="Permalink to this definition">¶</a></dt>
+<dd><p>catches the argument references before initial calculation processing
+and saves the information to an isolated variable for later use.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="libRL.refactoring.save_to_excel">
+<code class="sig-prename descclassname">libRL.refactoring.</code><code class="sig-name descname">save_to_excel</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">location</em>, <em class="sig-param">file_name</em>, <em class="sig-param">parent</em>, <em class="sig-param">overview</em><span class="sig-paren">)</span><a class="headerlink" href="#libRL.refactoring.save_to_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>uses the function arguments and resultants to generate an excel file to be 
+saved locally.</p>
 </dd></dl>
 
 </div>
@@ -927,6 +971,7 @@ These keyword areguments are:</p>
 <span class="n">multicolumn</span><span class="o">=</span>
 <span class="n">as_dataframe</span><span class="o">=</span>
 <span class="n">quick_graph</span><span class="o">=</span>
+<span class="n">quick_save</span><span class="o">=</span>
 </pre></div>
 </div>
 <p>Descriptions of these keyword arguments can be found in the docstrings.</p>

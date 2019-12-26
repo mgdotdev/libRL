@@ -47,18 +47,21 @@ see refactoring.m_set_ref? for complete documentation
 
 """
 
+import time
+
 from numpy import (
     arange, delete, abs, array,
     argmin, float64, average
 )
 
 from pandas import (
-    read_csv, read_excel
+    read_csv, ExcelWriter,
+    read_excel, DataFrame
 )
 
 from scipy.interpolate import interp1d
 
-from os.path import splitext, split
+from os.path import splitext, split, join
 
 
 def file_refactor(dataFile=None, **kwargs):
@@ -92,22 +95,23 @@ mu = (1 - j*0). 'eps set' sets epsilon = (avg(e1)-j*0).
 
 refactored data set of Nx5 dimensionality in numpy array
     """
+
     if dataFile is None:
         error_msg = 'Data must be passed as an array which is mappable ' \
                    'to an Nx5 numpy array with columns ' \
                    '[freq, e1, e2, mu1, mu2]'
         raise RuntimeError(error_msg)
-
+    
     # allows for file location to be passed as the data variable.
     elif isinstance(dataFile, str) is True:
 
         if splitext(dataFile)[1] == '.csv':
             data = read_csv(dataFile, sep=',').to_numpy()
-
+            
             if data.shape[1] == 1 \
                     and "\t" in data[data.shape[0]//2][0]:
                 data = read_csv(dataFile, sep='\t').to_numpy()
-
+                
         elif splitext(dataFile)[1] == '.xlsx':
             data = read_excel(dataFile).to_numpy()
 
@@ -183,7 +187,7 @@ Permeability, and Complex Permeability respectively
 
     params = ['e1f', 'e2f', 'mu1f', 'mu2f']
 
-    if 'interp' in kwargs and kwargs['interp'] is 'linear':
+    if 'interp' in kwargs and kwargs['interp'] == 'linear':
 
         funcs = {param: interp1d(
             array(data[:, 0], dtype=float64),
@@ -243,7 +247,7 @@ refactored f_set of Nx1 numpy array
             m for m in arange(data[0, 0], data[-1, 0] + f_set, f_set)
         ], dtype=float64)
 
-    elif len(f_set) is 2:
+    elif len(f_set) == 2:
 
         if f_set[0] > f_set[1]:
             error_msg = "f_set must be of order (start, stop, [step]) where " \
@@ -262,7 +266,7 @@ refactored f_set of Nx1 numpy array
                        0]
         ], dtype=float64)
 
-    elif len(f_set) is 3:
+    elif len(f_set) == 3:
 
         if f_set[0] < data[0,0] or f_set[1] > data[-1,0]:
             error_msg = "f_set must be of order (start, stop, [step]) where " \
@@ -365,7 +369,12 @@ tuple of ints which define the bands to be calculated.
     return m_set
 
 
-def qgref(data):
+def qref(data):
+    """
+catches the argument references before initial calculation processing
+and saves the information to an isolated variable for later use.
+
+    """
 
     assert isinstance(data, str) is True, \
         'To use the True assertion for this **kwarg the user must ' \
@@ -378,5 +387,21 @@ def qgref(data):
 
     else:
         output_location = split(data)[0]
+        file_name = splitext(split(data)[1])[0]
 
-    return output_location
+    return output_location, file_name
+
+def save_to_excel(data, location, file_name, parent, overview):
+    """
+
+uses the function arguments and resultants to generate an excel file to be 
+saved locally.
+
+    """
+
+    writer = ExcelWriter(join(location, parent + ' ' + file_name) + '.xlsx')
+    data.to_excel(writer, sheet_name=parent)
+
+    overview.to_excel(writer, sheet_name='overview')
+
+    writer.save()

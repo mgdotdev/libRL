@@ -15,7 +15,7 @@ libRL
    :members:
 
 .. automodule:: libRL.refactoring
-   :members: file_refactor, interpolate, f_set_ref, d_set_ref, m_set_ref, qgref
+   :members: file_refactor, interpolate, f_set_ref, d_set_ref, m_set_ref, qref, save_to_excel
 
 .. automodule:: libRL.quick_graphs
    :members:

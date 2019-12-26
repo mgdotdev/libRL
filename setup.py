@@ -37,6 +37,7 @@ setup(
         'pandas',
         'pathos',
         'xlrd',
+        'openpyxl',
         'matplotlib',
         'cython',
     ],
@@ -44,7 +45,7 @@ setup(
     project_urls={
         'GitHub': 'https://github.com/1mikegrn/libRL',
         'DocSite': 'https://1mikegrn.github.io/libRL/',
-        'Personal Blog': 'http://www.inorganicexposure.com',
+        'Personal Webpage': 'https://1mikegrn.github.io',
         'Google Scholar': 'https://scholar.google.com/citations?user=DxFljRYAAAAJ&hl=en'
     }
 )

@@ -58,7 +58,7 @@ by Michael Green and Xiaobo Chen.
 full details can be found at https://1mikegrn.github.io/libRL/
 """
 
-import cmath
+import cmath, time
 from os import path, name
 
 from numpy import (
@@ -206,6 +206,18 @@ over each of the three columns.
 
 ::
 
+    :param kwargs:  quick_save=
+                (False); True, str()
+
+Saves the results to an excel file for external reference. If set to True, the
+quick_save function saves the resulting excel file to the location of the
+input data as defined by the data input (assuming that the data was input via a
+location string. If not, True throws an assertion error). The raw string of a
+file location can also be passed as the str() argument, if utilized then the
+function will save the excel file at the specified location.
+
+::
+
     :return:        [RL, f, d]
 
 returns Nx3 data set of [RL, f, d] by default
@@ -217,8 +229,23 @@ returns Nx3 data set of [RL, f, d] by default
     # data is refactored into a Nx5 numpy array by the file_refactor
     # function from 'refactoring.py'
 
+    start_time = time.time()
+
+    overview = {
+        'function': 'reflection_loss',
+        'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
+        'd_set': str(d_set),
+        'f_set': str(f_set),
+        '**kwargs': str(kwargs)
+    }
+
+    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+        kwargs['quick_save'], file_name = refactoring.qref(data)
+        kwargs['as_dataframe'] = True
+        kwargs['multicolumn'] = True
+
     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
-        kwargs['quick_graph'] = refactoring.qgref(data)
+        kwargs['quick_graph'], file_name = refactoring.qref(data)
 
     data = refactoring.file_refactor(data)
 
@@ -325,6 +352,30 @@ returns Nx3 data set of [RL, f, d] by default
             res = DataFrame(res)
             res.columns = ['RL', 'f', 'd']
 
+        if 'quick_save' in kwargs and isinstance(
+                kwargs['quick_save'], str
+                ) is True:
+
+            stats = (
+                    res[res.min().idxmin()][res.min(axis=1).idxmin()],
+                    'frequency='+str(res.min(axis=1).idxmin()), 'thickness='+str(res.min().idxmin())
+                    )
+
+            overview.update({
+                    'calculation time': time.time()-start_time,
+                    'maxRL': str(stats)
+                })
+
+            overview = DataFrame.from_dict(overview, orient='index')
+
+            refactoring.save_to_excel(
+                data=res,
+                location=kwargs['quick_save'],
+                file_name=file_name,
+                parent='reflection_loss',
+                overview=overview
+            )
+
     return res
 
 
@@ -414,6 +465,18 @@ parameter keywords.
 
 ::
 
+    :param kwargs:  quick_save=
+                (False); True, str()
+
+Saves the results to an excel file for external reference. If set to True, the
+quick_save function saves the resulting excel file to the location of the
+input data as defined by the data input (assuming that the data was input via a
+location string. If not, True throws an assertion error). The raw string of a
+file location can also be passed as the str() argument, if utilized then the
+function will save the excel file at the specified location.
+
+::
+
     :return:        (results)
 
 NxY data set of the requested parameters as columns 1 to Y with the input
@@ -422,6 +485,19 @@ frequency values in column zero to N.
 - if kwarg as_dataframe is True, returns a pandas dataframe with the requested
   parameters as column headers, and the frequency values as index headers.
     """
+
+    start_time = time.time()
+
+    overview = {
+        'function': 'characterization',
+        'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
+        'f_set': str(f_set),
+        'params': str(params),
+        '**kwargs': str(kwargs)
+    }
+
+    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+        kwargs['quick_save'], file_name = refactoring.qref(data)
 
     # data is refactored into a Nx5 numpy array by the file_
     # refactor function in libRL
@@ -530,6 +606,23 @@ frequency values in column zero to N.
         panda_matrix = DataFrame(Matrix[:, 1:])
         panda_matrix.columns = list(names[1:])
         panda_matrix.index = list(f_set)
+
+        if 'quick_save' in kwargs and isinstance(
+                kwargs['quick_save'], str
+                ) is True:
+
+            overview.update({'calculation time': time.time()-start_time})
+
+            overview = DataFrame.from_dict(overview, orient='index')
+
+            refactoring.save_to_excel(
+                data=panda_matrix,
+                location=kwargs['quick_save'],
+                file_name=file_name,
+                parent='characterization',
+                overview=overview
+            )
+
         return panda_matrix
 
     return Matrix, names
@@ -648,6 +741,18 @@ resulting effective bandwidths.
 
 ::
 
+    :param kwargs:  quick_save=
+                (False); True, str()
+
+Saves the results to an excel file for external reference. If set to True, the
+quick_save function saves the resulting excel file to the location of the
+input data as defined by the data input (assuming that the data was input via a
+location string. If not, True throws an assertion error). The raw string of a
+file location can also be passed as the str() argument, if utilized then the
+function will save the excel file at the specified location.
+
+::
+
     :return:        (d_set, band_results, m_set)
 
 returns len(3) tuple of (d_set, band_results, m_set). the rows of the
@@ -658,10 +763,25 @@ correspond with the m_set.
   band values as column headers and the thickness values as row headers.
     """
 
+    start_time = time.time()
+
+    overview = {
+        'function': 'band_analysis',
+        'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
+        'f_set': str(f_set),
+        'd_set': str(d_set),
+        'm_set': str(m_set),
+        'threshold': thrs,
+        '**kwargs': str(kwargs)
+    }
+
     # data is refactored into a Nx5 numpy array by the file_refactor
     # function from 'refactoring.py'
+    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+        kwargs['quick_save'], file_name = refactoring.qref(data)
+    
     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
-        kwargs['quick_graph'] = refactoring.qgref(data)
+        kwargs['quick_graph'], file_name = refactoring.qref(data)
 
     # data is refactored into a Nx5 numpy array by the file_
     # refactor function in libRL
@@ -730,6 +850,22 @@ correspond with the m_set.
         res = DataFrame(band_results)
         res.columns = list(m_set)
         res.index = list(d_set)
+
+        if 'quick_save' in kwargs and isinstance(
+                kwargs['quick_save'], str
+                ) is True:
+
+            overview.update({'calculation time': time.time()-start_time})
+
+            overview = DataFrame.from_dict(overview, orient='index')
+
+            refactoring.save_to_excel(
+                data=res,
+                location=kwargs['quick_save'],
+                file_name=file_name,
+                parent='band_analysis',
+                overview=overview
+            )
 
     else:
         res = (d_set, band_results, m_set)
