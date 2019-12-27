@@ -230,6 +230,7 @@ returns Nx3 data set of [RL, f, d] by default
     # function from 'refactoring.py'
 
     start_time = time.time()
+    file_name = 'results'
 
     overview = {
         'function': 'reflection_loss',
@@ -241,6 +242,7 @@ returns Nx3 data set of [RL, f, d] by default
 
     if 'quick_save' in kwargs and kwargs['quick_save'] is True:
         kwargs['quick_save'], file_name = refactoring.qref(data)
+        print(kwargs['quick_save'], file_name)
         kwargs['as_dataframe'] = True
         kwargs['multicolumn'] = True
 
@@ -487,6 +489,7 @@ frequency values in column zero to N.
     """
 
     start_time = time.time()
+    file_name = 'results'
 
     overview = {
         'function': 'characterization',
@@ -498,7 +501,6 @@ frequency values in column zero to N.
 
     if 'quick_save' in kwargs and kwargs['quick_save'] is True:
         kwargs['quick_save'], file_name = refactoring.qref(data)
-
     # data is refactored into a Nx5 numpy array by the file_
     # refactor function in libRL
     data = refactoring.file_refactor(data)
@@ -764,6 +766,7 @@ correspond with the m_set.
     """
 
     start_time = time.time()
+    file_name = 'results'
 
     overview = {
         'function': 'band_analysis',
