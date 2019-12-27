@@ -242,7 +242,6 @@ returns Nx3 data set of [RL, f, d] by default
 
     if 'quick_save' in kwargs and kwargs['quick_save'] is True:
         kwargs['quick_save'], file_name = refactoring.qref(data)
-        print(kwargs['quick_save'], file_name)
         kwargs['as_dataframe'] = True
         kwargs['multicolumn'] = True
 
