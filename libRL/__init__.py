@@ -207,7 +207,7 @@ over each of the three columns.
 ::
 
     :param kwargs:  quick_save=
-                (False); True, str()
+                    (False); True, str()
 
 Saves the results to an excel file for external reference. If set to True, the
 quick_save function saves the resulting excel file to the location of the
@@ -248,7 +248,7 @@ returns Nx3 data set of [RL, f, d] by default
     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
         kwargs['quick_graph'], file_name = refactoring.qref(data)
 
-    data = refactoring.file_refactor(data)
+    data = refactoring.file_refactor(data, **kwargs)
 
     # acquire the desired interpolating functions from 'refactoring.py'
     e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
@@ -418,7 +418,9 @@ end frequencies
 - if f_set is of type list, the frequencies calculate
 will be only the frequencies represented in the list.
 
-::  :param params:  list()
+::  
+    
+    :param params:  list()
 
 A list i.e. [] of text arguments for the parameters the user wants calculated.
 
@@ -467,7 +469,7 @@ parameter keywords.
 ::
 
     :param kwargs:  quick_save=
-                (False); True, str()
+                    (False); True, str()
 
 Saves the results to an excel file for external reference. If set to True, the
 quick_save function saves the resulting excel file to the location of the
@@ -502,7 +504,7 @@ frequency values in column zero to N.
         kwargs['quick_save'], file_name = refactoring.qref(data)
     # data is refactored into a Nx5 numpy array by the file_
     # refactor function in libRL
-    data = refactoring.file_refactor(data)
+    data = refactoring.file_refactor(data, **kwargs)
 
     # acquire the desired interpolating functions from 'refactoring.py'
     e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
@@ -721,7 +723,7 @@ of cubic spline.
 
 ::
 
-    :param kwargs:   quick_graph=
+    :param kwargs:  quick_graph=
                     (False); True, str()
 
 saves a `.png` graphical image to a specified location. If set to True, the
@@ -733,7 +735,7 @@ function will save the graph at the specified location.
 
 ::
 
-    :param kwargs:   as_dataframe=
+    :param kwargs:  as_dataframe=
                     (False); True
 
 Formats results into a pandas dataframe with the index labels as the thickness
@@ -743,7 +745,7 @@ resulting effective bandwidths.
 ::
 
     :param kwargs:  quick_save=
-                (False); True, str()
+                    (False); True, str()
 
 Saves the results to an excel file for external reference. If set to True, the
 quick_save function saves the resulting excel file to the location of the
@@ -787,7 +789,7 @@ correspond with the m_set.
 
     # data is refactored into a Nx5 numpy array by the file_
     # refactor function in libRL
-    data = refactoring.file_refactor(data)
+    data = refactoring.file_refactor(data, **kwargs)
 
     # refactor the data sets in accordance to
     # refactoring protocols in 'refactoring.py'

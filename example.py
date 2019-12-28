@@ -24,7 +24,7 @@ repository for convenience. Results are simply printed.
     :return: nothing
 
     """
-    data_string = 'https://raw.githubusercontent.com/1mikegrn/libRL/master/test/test_data.csv'
+    # data_string = 'https://raw.githubusercontent.com/1mikegrn/libRL/master/test/test_data.csv'
 
     data_string =  r'D:\Research and Teaching\University of Missouri-Kansas City\Dr. Xiaobo Chen\Microwave Absorption\Data\Mo132 {C}\Mo132_2.csv'
 
@@ -33,6 +33,7 @@ repository for convenience. Results are simply printed.
         f_set=(1,18,1),
         d_set=(0,20,1),
         interp='cubic',
+        override='chi zero',
         multiprocessing=True,
         multicolumn=True,
         as_dataframe=True,
@@ -45,6 +46,7 @@ repository for convenience. Results are simply printed.
     characterization = libRL.characterization(
         data=data_string,
         f_set=(1,18,0.1),
+        override='chi zero',
         params='all',
         as_dataframe=True,
         quick_save=True
@@ -55,6 +57,7 @@ repository for convenience. Results are simply printed.
     band_analysis = libRL.band_analysis(
         data=data_string,
         f_set=(1,18,0.1),
+        override='chi zero',
         d_set=(1,5,0.1),
         m_set=[1,2,3,4,5],
         thrs=-10,
