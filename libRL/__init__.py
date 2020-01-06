@@ -543,7 +543,7 @@ frequency values in column zero to N.
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
         ).real,
 
-        "EXTCOEFF": lambda f: sqrt(
+        "EXTCOEFF": lambda f: -1*sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
         ).imag,
 
@@ -555,21 +555,17 @@ frequency values in column zero to N.
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)
                                  ).real * 8.86588,
 
-        "PHSCNST": lambda f: ((2 * pi * f * GHz) * sqrt(
+        "PHSCNST": lambda f: -1*((2 * pi * f * GHz) * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))) * (c ** -1)
                               ).imag,
 
-        "PHSVEL": lambda f: ((2 * pi * f * GHz) / (
-            ((2 * pi * f * GHz) * sqrt(
-                (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f))
-            ) * (c ** -1))
-            ).imag),
+        "PHSVEL": lambda f: (2 * pi * f * GHz) / chars["PHSCNST"](f),
 
         "RES": lambda f: (Z0 * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))
                           ).real,
 
-        "REACT": lambda f: (Z0 * sqrt(
+        "REACT": lambda f: -1*(Z0 * sqrt(
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))
                             ).imag,
 
@@ -579,7 +575,8 @@ frequency values in column zero to N.
             (mu1f(f) - j * mu2f(f)) * (e1f(f) - j * e2f(f)))) * (c ** -1)
                                  ).real,
 
-        "EDDY": lambda f: mu2f(f) / (mu1f(f) ** 2 * f)
+        "EDDY": lambda f: mu2f(f) / (mu1f(f) ** 2 * f),
+
     }
 
     # give user option to just calculate everything without forcing them
