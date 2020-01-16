@@ -8,7 +8,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='libRL',
-    version='1.1.2',
+    version='1.2.0 α',
     description='Python library for characterizing Microwave Absorption',
     long_description=long_description,
     url='https://github.com/1mikegrn/libRL',

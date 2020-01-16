@@ -853,6 +853,10 @@ correspond with the m_set.
 
     return res
 
+#
+#  -------------------------- Still in development --------------------------
+#
+
 def quarter_wave(
     data=None, f_set=None,
     m_set=None, **kwargs
@@ -917,238 +921,234 @@ def quarter_wave(
 
     return dataset
 
-#
-#   ----------------- Still in development ---------------------
-#
+def f_peak(
+    data=None, f_set=None,
+    d_set=None, m_set=None,
+    **kwargs
+    ):
 
-# def f_peak(
-#     data=None, f_set=None,
-#     d_set=None, m_set=None,
-#     **kwargs
-#     ):
+    # data is refactored into a Nx5 numpy array by the file_refactor
+    # function from 'refactoring.py'
 
-#     # data is refactored into a Nx5 numpy array by the file_refactor
-#     # function from 'refactoring.py'
+    start_time = time.time()
+    file_name = 'results'
 
-#     start_time = time.time()
-#     file_name = 'results'
+    overview = {
+        'function': 'f_peak',
+        'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
+        'd_set': str(d_set),
+        'f_set': str(f_set),
+        '**kwargs': str(kwargs)
+    }
 
-#     overview = {
-#         'function': 'f_peak',
-#         'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
-#         'd_set': str(d_set),
-#         'f_set': str(f_set),
-#         '**kwargs': str(kwargs)
-#     }
+    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+        kwargs['quick_save'], file_name = refactoring.qref(data)
+        kwargs['as_dataframe'] = True
+        kwargs['multicolumn'] = True
 
-#     if 'quick_save' in kwargs and kwargs['quick_save'] is True:
-#         kwargs['quick_save'], file_name = refactoring.qref(data)
-#         kwargs['as_dataframe'] = True
-#         kwargs['multicolumn'] = True
+    if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
+        kwargs['quick_graph'], file_name = refactoring.qref(data)
 
-#     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
-#         kwargs['quick_graph'], file_name = refactoring.qref(data)
+    data = refactoring.file_refactor(data, **kwargs)
 
-#     data = refactoring.file_refactor(data, **kwargs)
+    # acquire the desired interpolating functions from 'refactoring.py'
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
 
-#     # acquire the desired interpolating functions from 'refactoring.py'
-#     e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
+    # refactor the data sets in accordance to refactoring protocols
+    # in 'refactoring.py'
+    f_set = refactoring.f_set_ref(f_set, data)
+    d_set = refactoring.d_set_ref(d_set)
+    m_set = refactoring.m_set_ref(m_set)
 
-#     # refactor the data sets in accordance to refactoring protocols
-#     # in 'refactoring.py'
-#     f_set = refactoring.f_set_ref(f_set, data)
-#     d_set = refactoring.d_set_ref(d_set)
-#     m_set = refactoring.m_set_ref(m_set)
+    # construct a data grid for mapping from refactored data sets
+    # d *must* be first as list comprehension cycles through f_set
+    # for each d value, and this is deterministic of the structure
+    # of the resultant.
 
-#     # construct a data grid for mapping from refactored data sets
-#     # d *must* be first as list comprehension cycles through f_set
-#     # for each d value, and this is deterministic of the structure
-#     # of the resultant.
+    grid = [(e1f, e2f, mu1f, mu2f, m, n)
+            for n in d_set
+            for m in f_set
+            ]
 
-#     grid = [(e1f, e2f, mu1f, mu2f, m, n)
-#             for n in d_set
-#             for m in f_set
-#             ]
+    if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
 
-#     if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
-
-#         if kwargs['multiprocessing'] is True:
-#             res = array(Pool().map(
-#                 refactoring.reflection_loss_function, grid
-#                 ))
-#         else:
-#             res = array(Pool(
-#                 nodes=int(kwargs['multiprocessing'])).map(
-#                     refactoring.reflection_loss_function, grid
-#                     ))
+        if kwargs['multiprocessing'] is True:
+            res = array(Pool().map(
+                refactoring.reflection_loss_function, grid
+                ))
+        else:
+            res = array(Pool(
+                nodes=int(kwargs['multiprocessing'])).map(
+                    refactoring.reflection_loss_function, grid
+                    ))
         
-#     else:
-#         res = array(list(map(
-#             refactoring.reflection_loss_function, grid
-#             )))    
+    else:
+        res = array(list(map(
+            refactoring.reflection_loss_function, grid
+            )))    
 
-#     # get frequency values from grid so
-#     # to normalize the procedure due to the
-#     # various frequency input methods
-#     gridInt = int(len(grid) / len(d_set))
+    # get frequency values from grid so
+    # to normalize the procedure due to the
+    # various frequency input methods
+    gridInt = int(len(grid) / len(d_set))
 
-#     # zero-array of NxM where N is the frequency
-#     # values and M is 3 times the
-#     # number of thickness values
-#     MCres = zeros(
-#         (gridInt, d_set.shape[0] * 3)
-#     )
+    # zero-array of NxM where N is the frequency
+    # values and M is 3 times the
+    # number of thickness values
+    MCres = zeros(
+        (gridInt, d_set.shape[0] * 3)
+    )
 
-#     # map the Zx3 result array to the NxM array
-#     for i in arange(int(MCres.shape[1] / 3)):
-#         MCres[:, 3 * i:3 * i + 3] = res[
-#             i * gridInt:(i + 1) * gridInt, 0:3
-#         ]
+    # map the Zx3 result array to the NxM array
+    for i in arange(int(MCres.shape[1] / 3)):
+        MCres[:, 3 * i:3 * i + 3] = res[
+            i * gridInt:(i + 1) * gridInt, 0:3
+        ]
 
-#     # stick the MultiColumn Array in the place of the results array
-#     res = MCres[:, ::3]
+    # stick the MultiColumn Array in the place of the results array
+    res = MCres[:, ::3]
 
-#     # make another grid for the band edges
-#     mGrid = zeros((f_set.shape[0], m_set.shape[0] * 2), dtype=float64)
+    # make another grid for the band edges
+    mGrid = zeros((f_set.shape[0], m_set.shape[0] * 2), dtype=float64)
 
-#     # use the 1/2 integer function to populate it
-#     for i, m in enumerate(m_set):
-#         mGrid[:, 2 * i] = refactoring.dfind_half(
-#             e1f, e2f, mu1f, mu2f, f_set[:], m
-#         )
+    # use the 1/2 integer function to populate it
+    for i, m in enumerate(m_set):
+        mGrid[:, 2 * i] = refactoring.dfind_half(
+            e1f, e2f, mu1f, mu2f, f_set[:], m
+        )
 
-#         mGrid[:, 2 * i + 1] = refactoring.dfind_half(
-#             e1f, e2f, mu1f, mu2f, f_set[:], m + 1
-#         )
+        mGrid[:, 2 * i + 1] = refactoring.dfind_half(
+            e1f, e2f, mu1f, mu2f, f_set[:], m + 1
+        )
 
-#     # run through the entire list looking for the points which are between mGrid coordinates.
+    # run through the entire list looking for the points which are between mGrid coordinates.
 
-#     output = zeros((len(d_set), len(m_set)), dtype = float)
-#     f_pairs = zeros((len(d_set), len(m_set)), dtype = float)
+    output = zeros((len(d_set), len(m_set)), dtype = float)
+    f_pairs = zeros((len(d_set), len(m_set)), dtype = float)
 
-#     coordinates = [(row, col)
-#         for row in range(res.shape[0])
-#         for col in range(res.shape[1])
-#     ]
+    coordinates = [(row, col)
+        for row in range(res.shape[0])
+        for col in range(res.shape[1])
+    ]
 
-#     for m in range(len(m_set)):
-#         for row, col in coordinates:
-#             if mGrid[row,2*int(m)] < d_set[col] < mGrid[row,2*int(m)+1] and res[row, col] < output[col, m]:
-#                 output[col, m] = res[row, col]
-#                 f_pairs[col, m] = f_set[row]
+    for m in range(len(m_set)):
+        for row, col in coordinates:
+            if mGrid[row,2*int(m)] < d_set[col] < mGrid[row,2*int(m)+1] and res[row, col] < output[col, m]:
+                output[col, m] = res[row, col]
+                f_pairs[col, m] = f_set[row]
 
-#     res = DataFrame(f_pairs)
-#     res.index=list(d_set)
-#     res.columns=list(m_set)
+    res = DataFrame(f_pairs)
+    res.index=list(d_set)
+    res.columns=list(m_set)
 
-#     return res
+    return res
 
-# def f_peak2(
-#     data=None, f_set=None,
-#     d_set=None, m_set=None,
-#     **kwargs
-#     ):
+def f_peak2(
+    data=None, f_set=None,
+    d_set=None, m_set=None,
+    **kwargs
+    ):
 
-#     # data is refactored into a Nx5 numpy array by the file_refactor
-#     # function from 'refactoring.py'
+    # data is refactored into a Nx5 numpy array by the file_refactor
+    # function from 'refactoring.py'
 
-#     start_time = time.time()
-#     file_name = 'results'
+    start_time = time.time()
+    file_name = 'results'
 
-#     overview = {
-#         'function': 'f_peak',
-#         'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
-#         'd_set': str(d_set),
-#         'f_set': str(f_set),
-#         '**kwargs': str(kwargs)
-#     }
+    overview = {
+        'function': 'f_peak',
+        'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
+        'd_set': str(d_set),
+        'f_set': str(f_set),
+        '**kwargs': str(kwargs)
+    }
 
-#     if 'quick_save' in kwargs and kwargs['quick_save'] is True:
-#         kwargs['quick_save'], file_name = refactoring.qref(data)
-#         kwargs['as_dataframe'] = True
-#         kwargs['multicolumn'] = True
+    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+        kwargs['quick_save'], file_name = refactoring.qref(data)
+        kwargs['as_dataframe'] = True
+        kwargs['multicolumn'] = True
 
-#     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
-#         kwargs['quick_graph'], file_name = refactoring.qref(data)
+    if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
+        kwargs['quick_graph'], file_name = refactoring.qref(data)
 
-#     data = refactoring.file_refactor(data, **kwargs)
+    data = refactoring.file_refactor(data, **kwargs)
 
-#     # acquire the desired interpolating functions from 'refactoring.py'
-#     e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
+    # acquire the desired interpolating functions from 'refactoring.py'
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
 
-#     # refactor the data sets in accordance to refactoring protocols
-#     # in 'refactoring.py'
-#     f_set = refactoring.f_set_ref(f_set, data)
-#     d_set = refactoring.d_set_ref(d_set)
-#     m_set = refactoring.m_set_ref(m_set)
+    # refactor the data sets in accordance to refactoring protocols
+    # in 'refactoring.py'
+    f_set = refactoring.f_set_ref(f_set, data)
+    d_set = refactoring.d_set_ref(d_set)
+    m_set = refactoring.m_set_ref(m_set)
 
-#     # construct a data grid for mapping from refactored data sets
-#     # d *must* be first as list comprehension cycles through f_set
-#     # for each d value, and this is deterministic of the structure
-#     # of the resultant.
+    # construct a data grid for mapping from refactored data sets
+    # d *must* be first as list comprehension cycles through f_set
+    # for each d value, and this is deterministic of the structure
+    # of the resultant.
 
-#     grid = [(e1f, e2f, mu1f, mu2f, m, n)
-#             for n in d_set
-#             for m in f_set
-#             ]
+    grid = [(e1f, e2f, mu1f, mu2f, m, n)
+            for n in d_set
+            for m in f_set
+            ]
 
-#     if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
+    if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
 
-#         if kwargs['multiprocessing'] is True:
-#             res = array(Pool().map(
-#                 refactoring.reflection_loss_function, grid
-#                 ))
-#         else:
-#             res = array(Pool(
-#                 nodes=int(kwargs['multiprocessing'])).map(
-#                     refactoring.reflection_loss_function, grid
-#                     ))
+        if kwargs['multiprocessing'] is True:
+            res = array(Pool().map(
+                refactoring.reflection_loss_function, grid
+                ))
+        else:
+            res = array(Pool(
+                nodes=int(kwargs['multiprocessing'])).map(
+                    refactoring.reflection_loss_function, grid
+                    ))
         
-#     else:
-#         res = array(list(map(
-#             refactoring.reflection_loss_function, grid
-#             )))    
+    else:
+        res = array(list(map(
+            refactoring.reflection_loss_function, grid
+            )))    
 
-#     # get frequency values from grid so
-#     # to normalize the procedure due to the
-#     # various frequency input methods
-#     gridInt = int(len(grid) / len(d_set))
+    # get frequency values from grid so
+    # to normalize the procedure due to the
+    # various frequency input methods
+    gridInt = int(len(grid) / len(d_set))
 
-#     # zero-array of NxM where N is the frequency
-#     # values and M is 3 times the
-#     # number of thickness values
-#     MCres = zeros(
-#         (gridInt, d_set.shape[0] * 3)
-#     )
+    # zero-array of NxM where N is the frequency
+    # values and M is 3 times the
+    # number of thickness values
+    MCres = zeros(
+        (gridInt, d_set.shape[0] * 3)
+    )
 
-#     # map the Zx3 result array to the NxM array
-#     for i in arange(int(MCres.shape[1] / 3)):
-#         MCres[:, 3 * i:3 * i + 3] = res[
-#             i * gridInt:(i + 1) * gridInt, 0:3
-#         ]
+    # map the Zx3 result array to the NxM array
+    for i in arange(int(MCres.shape[1] / 3)):
+        MCres[:, 3 * i:3 * i + 3] = res[
+            i * gridInt:(i + 1) * gridInt, 0:3
+        ]
 
-#     # stick the MultiColumn Array in the place of the results array
-#     res = MCres[:, ::3]
+    # stick the MultiColumn Array in the place of the results array
+    res = MCres[:, ::3]
 
-#     bool_matrix = zeros(res.shape)
+    bool_matrix = zeros(res.shape)
 
-#     grid = [(row, col)
-#         for row in range(len(f_set))
-#         for col in range(len(d_set))
-#     ]
+    grid = [(row, col)
+        for row in range(len(f_set))
+        for col in range(len(d_set))
+    ]
 
-#     out_cord = list()
+    out_cord = list()
 
-#     for row, col in grid:
-#         try:
-#             if res[row, col] < res[row+1, col] and      \
-#                 res[row, col] < res[row, col+1] and     \
-#                 res[row, col] < res[row-1, col] and     \
-#                 res[row, col] < res[row, col-1]:
-#                 bool_matrix[row, col] = 1
-#                 out_cord.append([f_set[row],d_set[col]])
-#         except:
-#             pass
+    for row, col in grid:
+        try:
+            if res[row, col] < res[row+1, col] and      \
+                res[row, col] < res[row, col+1] and     \
+                res[row, col] < res[row-1, col] and     \
+                res[row, col] < res[row, col-1]:
+                bool_matrix[row, col] = 1
+                out_cord.append([f_set[row],d_set[col]])
+        except:
+            pass
        
-#     return out_cord
+    return out_cord
 
