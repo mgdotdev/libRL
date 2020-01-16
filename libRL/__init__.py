@@ -76,7 +76,7 @@ from libRL import(
 
 # some users having issues with pyximport compiling if they don't have
 # a compiler installed to the OS path - so far seems to be only a windows 
-# issue, so we'll just provide the compiled .pyd file.
+# issue, so we'll just provide the compiled windows-compatible .pyd file.
 
 if name == 'nt':
     from libRL import cpfuncs
@@ -89,9 +89,13 @@ else:
 
     from libRL import cpfuncs_raw as cpfuncs
 
-# except:
-#     print('bypass')
-#     from libRL import cpfuncs_bk as cpfuncs
+
+# constants
+j = cmath.sqrt(-1)              # definition of j
+c = 299792458                   # speed of light
+GHz = 10 ** 9                   # definition of GHz
+Z0 = 376.730313461              # intrinsic impedance
+e0 = 8.854188 * 10 ** (-12)     # permittivity of free space
 
 # from libRL import cpfuncs_bk as cpfuncs
 
@@ -262,33 +266,10 @@ returns Nx3 data set of [RL, f, d] by default
     # d *must* be first as list comprehension cycles through f_set
     # for each d value, and this is deterministic of the structure
     # of the resultant.
-    grid = array([(m, n)
-                  for n in d_set
-                  for m in f_set
-                  ], dtype=float64)
-
-    # just a constant
-    j = cmath.sqrt(-1)
-
-    def gamma(grid):
-        f = grid[0]
-        d = grid[1]
-
-        # I know, it's super ugly.
-        y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) /
-            (e1f(f) - cmath.sqrt(-1) * e2f(f)))) * (cmath.tanh(j *
-            (2 * cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) *
-            cmath.sqrt((mu1f(f) - j * mu2f(f)) * (e1f(f) - j *
-            e2f(f)))))) - 1) / ((1 * (cmath.sqrt((mu1f(f) - j * mu2f(f)) /
-            (e1f(f) - j * e2f(f)))) * (cmath.tanh(j * (2 *
-            cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) * cmath.sqrt(
-            (mu1f(f) - j * mu2f(f)) * (e1f(f) - j *
-            e2f(f)))))) + 1)))))
-
-        # return inputted data for documentation and return
-        # the real portion of y to drop complex portion
-        # of form j*0
-        return y.real, f, d
+    grid = [(e1f, e2f, mu1f, mu2f, m, n)
+            for n in d_set
+            for m in f_set
+            ]
 
     # if multiprocessing is given as True use all available nodes
     # if multiprocessing is given and is a non-zero
@@ -300,12 +281,19 @@ returns Nx3 data set of [RL, f, d] by default
     if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
 
         if kwargs['multiprocessing'] is True:
-            res = array(Pool().map(gamma, grid))
+            res = array(Pool().map(
+                refactoring.reflection_loss_function, grid
+                ))
         else:
-            res = array(Pool(nodes=int(kwargs['multiprocessing'])).map(gamma, grid))
+            res = array(Pool(
+                nodes=int(kwargs['multiprocessing'])).map(
+                    refactoring.reflection_loss_function, grid
+                    ))
         
     else:
-        res = array(list(map(gamma, grid)))
+        res = array(list(map(
+            refactoring.reflection_loss_function, grid
+            )))
 
     # takes data derived from computation and the file directory string and
     # generates a graphical image at the at location.
@@ -324,7 +312,7 @@ returns Nx3 data set of [RL, f, d] by default
         # get frequency values from grid so
         # to normalize the procedure due to the
         # various frequency input methods
-        gridInt = int(grid.shape[0] / d_set.shape[0])
+        gridInt = int(len(grid) / len(d_set))
 
         # zero-array of NxM where N is the frequency
         # values and M is 3 times the
@@ -359,7 +347,8 @@ returns Nx3 data set of [RL, f, d] by default
 
             stats = (
                     res[res.min().idxmin()][res.min(axis=1).idxmin()],
-                    'frequency='+str(res.min(axis=1).idxmin()), 'thickness='+str(res.min().idxmin())
+                    'frequency='+str(res.min(axis=1).idxmin()),
+                    'thickness='+str(res.min().idxmin())
                     )
 
             overview.update({
@@ -519,13 +508,6 @@ frequency values in column zero to N.
         f_set = array(f_set, dtype=float64)
     else:
         f_set = refactoring.f_set_ref(f_set, data)
-
-    # constants
-    j = cmath.sqrt(-1)              # definition of j
-    c = 299792458                   # speed of light
-    GHz = 10 ** 9                   # definition of GHz
-    Z0 = 376.730313461              # intrinsic impedance
-    e0 = 8.854188 * 10 ** (-12)     # permittivity of free space
 
     # and you thought that first function was ugly
     chars = {
@@ -779,6 +761,7 @@ correspond with the m_set.
     # data is refactored into a Nx5 numpy array by the file_refactor
     # function from 'refactoring.py'
     if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+        kwargs['as_dataframe'] = True
         kwargs['quick_save'], file_name = refactoring.qref(data)
     
     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
@@ -812,21 +795,18 @@ correspond with the m_set.
         mu2f(f_set[:])
         ]).transpose()
 
-    # to find the 1/2th integer wavelength, NOT quarter.
-    def dfind(f, m):
-        y = ((299792458 / (f * 10**9)) * (1.0 / (
-            sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) *
-            (e1f(f) - cmath.sqrt(-1) * e2f(f))).real)) * (
-                ((2.0 * m) - 2.0) / 4.0)) * 1000
-        return y
-
     # make another grid for the band edges
     mGrid = zeros((f_set.shape[0], m_set.shape[0] * 2), dtype=float64)
 
     # use the 1/2 integer function to populate it
     for i, m in enumerate(m_set):
-        mGrid[:, 2 * i] = dfind(f_set[:], m)
-        mGrid[:, 2 * i + 1] = dfind(f_set[:], m + 1)
+        mGrid[:, 2 * i] = refactoring.dfind_half(
+            e1f, e2f, mu1f, mu2f, f_set[:], m
+            )
+
+        mGrid[:, 2 * i + 1] = refactoring.dfind_half(
+            e1f, e2f, mu1f, mu2f, f_set[:], m + 1
+            )
 
     # push the calculation to cython for increased computation performance
     # see included file titled 'cpfuncs.pyx' for build blueprint
@@ -872,3 +852,303 @@ correspond with the m_set.
         res = (d_set, band_results, m_set)
 
     return res
+
+def quarter_wave(
+    data=None, f_set=None,
+    m_set=None, **kwargs
+):
+
+    start_time = time.time()
+    file_name = 'results'
+
+    overview = {
+        'function': 'quarter_wave',
+        'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
+        'f_set': str(f_set),
+        'm_set': str(m_set),
+        '**kwargs': str(kwargs)
+    }
+
+    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+        kwargs['as_dataframe'] = True
+        kwargs['quick_save'], file_name = refactoring.qref(data)
+    
+    data = refactoring.file_refactor(data, **kwargs)
+
+    f_set = refactoring.f_set_ref(f_set, data)
+    m_set = refactoring.m_set_ref(m_set)
+
+    # acquire the desired interpolating functions from 'refactoring.py'
+    e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
+
+    def ref_index(f):
+        return cmath.sqrt((mu1f(f) - j*mu2f(f)) * (e1f(f) - j*e2f(f))).real
+
+    output = list()
+    for m in m_set:
+
+        def dfind_qw(f):
+            y = (c/(f*GHz))*(1.0/ref_index(f))*(((2.0*m)-1.0)/4.0)
+            return y*1000
+
+        res = list(map(dfind_qw, f_set))
+        output.append(res)
+
+    dataset = array(output).transpose()
+
+    if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:
+        dataset = DataFrame(dataset)
+        dataset.columns = list(m_set)
+        dataset.index = list(f_set)
+
+        if 'quick_save' in kwargs and isinstance(kwargs['quick_save'], str) is True:
+
+            overview.update({'calculation time': time.time()-start_time})
+
+            overview = DataFrame.from_dict(overview, orient='index')
+
+            refactoring.save_to_excel(
+                data=dataset,
+                location=kwargs['quick_save'],
+                file_name=file_name,
+                parent='quarter_wave',
+                overview=overview
+            )
+
+    return dataset
+
+#
+#   ----------------- Still in development ---------------------
+#
+
+# def f_peak(
+#     data=None, f_set=None,
+#     d_set=None, m_set=None,
+#     **kwargs
+#     ):
+
+#     # data is refactored into a Nx5 numpy array by the file_refactor
+#     # function from 'refactoring.py'
+
+#     start_time = time.time()
+#     file_name = 'results'
+
+#     overview = {
+#         'function': 'f_peak',
+#         'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
+#         'd_set': str(d_set),
+#         'f_set': str(f_set),
+#         '**kwargs': str(kwargs)
+#     }
+
+#     if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+#         kwargs['quick_save'], file_name = refactoring.qref(data)
+#         kwargs['as_dataframe'] = True
+#         kwargs['multicolumn'] = True
+
+#     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
+#         kwargs['quick_graph'], file_name = refactoring.qref(data)
+
+#     data = refactoring.file_refactor(data, **kwargs)
+
+#     # acquire the desired interpolating functions from 'refactoring.py'
+#     e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
+
+#     # refactor the data sets in accordance to refactoring protocols
+#     # in 'refactoring.py'
+#     f_set = refactoring.f_set_ref(f_set, data)
+#     d_set = refactoring.d_set_ref(d_set)
+#     m_set = refactoring.m_set_ref(m_set)
+
+#     # construct a data grid for mapping from refactored data sets
+#     # d *must* be first as list comprehension cycles through f_set
+#     # for each d value, and this is deterministic of the structure
+#     # of the resultant.
+
+#     grid = [(e1f, e2f, mu1f, mu2f, m, n)
+#             for n in d_set
+#             for m in f_set
+#             ]
+
+#     if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
+
+#         if kwargs['multiprocessing'] is True:
+#             res = array(Pool().map(
+#                 refactoring.reflection_loss_function, grid
+#                 ))
+#         else:
+#             res = array(Pool(
+#                 nodes=int(kwargs['multiprocessing'])).map(
+#                     refactoring.reflection_loss_function, grid
+#                     ))
+        
+#     else:
+#         res = array(list(map(
+#             refactoring.reflection_loss_function, grid
+#             )))    
+
+#     # get frequency values from grid so
+#     # to normalize the procedure due to the
+#     # various frequency input methods
+#     gridInt = int(len(grid) / len(d_set))
+
+#     # zero-array of NxM where N is the frequency
+#     # values and M is 3 times the
+#     # number of thickness values
+#     MCres = zeros(
+#         (gridInt, d_set.shape[0] * 3)
+#     )
+
+#     # map the Zx3 result array to the NxM array
+#     for i in arange(int(MCres.shape[1] / 3)):
+#         MCres[:, 3 * i:3 * i + 3] = res[
+#             i * gridInt:(i + 1) * gridInt, 0:3
+#         ]
+
+#     # stick the MultiColumn Array in the place of the results array
+#     res = MCres[:, ::3]
+
+#     # make another grid for the band edges
+#     mGrid = zeros((f_set.shape[0], m_set.shape[0] * 2), dtype=float64)
+
+#     # use the 1/2 integer function to populate it
+#     for i, m in enumerate(m_set):
+#         mGrid[:, 2 * i] = refactoring.dfind_half(
+#             e1f, e2f, mu1f, mu2f, f_set[:], m
+#         )
+
+#         mGrid[:, 2 * i + 1] = refactoring.dfind_half(
+#             e1f, e2f, mu1f, mu2f, f_set[:], m + 1
+#         )
+
+#     # run through the entire list looking for the points which are between mGrid coordinates.
+
+#     output = zeros((len(d_set), len(m_set)), dtype = float)
+#     f_pairs = zeros((len(d_set), len(m_set)), dtype = float)
+
+#     coordinates = [(row, col)
+#         for row in range(res.shape[0])
+#         for col in range(res.shape[1])
+#     ]
+
+#     for m in range(len(m_set)):
+#         for row, col in coordinates:
+#             if mGrid[row,2*int(m)] < d_set[col] < mGrid[row,2*int(m)+1] and res[row, col] < output[col, m]:
+#                 output[col, m] = res[row, col]
+#                 f_pairs[col, m] = f_set[row]
+
+#     res = DataFrame(f_pairs)
+#     res.index=list(d_set)
+#     res.columns=list(m_set)
+
+#     return res
+
+# def f_peak2(
+#     data=None, f_set=None,
+#     d_set=None, m_set=None,
+#     **kwargs
+#     ):
+
+#     # data is refactored into a Nx5 numpy array by the file_refactor
+#     # function from 'refactoring.py'
+
+#     start_time = time.time()
+#     file_name = 'results'
+
+#     overview = {
+#         'function': 'f_peak',
+#         'date/time': time.strftime('%D %H:%M:%S', time.localtime()),
+#         'd_set': str(d_set),
+#         'f_set': str(f_set),
+#         '**kwargs': str(kwargs)
+#     }
+
+#     if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+#         kwargs['quick_save'], file_name = refactoring.qref(data)
+#         kwargs['as_dataframe'] = True
+#         kwargs['multicolumn'] = True
+
+#     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
+#         kwargs['quick_graph'], file_name = refactoring.qref(data)
+
+#     data = refactoring.file_refactor(data, **kwargs)
+
+#     # acquire the desired interpolating functions from 'refactoring.py'
+#     e1f, e2f, mu1f, mu2f = refactoring.interpolate(data, **kwargs)
+
+#     # refactor the data sets in accordance to refactoring protocols
+#     # in 'refactoring.py'
+#     f_set = refactoring.f_set_ref(f_set, data)
+#     d_set = refactoring.d_set_ref(d_set)
+#     m_set = refactoring.m_set_ref(m_set)
+
+#     # construct a data grid for mapping from refactored data sets
+#     # d *must* be first as list comprehension cycles through f_set
+#     # for each d value, and this is deterministic of the structure
+#     # of the resultant.
+
+#     grid = [(e1f, e2f, mu1f, mu2f, m, n)
+#             for n in d_set
+#             for m in f_set
+#             ]
+
+#     if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
+
+#         if kwargs['multiprocessing'] is True:
+#             res = array(Pool().map(
+#                 refactoring.reflection_loss_function, grid
+#                 ))
+#         else:
+#             res = array(Pool(
+#                 nodes=int(kwargs['multiprocessing'])).map(
+#                     refactoring.reflection_loss_function, grid
+#                     ))
+        
+#     else:
+#         res = array(list(map(
+#             refactoring.reflection_loss_function, grid
+#             )))    
+
+#     # get frequency values from grid so
+#     # to normalize the procedure due to the
+#     # various frequency input methods
+#     gridInt = int(len(grid) / len(d_set))
+
+#     # zero-array of NxM where N is the frequency
+#     # values and M is 3 times the
+#     # number of thickness values
+#     MCres = zeros(
+#         (gridInt, d_set.shape[0] * 3)
+#     )
+
+#     # map the Zx3 result array to the NxM array
+#     for i in arange(int(MCres.shape[1] / 3)):
+#         MCres[:, 3 * i:3 * i + 3] = res[
+#             i * gridInt:(i + 1) * gridInt, 0:3
+#         ]
+
+#     # stick the MultiColumn Array in the place of the results array
+#     res = MCres[:, ::3]
+
+#     bool_matrix = zeros(res.shape)
+
+#     grid = [(row, col)
+#         for row in range(len(f_set))
+#         for col in range(len(d_set))
+#     ]
+
+#     out_cord = list()
+
+#     for row, col in grid:
+#         try:
+#             if res[row, col] < res[row+1, col] and      \
+#                 res[row, col] < res[row, col+1] and     \
+#                 res[row, col] < res[row-1, col] and     \
+#                 res[row, col] < res[row, col-1]:
+#                 bool_matrix[row, col] = 1
+#                 out_cord.append([f_set[row],d_set[col]])
+#         except:
+#             pass
+       
+#     return out_cord
+

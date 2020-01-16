@@ -13,6 +13,7 @@ https://1mikegrn.github.io/libRL/#examples
 '''
 
 import libRL
+import pandas as pd
 
 def main():
     """
@@ -24,16 +25,14 @@ repository for convenience. Results are simply printed.
     :return: nothing
 
     """
-    # data_string = 'https://raw.githubusercontent.com/1mikegrn/libRL/master/test/test_data.csv'
-
-    data_string =  r'D:\Research and Teaching\University of Missouri-Kansas City\Dr. Xiaobo Chen\Microwave Absorption\Data\Mo132 {C}\Mo132_2.csv'
+    data_string = 'https://raw.githubusercontent.com/1mikegrn/libRL/master/test/test_data.csv'
 
     reflection_loss = libRL.reflection_loss(
         data=data_string,
         f_set=(1,18,1),
         d_set=(0,20,1),
         interp='cubic',
-        multiprocessing=True,
+        multiprocessing=False,
         multicolumn=True,
         as_dataframe=True,
         quick_graph=True,
@@ -64,7 +63,6 @@ repository for convenience. Results are simply printed.
     )
 
     print(band_analysis)
-
 
 if __name__ == "__main__":
     main()

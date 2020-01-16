@@ -21,9 +21,9 @@ If you're new to Python, the easiest way to get started is through the
 Installation instructions for the three major operating systems can be found
 in the JCE-Supplemental for `pyGC <https://github.com/1mikegrn/pyGC>`_
 
-From your command prompt, the libRL library can be installed via pip and git
+From your command prompt, the latest version of the libRL library can be installed via pip and git
 
-:code:`pip install git+https://github.com/1mikegrn/libRL`
+:code:`pip install git+https://github.com/1mikegrn/libRL@v1.1.2`
 
 Where the setup file will automatically check dependencies and install
 to the main module library. Once installed, simply import the module as

@@ -182,7 +182,7 @@ string directory location of where to save the resulting graphical image.
     ax.set_xlabel('Thickness / $mm$', fontsize = 12)
     ax.set_ylabel('Frequency / GHz', fontsize = 12)
     
-    cmap = pyplot.cm.get_cmap(pyplot.cm.rainbow, 1)
+    cmap = pyplot.cm.get_cmap('rainbow')
 
     leg_list=[]
     for count, band in enumerate(m_vals):

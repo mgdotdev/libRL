@@ -183,8 +183,8 @@ NSF-1609061.</p>
 <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> distribution.
 Installation instructions for the three major operating systems can be found
 in the JCE-Supplemental for <a class="reference external" href="https://github.com/1mikegrn/pyGC">pyGC</a></p>
-<p>From your command prompt, the libRL library can be installed via pip and git</p>
-<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/1mikegrn/libRL</span></code></p>
+<p>From your command prompt, the latest version of the libRL library can be installed via pip and git</p>
+<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/1mikegrn/libRL&#64;v1.1.2</span></code></p>
 <p>Where the setup file will automatically check dependencies and install
 to the main module library. Once installed, simply import the module as
 normal via <code class="code docutils literal notranslate"><span class="pre">import</span> <span class="pre">libRL</span></code>, and query the docstring via libRL? - the
@@ -350,7 +350,7 @@ over each of the three columns.</p>
 columns of name d and indexes of name f.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_save</span><span class="o">=</span>
-            <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
+                <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Saves the results to an excel file for external reference. If set to True, the
@@ -399,7 +399,9 @@ end frequencies
 - if f_set is None, frequency is bound to input data
 - if f_set is of type list, the frequencies calculate
 will be only the frequencies represented in the list.</p>
-<p>::  :param params:  list()</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">params</span><span class="p">:</span>  <span class="nb">list</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>A list i.e. [] of text arguments for the parameters the user wants calculated.</p>
 <p>The available arguments are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
@@ -439,7 +441,7 @@ which EM parameters are casual for reflection loss. ‘chi zero’ sets mu =
 <p>returns the requested parameters as a pandas dataframe with column names as the
 parameter keywords.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_save</span><span class="o">=</span>
-            <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
+                <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Saves the results to an excel file for external reference. If set to True, the
@@ -532,7 +534,7 @@ which EM parameters are casual for reflection loss. ‘chi zero’ sets mu =
 </div>
 <p>Method for interpolation. Set to linear if user wants to linear interp instead
 of cubic spline.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>   <span class="n">quick_graph</span><span class="o">=</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_graph</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -542,7 +544,7 @@ input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
 function will save the graph at the specified location.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>   <span class="n">as_dataframe</span><span class="o">=</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">as_dataframe</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span>
 </pre></div>
 </div>
@@ -550,7 +552,7 @@ function will save the graph at the specified location.</p>
 values, the column labels as the band numbers, and the dataframe as the
 resulting effective bandwidths.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_save</span><span class="o">=</span>
-            <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
+                <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Saves the results to an excel file for external reference. If set to True, the

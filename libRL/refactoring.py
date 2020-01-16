@@ -47,11 +47,11 @@ see refactoring.m_set_ref? for complete documentation
 
 """
 
-import time
+import cmath, time
 
 from numpy import (
     arange, delete, abs, array,
-    argmin, float64, average
+    argmin, float64, average, sqrt
 )
 
 from pandas import (
@@ -124,12 +124,16 @@ refactored data set of Nx5 dimensionality in numpy array
 
     # check each position in numpy array
     # if it can be a number, make it a number
-    for row in range(data.shape[0]):
-        for col in range(data.shape[1]):
-            try:
-                data[row, col] = float64(data[row, col])
-            except:
-                pass
+    index = [(row, col) 
+        for row in range(data.shape[0]) 
+        for col in range(data.shape[1])
+    ]
+
+    for coordinate in index:
+        try:
+            data[coordinate] = float64(data[coordinate])
+        except:
+            pass
 
     # finds all rows in numpy array which aren't
     # a part of the Nx5 data array expected.
@@ -368,6 +372,39 @@ tuple of ints which define the bands to be calculated.
 
     return m_set
 
+def reflection_loss_function(grid):
+    e1f=grid[0]
+    e2f=grid[1]
+    mu1f=grid[2]
+    mu2f=grid[3]
+    f=grid[4]
+    d=grid[5]
+
+    # I know, it's super ugly.
+    y = (20 * cmath.log10((abs(((1 * (cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) /
+        (e1f(f) - cmath.sqrt(-1) * e2f(f)))) * (cmath.tanh(cmath.sqrt(-1) *
+        (2 * cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) *
+        cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) * (e1f(f) - cmath.sqrt(-1) *
+        e2f(f)))))) - 1) / ((1 * (cmath.sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) /
+        (e1f(f) - cmath.sqrt(-1) * e2f(f)))) * (cmath.tanh(cmath.sqrt(-1) * (2 *
+        cmath.pi * (f * 10**9) * (d * 0.001) / 299792458) * cmath.sqrt(
+        (mu1f(f) - cmath.sqrt(-1) * mu2f(f)) * (e1f(f) - cmath.sqrt(-1) *
+        e2f(f)))))) + 1)))))
+
+    # return inputted data for documentation and return
+    # the real portion of y to drop complex portion
+    # of form j*0
+    return y.real, f, d
+
+
+# to find the 1/2th integer wavelength, NOT quarter.
+def dfind_half(e1f, e2f, mu1f, mu2f, f, m):
+    y = ((299792458 / (f * 10**9)) * (1.0 / (
+        sqrt((mu1f(f) - cmath.sqrt(-1) * mu2f(f)) *
+        (e1f(f) - cmath.sqrt(-1) * e2f(f))).real)) * (
+            ((2.0 * m) - 2.0) / 4.0)) * 1000
+    return y
+
 
 def qref(data):
     """
@@ -399,7 +436,7 @@ saved locally.
 
     """
 
-    writer = ExcelWriter(join(location, parent + ' ' + file_name) + '.xlsx')
+    writer = ExcelWriter(join(location, parent + ' ' + file_name) + '.xlsx') # pylint: disable=abstract-class-instantiated
     data.to_excel(writer, sheet_name=parent)
 
     overview.to_excel(writer, sheet_name='overview')
