@@ -60,7 +60,6 @@ full details can be found at https://1mikegrn.github.io/libRL/
 
 import cmath, time
 from os import path, name
-
 from numpy import (
     arange, zeros, abs, array,
     float64, errstate, pi, sqrt
@@ -75,20 +74,19 @@ from libRL import(
 )
 
 # some users having issues with pyximport compiling if they don't have
-# a compiler installed to the OS path - so far seems to be only a windows 
-# issue, so we'll just provide the compiled windows-compatible .pyd file.
+# a compiler installed to the OS path. So, try the install, if it doesn't work,
+# fall back to a python implementation
 
-if name == 'nt':
-    from libRL import cpfuncs
-
-else:
+try:
     import pyximport; pyximport.install(
         language_level=3,
         build_dir=path.abspath(path.dirname(__file__))
     )
 
-    from libRL import cpfuncs_raw as cpfuncs
+    from libRL import cpfuncs
 
+except:
+    from libRL import pyfuncs as cpfuncs
 
 # constants
 j = cmath.sqrt(-1)              # definition of j

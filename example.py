@@ -29,14 +29,12 @@ repository for convenience. Results are simply printed.
 
     reflection_loss = libRL.reflection_loss(
         data=data_string,
-        f_set=(1,18,1),
-        d_set=(0,20,1),
+        f_set=(1,18,0.1),
+        d_set=(0,20,0.1),
         interp='cubic',
-        multiprocessing=False,
+        multiprocessing=True,
         multicolumn=True,
-        as_dataframe=True,
-        quick_graph=True,
-        quick_save=True
+        as_dataframe=True
     )
 
     print(reflection_loss)
@@ -45,8 +43,7 @@ repository for convenience. Results are simply printed.
         data=data_string,
         f_set=(1,18,0.1),
         params='all',
-        as_dataframe=True,
-        quick_save=True
+        as_dataframe=True
     )
 
     print(characterization)
@@ -58,8 +55,6 @@ repository for convenience. Results are simply printed.
         m_set=[1,2,3,4,5],
         thrs=-10,
         as_dataframe=True,
-        quick_graph=True,
-        quick_save=True
     )
 
     print(band_analysis)
