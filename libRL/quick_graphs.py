@@ -25,7 +25,7 @@ but to be frank, it's not too high on my list of priorities.
 """
 
 from os import path
-from matplotlib import colors, pyplot, rcParams
+from matplotlib import colors, pyplot as plt, rcParams
 import mpl_toolkits.mplot3d.axis3d as axis3d
 
 rcParams['font.family'] = 'serif'
@@ -77,7 +77,12 @@ string directory location of where to save the resulting graphical image.
     :return:            (None)
     """
 
-    fig = pyplot.figure(dpi=200)
+    if location == 'show':
+        dpi=100
+    else:
+        dpi=200
+
+    fig = plt.figure(dpi=dpi)
     ax = fig.add_axes([0.1,0.15, 0.7, 0.75], projection='3d')
     cbaxes = fig.add_axes([0.80, 0.352, 0.02, 0.378])
 
@@ -96,8 +101,8 @@ string directory location of where to save the resulting graphical image.
     ax.set_xlabel('Frequency / GHz', fontsize=12)
     ax.set_ylabel('Thickness / mm', fontsize=12)
 
-    ax.xaxis.set_major_locator(pyplot.MaxNLocator(5))
-    ax.yaxis.set_major_locator(pyplot.MaxNLocator(5))
+    ax.xaxis.set_major_locator(plt.MaxNLocator(5))
+    ax.yaxis.set_major_locator(plt.MaxNLocator(5))
 
     ax.set_zticklabels([0, -10, -20, -30, -40, -50, -60], va='center')
     ax.set_zticks([0, -10, -20, -30, -40, -50, -60])
@@ -121,7 +126,7 @@ string directory location of where to save the resulting graphical image.
         vmax=0
     )
 
-    cbar1 = pyplot.colorbar(plot1, cax=cbaxes)
+    cbar1 = plt.colorbar(plot1, cax=cbaxes)
     cbar1.ax.tick_params(labelsize=10)
 
     cbar1.set_ticks(
@@ -136,7 +141,11 @@ string directory location of where to save the resulting graphical image.
 
     cbar1.ax.invert_yaxis()
 
-    fig.savefig(path.join(location, 'quick_graph RL.png'))
+    if location == 'show':
+        plt.show()
+
+    else:
+        fig.savefig(path.join(location, 'quick_graph RL.png'))
 
 
 def quick_graph_band_analysis(bands, d_vals, m_vals, location):
@@ -174,15 +183,19 @@ string directory location of where to save the resulting graphical image.
     :return:            (None)
     """
 
+    if location == 'show':
+        dpi=100
+    else:
+        dpi=200
 
-    fig = pyplot.figure(dpi=200)
+    fig = plt.figure(dpi=dpi)
     ax = fig.add_subplot(111)
 
     ax.tick_params(direction='in', pad = 3)
     ax.set_xlabel('Thickness / $mm$', fontsize = 12)
     ax.set_ylabel('Frequency / GHz', fontsize = 12)
     
-    cmap = pyplot.cm.get_cmap('rainbow')
+    cmap = plt.cm.get_cmap('rainbow')
 
     leg_list=[]
     for count, band in enumerate(m_vals):
@@ -195,6 +208,10 @@ string directory location of where to save the resulting graphical image.
 
     ax.legend(leg_list)
 
-    pyplot.tight_layout()
+    plt.tight_layout()
 
-    fig.savefig(path.join(location, 'quick_graph band_analysis.png'))
+    if location == 'show':
+        plt.show()
+
+    else:
+        fig.savefig(path.join(location, 'quick_graph band_analysis.png'))

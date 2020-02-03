@@ -324,15 +324,18 @@ particular kwarg.</p>
 computer you <strong>*MUST MUST MUST MUST*</strong> provide main module protection via the
 <code class="code docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;:</span></code> conditional so to negate infinite spawns.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_graph</span><span class="o">=</span>
-                <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
+                <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Saves a <cite>.png</cite> graphical image to a specified location. If set to True, the
+<p>Generates a <cite>.png</cite> graphical image to a specified location. If set to True, the
 quick_graph function saves the resulting graphical image to the location of the
 input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
-function will save the graph at the specified location.</p>
+function will save the graph at the specified location. Optionally, this kwarg
+can be set to ‘show’ to simply display the generated image to either a 
+matplotlib window on the desktop or within a jupyter notebook if the function
+is run on google colab.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">as_dataframe</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span>
 </pre></div>
@@ -535,7 +538,7 @@ which EM parameters are casual for reflection loss. ‘chi zero’ sets mu =
 <p>Method for interpolation. Set to linear if user wants to linear interp instead
 of cubic spline.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">quick_graph</span><span class="o">=</span>
-                <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
+                <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>saves a <cite>.png</cite> graphical image to a specified location. If set to True, the
@@ -543,7 +546,10 @@ quick_graph function saves the resulting graphical image to the location of the
 input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
-function will save the graph at the specified location.</p>
+function will save the graph at the specified location. Optionally, this kwarg
+can be set to ‘show’ to simply display the generated image to either a 
+matplotlib window on the desktop or within a jupyter notebook if the function
+is run on google colab.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="n">as_dataframe</span><span class="o">=</span>
                 <span class="p">(</span><span class="kc">False</span><span class="p">);</span> <span class="kc">True</span>
 </pre></div>

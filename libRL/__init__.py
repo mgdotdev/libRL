@@ -178,14 +178,17 @@ computer you ***MUST MUST MUST MUST*** provide main module protection via the
 ::
 
     :param kwargs:  quick_graph=
-                    (False); True, str()
+                    (False); True, 'show', str()
 
-Saves a `.png` graphical image to a specified location. If set to True, the
+Generates a `.png` graphical image to a specified location. If set to True, the
 quick_graph function saves the resulting graphical image to the location of the
 input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
-function will save the graph at the specified location.
+function will save the graph at the specified location. Optionally, this kwarg
+can be set to 'show' to simply display the generated image to either a 
+matplotlib window on the desktop or within a jupyter notebook if the function
+is run on google colab.
 
 ::
 
@@ -701,14 +704,17 @@ of cubic spline.
 ::
 
     :param kwargs:  quick_graph=
-                    (False); True, str()
+                    (False); True, 'show', str()
 
 saves a `.png` graphical image to a specified location. If set to True, the
 quick_graph function saves the resulting graphical image to the location of the
 input data as defined by the data input (assuming that the data was input via a
 location string. If not, True throws an assertion error). The raw string of a
 file location can also be passed as the str() argument, if utilized then the
-function will save the graph at the specified location.
+function will save the graph at the specified location. Optionally, this kwarg
+can be set to 'show' to simply display the generated image to either a 
+matplotlib window on the desktop or within a jupyter notebook if the function
+is run on google colab.
 
 ::
 
