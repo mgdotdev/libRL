@@ -78,7 +78,7 @@ string directory location of where to save the resulting graphical image.
     """
 
     if location == 'show':
-        dpi=100
+        dpi=50
     else:
         dpi=200
 
@@ -184,7 +184,7 @@ string directory location of where to save the resulting graphical image.
     """
 
     if location == 'show':
-        dpi=100
+        dpi=50
     else:
         dpi=200
 
