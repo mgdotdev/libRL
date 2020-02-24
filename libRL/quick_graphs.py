@@ -147,6 +147,8 @@ string directory location of where to save the resulting graphical image.
     else:
         fig.savefig(path.join(location, 'quick_graph RL.png'))
 
+    plt.close()
+
 
 def quick_graph_band_analysis(bands, d_vals, m_vals, location):
     """
@@ -215,3 +217,5 @@ string directory location of where to save the resulting graphical image.
 
     else:
         fig.savefig(path.join(location, 'quick_graph band_analysis.png'))
+
+    plt.close()
