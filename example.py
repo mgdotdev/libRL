@@ -34,31 +34,30 @@ repository for convenience. Results are simply printed.
         interp='cubic',
         multiprocessing=True,
         multicolumn=True,
-        as_dataframe=True,
-        quick_graph='show'
+        as_dataframe=True
     )
 
-    # print(reflection_loss)
+    print(reflection_loss)
 
-    # characterization = libRL.characterization(
-    #     data=data_string,
-    #     f_set=(1,18,0.1),
-    #     params='all',
-    #     as_dataframe=True
-    # )
+    characterization = libRL.characterization(
+        data=data_string,
+        f_set=(1,18,0.1),
+        params='all',
+        as_dataframe=True
+    )
 
-    # print(characterization)
+    print(characterization)
 
-    # band_analysis = libRL.band_analysis(
-    #     data=data_string,
-    #     f_set=(1,18,0.1),
-    #     d_set=(1,5,0.1),
-    #     m_set=[1,2,3,4,5],
-    #     thrs=-10,
-    #     as_dataframe=True,
-    # )
+    band_analysis = libRL.band_analysis(
+        data=data_string,
+        f_set=(1,18,0.1),
+        d_set=(1,5,0.1),
+        m_set=[1,2,3,4,5],
+        thrs=-10,
+        as_dataframe=True,
+    )
 
-    # print(band_analysis)
+    print(band_analysis)
 
 if __name__ == "__main__":
     main()

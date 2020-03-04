@@ -159,8 +159,8 @@ encouraged to look at the documentation provided on this site for each
 of those functions.
 
 Some of the subdirectory functions available which are of convenient use
-are the :func:`libRL.refactoring.file_refactor` and
-:func:`libRL.refactoring.interpolate` functions,
+are the :func:`libRL.src.tools.refactoring.file_refactor` and
+:func:`libRL.src.tools.refactoring.interpolate` functions,
 which can be found in documentation under libRL/refactoring.py. In
 :code:`file_refactor()` is the protocol libRL uses to parse
 out the file string into actionable data, and :code:`interpolate()`

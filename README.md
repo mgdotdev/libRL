@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/1mikegrn/libRL.svg?branch=master)](https://travis-ci.com/1mikegrn/libRL)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.01868/status.svg)](https://doi.org/10.21105/joss.01868)
+[![DocSite](https://img.shields.io/badge/Docs-Site-blue)](https://1mikegrn.github.io/libRL/)
 
 # libRL
 A Python library for characterizing Microwave Absorption.
@@ -12,9 +13,9 @@ The libRL module can be installed via pip and git
         pip install git+https://github.com/1mikegrn/libRL@v1.1.2
 
 once installed, simply import the module as normal, and query the
-docstring via libRL? - the docstring includes a list of the available
-functions for use. Full documentation is also available at
-https://1mikegrn.github.io/libRL/ 
+docstring via libRL? - the docstrings include a list of the available
+functions for use. Full documentation is also available at the DocSite,
+which is accessible via the DocSite badge above.
 
 --------------------------------
 
