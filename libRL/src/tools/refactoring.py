@@ -48,6 +48,7 @@ see refactoring.m_set_ref? for complete documentation
 """
 
 import cmath, time
+from werkzeug.datastructures import FileStorage
 
 from numpy import (
     arange, delete, abs, array,
@@ -115,6 +116,21 @@ refactored data set of Nx5 dimensionality in numpy array
         elif splitext(dataFile)[1] == '.xlsx':
             data = read_excel(dataFile).to_numpy()
 
+        else:
+            error_msg = 'Error partitioning input data from string'
+            raise RuntimeError(error_msg)
+
+    # hook for GUI data input
+    elif isinstance(dataFile, FileStorage) is True:
+        ext = splitext(dataFile.filename)[1]
+        if ext == '.xlsx':
+            data = read_excel(dataFile.stream).to_numpy()
+        elif ext == '.csv':
+            data = read_csv(dataFile, sep=',').to_numpy()
+            
+            if data.shape[1] == 1 \
+                    and "\t" in data[data.shape[0]//2][0]:
+                data = read_csv(dataFile, sep='\t').to_numpy()            
         else:
             error_msg = 'Error partitioning input data from string'
             raise RuntimeError(error_msg)

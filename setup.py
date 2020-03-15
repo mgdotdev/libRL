@@ -40,7 +40,16 @@ setup(
         'openpyxl',
         'matplotlib',
         'cython',
+        'cefpython3',
+        'flask',
+        'flask-wtf',
+        'wtforms',
+        'werkzeug'
     ],
+
+    entry_points={
+        'console_scripts': ['libRL-app=libRL.app:init']
+    },
 
     project_urls={
         'GitHub': 'https://github.com/1mikegrn/libRL',

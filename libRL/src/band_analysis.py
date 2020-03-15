@@ -179,9 +179,10 @@ correspond with the m_set.
 
     # data is refactored into a Nx5 numpy array by the file_refactor
     # function from 'refactoring.py'
-    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
+    if 'quick_save' in kwargs:
+        if kwargs['quick_save'] is True:
+            kwargs['quick_save'], file_name = refactoring.qref(data)
         kwargs['as_dataframe'] = True
-        kwargs['quick_save'], file_name = refactoring.qref(data)
     
     if 'quick_graph' in kwargs and kwargs['quick_graph'] is True:
         kwargs['quick_graph'], file_name = refactoring.qref(data)

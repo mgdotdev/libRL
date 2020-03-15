@@ -133,8 +133,11 @@ frequency values in column zero to N.
         '**kwargs': str(kwargs)
     }
 
-    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
-        kwargs['quick_save'], file_name = refactoring.qref(data)
+    if 'quick_save' in kwargs:
+        if kwargs['quick_save'] is True:
+            kwargs['quick_save'], file_name = refactoring.qref(data)
+        kwargs['as_dataframe'] = True    
+
     # data is refactored into a Nx5 numpy array by the file_
     # refactor function in libRL
     data = refactoring.file_refactor(data, **kwargs)

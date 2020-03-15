@@ -58,11 +58,8 @@ by Michael Green and Xiaobo Chen.
 full details can be found at https://1mikegrn.github.io/libRL/
 """
 
-from libRL import src
+from libRL import src, gui
 from libRL.src.band_analysis import band_analysis
 from libRL.src.characterization import characterization
 from libRL.src.reflection_loss import reflection_loss
-
-class Profile:
-    def __init__(self, string):
-        pass
+from libRL.src.profile import Profile

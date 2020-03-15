@@ -1,4 +1,5 @@
 import time
+import concurrent.futures
 from pandas import DataFrame
 from libRL.src.tools import refactoring, quick_graphs
 from pathos.multiprocessing import ProcessPool as Pool
@@ -155,8 +156,9 @@ returns Nx3 data set of [RL, f, d] by default
         '**kwargs': str(kwargs)
     }
 
-    if 'quick_save' in kwargs and kwargs['quick_save'] is True:
-        kwargs['quick_save'], file_name = refactoring.qref(data)
+    if 'quick_save' in kwargs:
+        if kwargs['quick_save'] is True:
+            kwargs['quick_save'], file_name = refactoring.qref(data)
         kwargs['as_dataframe'] = True
         kwargs['multicolumn'] = True
 
@@ -259,7 +261,7 @@ returns Nx3 data set of [RL, f, d] by default
         if 'quick_save' in kwargs and isinstance(
                 kwargs['quick_save'], str
                 ) is True:
-
+                
             stats = (
                     res[res.min().idxmin()][res.min(axis=1).idxmin()],
                     'frequency='+str(res.min(axis=1).idxmin()),

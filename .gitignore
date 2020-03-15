@@ -10,3 +10,4 @@ __pycache__
 cython
 .vscode/
 .idea/
+error.log
