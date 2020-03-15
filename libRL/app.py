@@ -12,7 +12,7 @@ from libRL.gui.main import run_app
 
 class handler:
     def __init__(self):
-        port = self.find_port()
+        port = find_port()
 
         p1 = multiprocessing.Process(target=run_app, args=[port])
         p2 = multiprocessing.Process(target=self.cef_func, args=[port])
@@ -43,27 +43,40 @@ class handler:
         )
         cef.MessageLoop()
         cef.Shutdown()
-
-    def find_port(self):
-        port_attempts = 0
-        while port_attempts < 1000:
-            try:
-                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                sock.bind(('localhost', 0))
-                app_port = sock.getsockname()[1]
-                sock.close()
-                return app_port
-            except:
-                port_attempts += 1
         
-        print("FAILED AFTER 1000 PORT ATTEMPTS")
-        sys.exit(1)
+
+def find_port():
+    port_attempts = 0
+    while port_attempts < 1000:
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.bind(('localhost', 0))
+            app_port = sock.getsockname()[1]
+            sock.close()
+            print('push to port:' + str(app_port))
+            return app_port
+        except:
+            port_attempts += 1
+
+    print("FAILED AFTER 1000 PORT ATTEMPTS")
+    sys.exit(1)
+
+def port():
+    port = find_port()
+    run_app(port)
 
 def init():
-    handler()
+
+    pltfrm = sys.platform
+
+    if pltfrm == "win32":
+        handler()
+
+    else:
+        print('Currently the embedded app is available on windows only')
+        print('Pushing to localhost...')
+        port()
 
 if __name__ == "__main__":
     handler()
-    
-
 
