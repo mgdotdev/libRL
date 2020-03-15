@@ -24,17 +24,18 @@ setup(
 
     packages=find_packages(),
 
-    package_data={
-        'libRL': [
-            '*.pyx', 
-            '*.pyd', 
-            '/gui/static/styles/*.css',
-            '/gui/templates/*.html'
-        ],
+    include_package_data = True,
+    
+    # package_data={
+    #     'libRL': [
+    #         '*.pyx', 
+    #         '*.pyd', 
+    #         '/gui/static/styles/*.css',
+    #         '/gui/templates/*.html'
+    #     ],
 
-    },
+    # },
 
-    include_package_data=True,
     python_requires='>=3.6',
 
     install_requires=[
