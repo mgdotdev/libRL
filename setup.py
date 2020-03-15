@@ -22,16 +22,13 @@ setup(
         'License :: OSI Approved :: GPL-3.0 License',
     ],
 
+    packages=find_packages(),
+
     package_data={
-        'libRL': [
-            '*.pyx', 
-            '*.pyd',
-        ],
-        'gui': ['*']
+        'libRL': ['*.pyx', '*.pyd']
     },
 
-    include_package_data = True,
-
+    include_package_data=True,
     python_requires='>=3.6',
 
     install_requires=[
