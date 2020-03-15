@@ -24,11 +24,8 @@ setup(
 
     packages=find_packages(),
 
-    package_data={
-        'libRL': ['*.pyx', '*.pyd']
-    },
-
     include_package_data=True,
+    
     python_requires='>=3.6',
 
     install_requires=[
