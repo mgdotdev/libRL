@@ -22,7 +22,8 @@ setup(
         'License :: OSI Approved :: GPL-3.0 License',
     ],
 
-    packages=find_packages(),
+    packages=find_packages('libRL'),
+    package_dir = {'':'libRL'},
 
     package_data={
         'libRL': [
@@ -31,6 +32,8 @@ setup(
         ],
         'gui': ['*']
     },
+
+    include_package_data = True,
 
     python_requires='>=3.6',
 
