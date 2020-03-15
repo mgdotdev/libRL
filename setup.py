@@ -25,7 +25,13 @@ setup(
     packages=find_packages(),
 
     package_data={
-        '': ['*.pyx', '*.html', '*.css']
+        'libRL': [
+            '*.pyx', 
+            '*.pyd', 
+            '/gui/static/styles/*.css',
+            '/gui/templates/*.html'
+        ],
+
     },
 
     include_package_data=True,
