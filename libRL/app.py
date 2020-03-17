@@ -1,49 +1,11 @@
 import sys
 import socket
-import multiprocessing
-from cefpython3 import cefpython as cef
 from os import path, system
 
 here = path.abspath(path.dirname(__file__))
 sys.path.insert(0, path.split(here)[0])
 
 from libRL.gui.main import run_app
-
-
-class handler:
-    def __init__(self):
-        port = find_port()
-
-        p1 = multiprocessing.Process(target=run_app, args=[port])
-        p2 = multiprocessing.Process(target=self.cef_func, args=[port])
-
-        p1.start()
-        p2.start()
-
-        p2.join()
-        p1.terminate()
-
-
-    def cef_func(self, port):
-        
-        sys.excepthook = cef.ExceptHook
-        cef.DpiAware.EnableHighDpiSupport()
-
-        cef.Initialize(
-            switches={
-                'disable-gpu-compositing': None
-            }
-        )
-        
-        url = "http://localhost:" + str(port) + '/'
-
-        cef.CreateBrowserSync(
-            url=url,
-            window_title='libRL.app',
-        )
-        cef.MessageLoop()
-        cef.Shutdown()
-        
 
 def find_port():
     port_attempts = 0
@@ -58,20 +20,64 @@ def find_port():
         except:
             port_attempts += 1
 
-    print("FAILED AFTER 1000 PORT ATTEMPTS")
-    sys.exit(1)
 
-def browser_version(port):
+def init(port):
+    print('pushing to http://localhost' + str(port) + '/')
     run_app(port)
 
-def init():
 
-    if (sys.platform == "win32" and sys.version_info[1] < 8):
-        handler()
+# ------------------------------------ devs ------------------------------------
 
-    else:
-        print('Currently the embedded app is available on windows in python 3.7')
-        print('Pushing to localhost...')
-        port = find_port()
-        print('opened on localhost:' + port) 
-        browser_version(port)
+# cef was cool, but we're shelving it until we have more cross-platform 
+# integration and 3.8 support
+
+# class handler:
+#     def __init__(self):
+#         port = find_port()
+
+#         p1 = multiprocessing.Process(target=run_app, args=[port])
+#         p2 = multiprocessing.Process(target=self.cef_func, args=[port])
+
+#         p1.start()
+#         p2.start()
+
+#         p2.join()
+#         p1.terminate()
+
+#     def cef_func(self, port):
+        
+#         sys.excepthook = cef.ExceptHook
+#         cef.DpiAware.EnableHighDpiSupport()
+
+#         cef.Initialize(
+#             switches={
+#                 'disable-gpu-compositing': None
+#             }
+#         )
+        
+#         url = "http://localhost:" + str(port) + '/'
+
+#         cef.CreateBrowserSync(
+#             url=url,
+#             window_title='libRL.app',
+#         )
+#         cef.MessageLoop()
+#         cef.Shutdown()
+
+#     print("FAILED AFTER 1000 PORT ATTEMPTS")
+#     sys.exit(1)
+
+# def browser_version(port):
+#     run_app(port)
+
+# def init():
+
+#     if (sys.platform == "win32" and sys.version_info[1] < 8):
+#         handler()
+
+#     else:
+#         print('Currently the embedded app is available on windows in python 3.7')
+#         print('Pushing to localhost...')
+#         port = find_port()
+#         print('opened on localhost:' + port) 
+#         browser_version(port)
