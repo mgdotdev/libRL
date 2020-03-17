@@ -11,3 +11,4 @@ cython
 .vscode/
 .idea/
 error.log
+webrtc_event_logs/

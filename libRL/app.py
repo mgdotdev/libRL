@@ -61,21 +61,24 @@ def find_port():
     print("FAILED AFTER 1000 PORT ATTEMPTS")
     sys.exit(1)
 
-def port():
-    port = find_port()
+def browser_version(port):
     run_app(port)
 
 def init():
 
     pltfrm = sys.platform
 
-    if pltfrm == "win32":
+    version = sys.version_info
+
+    if pltfrm == "win32" and version[1] < 8:
         handler()
 
     else:
-        print('Currently the embedded app is available on windows only')
+        print('Currently the embedded app is available on windows in python 3.7')
         print('Pushing to localhost...')
-        port()
+        port = find_port()
+        print('opened on localhost:' + port) 
+        browser_version(port)
 
 if __name__ == "__main__":
     handler()
