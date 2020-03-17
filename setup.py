@@ -37,7 +37,6 @@ setup(
         'openpyxl',
         'matplotlib',
         'cython',
-        'cefpython3',
         'flask',
         'flask-wtf',
         'wtforms',
