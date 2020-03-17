@@ -118,8 +118,9 @@ def f_peak(
             pass
 
     if 'quick_save' in kwargs:
+        res = array(out_cord).transpose()
         refactoring.save_to_excel(
-            array(out_cord).transpose(),
+            res,
             kwargs['quick_save'],
             file_name,
             'f_peak',
