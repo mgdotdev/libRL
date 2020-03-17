@@ -66,11 +66,7 @@ def browser_version(port):
 
 def init():
 
-    pltfrm = sys.platform
-
-    version = sys.version_info
-
-    if pltfrm == "win32" and version[1] > 7:
+    if (sys.platform == "win32" and sys.version_info[1] < 8):
         handler()
 
     else:
@@ -79,7 +75,3 @@ def init():
         port = find_port()
         print('opened on localhost:' + port) 
         browser_version(port)
-
-if __name__ == "__main__":
-    handler()
-
