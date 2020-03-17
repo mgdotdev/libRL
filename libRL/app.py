@@ -23,7 +23,7 @@ def find_port():
 
 def init():
     port = find_port()
-    print('pushing to http://localhost' + str(port) + '/')
+    print('pushing to http://localhost:' + str(port) + '/')
     run_app(port)
 
 
