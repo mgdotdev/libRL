@@ -116,5 +116,14 @@ def f_peak(
                 out_cord.append([f_set[row],d_set[col]])
         except:
             pass
-       
+
+    if 'quick_save' in kwargs:
+        refactoring.save_to_excel(
+            array(out_cord).transpose(),
+            kwargs['quick_save'],
+            file_name,
+            'f_peak',
+            overview 
+        )
+
     return out_cord
