@@ -70,7 +70,7 @@ def init():
 
     version = sys.version_info
 
-    if pltfrm == "win32" and version[1] < 8:
+    if pltfrm == "win32" and version[1] > 7:
         handler()
 
     else:
