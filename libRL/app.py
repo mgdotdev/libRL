@@ -26,7 +26,8 @@ def init():
     print('pushing to http://localhost:' + str(port) + '/')
     run_app(port)
 
-
+if __name__ == "__main__":
+    init()
 # ------------------------------------ devs ------------------------------------
 
 # cef was cool, but we're shelving it until we have more cross-platform 

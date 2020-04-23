@@ -2,7 +2,6 @@ import time, cmath
 from os import path
 from pandas import DataFrame
 from libRL.src.tools import refactoring, quick_graphs, band_funcs
-from pathos.multiprocessing import ProcessPool as Pool
 from numpy import(
     array, zeros, float64, sqrt, errstate, pi
 )

@@ -1,5 +1,4 @@
 import time
-import concurrent.futures
 from pandas import DataFrame
 from libRL.src.tools import refactoring, quick_graphs
 from pathos.multiprocessing import ProcessPool as Pool
@@ -194,18 +193,19 @@ returns Nx3 data set of [RL, f, d] by default
     if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
 
         if kwargs['multiprocessing'] is True:
-            pool = Pool()
-            res = array(pool.map(
-                refactoring.reflection_loss_function, grid
-                ))
-            pool.close()
+            with Pool() as pool:
 
-        else:
-            pool = Pool(nodes=int(kwargs['multiprocessing']))
-            res = array(pool.map(
+                res = array(pool.map(
                     refactoring.reflection_loss_function, grid
                     ))
-            pool.close()
+
+
+        else:
+            with Pool(nodes=int(kwargs['multiprocessing'])) as pool:
+
+                res = array(pool.map(
+                        refactoring.reflection_loss_function, grid
+                        ))
         
     else:
         res = array(list(map(

@@ -27,17 +27,16 @@ repository for convenience. Results are simply printed.
     """
     data_string = 'https://raw.githubusercontent.com/1mikegrn/libRL/master/test/test_data.csv'
 
+
     reflection_loss = libRL.reflection_loss(
         data=data_string,
-        f_set=(1,18,1),
-        d_set=(0,20,1),
+        f_set=(1,18,0.1),
+        d_set=(0,20,0.1),
         interp='cubic',
         multiprocessing=True,
         multicolumn=True,
         as_dataframe=True
-    )
-
-    print(reflection_loss)
+    ) 
 
     characterization = libRL.characterization(
         data=data_string,
