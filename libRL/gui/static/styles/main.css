@@ -11,6 +11,10 @@ body, html {
   background-color: #343a40;
   }
 
+a {
+  color: #00e5ff;
+}
+
 .grid {
   display: grid;
   grid-template-areas:
@@ -18,7 +22,7 @@ body, html {
   "lft ctr rgt"
   "ftr ftr ftr";
   grid-template-columns: 1fr 12fr 1fr;
-  grid-template-rows: 50px 1fr 20px;
+  grid-template-rows: 110px 1fr 20px;
 }
 
 .hdr {
@@ -31,6 +35,7 @@ body, html {
   width: 100%;
   height: 110px;
   border-bottom: 5px solid #fff;
+  z-index: 10;
 }
 
 .hdr-title {
@@ -75,31 +80,59 @@ body, html {
 .ctr {
   grid-area: ctr;
   color: #FFF;
-
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 3fr;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto;
+}
+
+.ctr-spn {
+  grid-column: 1/-1;
+  grid-row: 1/-1;
+  margin-top: 50px;
 }
 
 .ctr-lft {
   grid-column: 1;
   grid-row: 2;
-
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 5fr;
+  grid-template-rows: 100px auto;
 }
 
 .ctr-lft-lft {
-  grid-row: 2;
+  grid-row: 1;
   grid-column: 1;
   text-align: left;
+  margin: auto;
 }
 
 .ctr-lft-rgt {
-  grid-row: 2;
+  grid-row: 1;
   grid-column: 2;
+  margin: auto;
   text-align: left;
+}
+
+.ctr-lft-top {
+  grid-row: 1;
+  grid-column: 1/-1;
+  text-align: left;
+  margin: 10px;
+}
+
+.ctr-lft-btm {
+  grid-row: 2;
+  grid-column: 1/-1;
+  margin-bottom: 100px;
+  text-align: left;
+}
+
+.ctr-lft-btm-2 {
+  grid-row: 2;
+  grid-column: 1/-1;
+  margin-bottom: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .ctr-rgt {
@@ -124,6 +157,13 @@ body, html {
   text-align: left;
 }
 
+.ctr-rgt-btm {
+  grid-row: 2;
+  grid-column: 1/-1;
+  margin-bottom: 100px;
+  text-align: left;
+}
+
 .ftr {
   grid-area: ftr;
   text-align: center;
@@ -132,6 +172,7 @@ body, html {
   bottom: 0;
   width: 100%;
   height: 50px;
+  z-index: 10;
 }
 
 .inputfile {
@@ -170,6 +211,18 @@ input[type=text]:focus {
   border: 2px solid #00e5ff;
 }
 
+.spaced {
+  margin-top: 10px;
+}
+
+/* ---------------------------------------------- /*
+ * Help
+/* ---------------------------------------------- */
+
+.text {
+  font-weight: 700;
+	font-size: 14px;
+}
 
 /* ---------------------------------------------- /*
  * Custom button styles
@@ -214,4 +267,118 @@ input[type=text]:focus {
 	background: #18191a;
 	border: 2px solid #FFF;
 	color: #FFF;
+}
+
+.btn-custom-3 {
+  height: 100px;
+  width: 50px;
+  text-align: left;
+}
+
+.btn-custom-0 {
+  color: #00e5ff;
+  margin-right: 10px;
+  margin-top: 10px;
+	background: #343a40;
+	border: 2px solid #00e5ff;
+  padding: 15px 25px;
+}
+
+.btn-custom-0:hover, .btn-custom-0:focus, .btn-custom-0:active, .btn-custom-0.active {
+	background: #FFF;
+	border: 2px solid #343a40;
+	color: #343a40;
+}
+
+.btn-custom-3:hover, .btn-custom-3:focus, .btn-custom-3:active {
+	background: #FFF;
+	border: 2px solid #343a40;
+	color: #343a40;
+}
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  color: #FFF;
+	background: #343a40;
+	border: 2px solid #FFF;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background: #FFF;
+	border: 2px solid #FFF;
+	color: #000;
+}
+
+input[type=text] {
+  background-color: #fff;
+  place-self: center stretch;
+  box-sizing: border-box;
+  border: 2px solid #FFF;
+  border-radius: 4px;
+  color: #000;
+  text-align: center;
+}
+
+input[type=text]:focus {
+  border: 2px solid #00e5ff;
+}
+
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(236, 236, 236, 0.75) url(../Loading.gif) no-repeat center center;
+  z-index: 10000;
+}
+
+#bld-overlay {
+  display: none;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index:100;
+}
+
+.middle {
+  position: fixed;
+  background-color: #343a40;
+	border: 2px solid #FFF;
+  top: 25%;
+  left: 20%;
+  width: 60%;
+  height: 45%;
+  text-align: center;
+  color: #FFF;
+  z-index: 200;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.middle-itm {
+  position: absolute;
+  margin-bottom: 15px;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  display: none;
 }

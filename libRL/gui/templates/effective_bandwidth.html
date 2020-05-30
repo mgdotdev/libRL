@@ -4,8 +4,7 @@
     <meta charset='UTF-8'>
     <title>CompGen.app</title>
     <!-- CSS -->
-    <link rel= 'stylesheet' type= 'text/css' href='{{ url_for("static", filename="styles/main.css") }}'>
-  
+    <link rel= 'stylesheet' type= 'text/css' href='{{ url_for("static", filename="styles/main.css") }}'>  
   </head>
 
   <body class='grid'>
@@ -27,12 +26,14 @@
           <input class='spaced' name='frequency' placeholder="(start, stop, [step])" required>
           <label class='spaced' for="thickness">Thickness :</label>
           <input class='spaced' name='thickness' placeholder="(start, stop, step)" required>
+          <label class='spaced' for="bands">Bands :</label>
+          <input class='spaced' name='bands' placeholder="(start, stop, step)" required>                    
+          <label class='spaced' for="thrs">Threshold :</label>
+          <input class='spaced' name='thrs' placeholder=" -10"> 
         </div>
-        <div>
-          <input name='submit' type="submit" value="Calculate" style="width: 100px; height: 25px; margin-top: -50px;">
-        </div>
+        <input name='submit' type="submit" value="Calculate" style="width: 100px; height: 25px; margin-top: -50px;">
       </div>
-      <div class="ctr-rgt" style="margin-top: 20px;">
+        <div class="ctr-rgt" style="margin-top: 20px;">
         <div class="ctr-rgt-lft" style="position: absolute;">
           <h3>Options</h3>
           <label for="override">Override: </label>
@@ -56,15 +57,14 @@
           <br><br>
           <input type="checkbox" name="graph" id="graph" value="off" style="margin-bottom: 100px;">
           <label for="graph">Graph</label>
-          <br>
         </div>
       </div>
       <div id="loader" style='display: none;'></div>
     </form>
 
     <div class='ftr'>
-      <a class="btn btn-custom-0" href="/reflection_loss">Reflection Loss</a>
-      <a class="btn btn-custom-1" href="/effective_bandwidth">Effective Bandwidth</a>
+      <a class="btn btn-custom-1" href="/reflection_loss">Reflection Loss</a>
+      <a class="btn btn-custom-0" href="/effective_bandwidth">Effective Bandwidth</a>
       <a class="btn btn-custom-1" href="/characterization">Characterization</a>
     </div>          
   </body>
@@ -82,7 +82,7 @@
     var spinner = document.getElementById('loader');
     spinner.style.display = "block";
 
-    xhr.open('POST', '/reflection_loss', true);
+    xhr.open('POST', '/effective_bandwidth', true);
     xhr.responseType = 'blob';
 
     xhr.send(formData);
@@ -96,4 +96,5 @@
       link.remove();
     }
   }
+
 </script>

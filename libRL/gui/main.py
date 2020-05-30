@@ -1,106 +1,22 @@
+import glob
 import libRL
-import multiprocessing
-from os import path
-from flask import Flask, render_template
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired
-from wtforms.validators import DataRequired
-from werkzeug.utils import secure_filename
-from wtforms import(
-    StringField, SubmitField, 
-    BooleanField, RadioField, 
-    FloatField
-)
+import shutil
+import datetime
+from os import path, remove, mkdir, rmdir
+from flask import Flask, render_template, request, send_from_directory
+from numpy.random import randint
+import pandas as pd
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'go on then, keep your secrets'
 
+here = path.abspath(path.dirname(__file__))
 
-class TextForms(FlaskForm):
-    file_input = FileField(
-        'File Input :', 
-        validators=[FileRequired()]
-    )
-    
-    frequency = StringField(
-        'Frequency :', 
-        validators=[DataRequired()],
-        render_kw={"placeholder": "(start, stop, [step])"}
-    )
-
-    thickness = StringField('Thickness :', 
-        validators=[DataRequired()],
-        render_kw={"placeholder": "(start, stop, [step])"}    
-    )
-
-    save_location = StringField('Save Location :', 
-        render_kw={"placeholder": r"~\Desktop"}
-    )
-
-    submit = SubmitField('Start')
-
-
-class ReflectionLossForm(TextForms):
-
-    multi = BooleanField('Multiprocessing: ')
-    graph = BooleanField('Graph: ')
-
-    interp = RadioField(
-        'Interpolation Method:',
-        choices=[('cspline','CSpline'),('linear','Linear')],
-        default='cspline'
-    )
-
-    override = RadioField(
-        'Override:',
-        choices=[('','None'),('chi Zero','Chi Zero'),('eps set','Eps Set')],
-        default=''
-    )
-
-
-class CharacterizationForm(TextForms):
-
-    multi = BooleanField('Multiprocessing: ')
-    graph = BooleanField('Graph: ')
-
-    interp = RadioField(
-        'Interpolation Method:',
-        choices=[('cspline','CSpline'),('linear','Linear')],
-        default='cspline'
-    )
-
-    override = RadioField(
-        'Override:',
-        choices=[('','None'),('chi zero','Chi Zero'),('eps set','Eps Set')],
-        default=''
-    )
-    
-
-class BandwidthForm(TextForms):
-    thrs = FloatField(
-        'Threshold :',
-        render_kw={"placeholder": "-10"}
-    )
-
-    bands = StringField(
-        'Bands :', 
-        validators=[DataRequired()],
-        render_kw={"placeholder": "(start, stop, [step])"}    
-    )
-
-    graph = BooleanField('Graph: ')
-
-    interp = RadioField(
-        'Interpolation Method:',
-        choices=[('cspline','CSpline'),('linear','Linear')],
-        default='cspline'
-    )
-
-    override = RadioField(
-        'Override:',
-        choices=[('','None'),('chi zero','Chi Zero'),('eps set','Eps Set')],
-        default=''
-    )
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -109,92 +25,109 @@ def index():
 
 
 @app.route('/reflection_loss', methods=['GET','POST'])
-def reflection_loss_page():
+def reflection_loss():
 
-    form = ReflectionLossForm()
-    
-    if form.is_submitted():
+    form = dict(request.form)
 
-        if form.save_location.data == '':
-            quick_save = path.expanduser(r"~\Desktop")
+    quick_graph = False
+
+    if len(form.keys()) > 1:       
+        save_loc = prep_tmp('rl')
+
+        if 'graph' in form.keys():
+            quick_graph = save_loc
         else:
-            quick_save = form.save_location.data
+            quick_graph = False
 
-        if form.graph.data is True:
-            quick_graph = path.expanduser(r"~\Desktop")
-        else:
-            quick_graph = form.save_location.data
+        input_file = request.files['input']
 
-        libRL.reflection_loss(
-            data=form.file_input.data,
-            f_set=string_fmt(form.frequency.data),
-            d_set=string_fmt(form.thickness.data),
-            interp=form.interp.data,
-            multiprocessing=form.multi.data,
-            override=form.override.data,
-            quick_save=quick_save,
+        res = libRL.reflection_loss(
+            data=input_file,
+            f_set = string_fmt(form['frequency']),
+            d_set = string_fmt(form['thickness']),
+            interp=form['interp'],
+            multicolumn=True,
+            as_dataframe=True,
             quick_graph=quick_graph
         )
 
-    return render_template('reflection_loss.html', form=form)
+        name = path.splitext(input_file.filename)[0]
 
-@app.route('/characterization', methods=['GET', 'POST'])
-def characterization_page():
+        res.to_csv(path.join(save_loc, name+'.csv'))
+        zipUp('rl')
+
+        return resultant()
+
+    return render_template('reflection_loss.html')
+
+@app.route('/characterization', methods=['GET','POST'])
+def characterization():
     
-    form = CharacterizationForm()
+    form = dict(request.form)
 
-    if form.is_submitted():
+    if len(form.keys()) > 1:
 
-        if form.save_location.data == '':
-            quick_save = path.expanduser(r"~\Desktop")
+        save_loc = prep_tmp('char')
+
+        input_file = request.files['input']
+
+        res = libRL.characterization(
+            data=input_file,
+            f_set = string_fmt(form['frequency']),
+            params='all',
+            as_dataframe=True,
+        )
+
+        name = path.splitext(input_file.filename)[0]
+
+        res.to_csv(path.join(save_loc, name+'.csv'))
+
+        zipUp('char')
+
+        return resultant()
+
+    return render_template('characterization.html')
+
+@app.route('/effective_bandwidth', methods=['GET','POST'])
+def effective_bandwidth():
+
+    form = dict(request.form)
+
+    quick_graph = False
+
+    if len(form.keys()) > 1:
+        save_loc = prep_tmp('band')
+
+        if 'graph' in form.keys():
+            quick_graph = save_loc
         else:
-            quick_save = form.save_location.data
+            quick_graph = False
 
-        libRL.characterization(
-            data=form.file_input.data,
-            f_set=string_fmt(form.frequency.data),
-            interp=form.interp.data,
-            multiprocessing=form.multi.data,
-            override=form.override.data,
-            quick_save=quick_save
-        )        
-
-    return render_template('characterization.html', form=form)
-
-@app.route('/bandwidth', methods=['GET', 'POST'])
-def bandwidth_page():
-    form = BandwidthForm()
-
-    if form.is_submitted():
-
-        if form.save_location.data == '':
-            quick_save = path.expanduser(r"~\Desktop")
-        else:
-            quick_save = form.save_location.data
-
-        if form.graph.data is True:
-            quick_graph = path.expanduser(r"~\Desktop")
-        else:
-            quick_graph = form.save_location.data
-
-        if isinstance(form.thrs.data, type(None)) is True:
+        try:
+            thrs = float(form['thrs'])
+        except:
             thrs = -10
-        else:
-            thrs = form.thrs.data
 
-        libRL.band_analysis(
-            data=form.file_input.data,
-            f_set=string_fmt(form.frequency.data),
-            d_set=string_fmt(form.thickness.data),
-            m_set=string_fmt(form.bands.data),
-            thrs=thrs,
-            interp=form.interp.data,
-            override=form.override.data,
-            quick_save=quick_save,
-            quick_graph=quick_graph
+        input_file = request.files['input']
+
+        res = libRL.band_analysis(
+            data=input_file,
+            f_set = string_fmt(form['frequency']),
+            d_set = string_fmt(form['thickness']),
+            m_set = string_fmt(form['bands']),
+            thrs = thrs,
+            as_dataframe=True,
+            quick_graph = quick_graph
         )
 
-    return render_template('bandwidth.html', form=form)
+        name = path.splitext(input_file.filename)[0]
+ 
+        res.to_csv(path.join(save_loc, name+'.csv'))
+        zipUp('band')
+
+        return resultant()
+
+    return render_template('effective_bandwidth.html')
 
 def string_fmt(string):
     remove = ['(',')']
@@ -203,5 +136,45 @@ def string_fmt(string):
     string=string.split(',')
     return tuple([float(x) for x in string])
 
+def prep_tmp(item):
+
+    save_loc = path.join(here, 'tmp', item)
+
+    try:
+        mkdir(save_loc)
+    except: pass
+
+    try:
+        tmp_files = glob.glob(path.join(here, 'tmp', item, '**'))
+        for file_to_remove in tmp_files:
+            remove(file_to_remove)
+    except: pass
+
+    return save_loc
+
+def zipUp(temp_file):
+
+    shutil.make_archive(
+        path.join(here, 'tmp', 'results'),
+        'zip', 
+        path.join(here, 'tmp', temp_file)
+    )
+
+    print(
+        '\nsaving .zip file at ' 
+        + str(path.join(here, 'tmp', 'results.zip'))
+        +'\n'
+    )
+
+def resultant():
+    return send_from_directory(
+        path.join(here, 'tmp'), 
+        'results.zip',
+        as_attachment=True
+    )
+
 def run_app(port):
     app.run(host='localhost', port=port)
+
+# if __name__ == "__main__":
+#     run_app(5000)

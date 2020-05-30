@@ -2,45 +2,90 @@
 <html lang='en'>
   <head>
     <meta charset='UTF-8'>
-    <title>libRL.app</title>
+    <title>CompGen.app</title>
     <!-- CSS -->
-    <link rel= 'stylesheet' type= 'text/css' href='{{ url_for("static",filename="styles/main.css") }}'>
+    <link rel= 'stylesheet' type= 'text/css' href='{{ url_for("static", filename="styles/main.css") }}'>
+  
   </head>
 
   <body class='grid'>
     <div class='hdr'>
       <a class='hdr-title'>libRL.app</a>
-      <a class='hdr-tag'>A Python library for the characterization of Microwave Absorption<br>Built on Flask/Chromium </a>
+      <a class='hdr-tag'>A Python library for the characterization of Microwave Absorption<br>Built on Flask</a>
     </div>
-    <form class='ctr' method="POST" enctype="multipart/form-data">
-      {{ form.hidden_tag() }}
-      <div class="ctr-lft">
-        {{ form.file_input }}
+
+    <form id="formData" class="ctr" method="POST" enctype="multipart/form-data">
+      <div class='ctr-lft'>
         <div class="ctr-lft-lft">
-          {{ form.frequency.label }} <br>
-          {{ form.save_location.label }} <br>
-          <br><br> {{ form.submit }}
+          <input type="file" name='input' required>
         </div>
         <div class="ctr-lft-rgt">
-        {{ form.frequency }} <br>
-        {{ form.save_location(rows=3, multiple=True) }} <br>
+          <p>&nbsp</p>
+        </div> 
+        <div class="ctr-lft-btm-2">
+          <label class='spaced' for="frequency">Frequency :</label>
+          <input class='spaced' name='frequency' placeholder="(start, stop, [step])" required>
+        </div>
+        <input name='submit' type="submit" value="Calculate" style="width: 100px; height: 25px; margin-top: -50px;">
+      </div>
+      <div class="ctr-rgt" style="margin-top: 20px;">
+        <div class="ctr-rgt-lft" style="position: absolute;">
+          <h3>Options</h3>
+          <label for="override">Override: </label>
+          <br>
+          <input type="radio" id="None" name="override" value="none" checked>
+          <label for="None">None</label>
+          <br>
+          <input type="radio" id="Chi Zero" name="override" value="chi zero">
+          <label for="Chi Zero">Chi Zero</label>
+          <br>
+          <input type="radio" id="Eps Set" name="override" value="eps set">
+          <label for="Eps Set">Eps Set</label>
+          <br><br>
+          <label for="interp">Interpolation Method: </label>
+          <br>
+          <input type="radio" id="Cubic" name="interp" value="cubic" checked>
+          <label for="Cubic">Cubic</label>
+          <br>
+          <input type="radio" id="Linear" name="interp" style="margin-bottom: 100px;" value="linear">
+          <label for="Linear">Linear</label>
         </div>
       </div>
-      <div class="ctr-rgt">
-        <h4 style='margin-bottom: -5px;'>Options</h4>
-        <div class="ctr-rgt-lft">
-        {{ form.override.label }} {{ form.override(style="list-style:none; margin-bottom:-10px;") }} <br>
-        {{ form.interp.label }} {{ form.interp(style="list-style:none; margin-bottom:50px;") }}
-        </div>
-        <div class="ctr-rgt-rgt">
-        {{ form.multi.label }} {{ form.multi }}
-        </div>
-      </div>
+      <div id="loader" style='display: none;'></div>
     </form>
+
     <div class='ftr'>
       <a class="btn btn-custom-1" href="/reflection_loss">Reflection Loss</a>
-      <a class="btn btn-custom-1" href="/characterization">Characterization</a>
-      <a class="btn btn-custom-1" href="/bandwidth">Bandwidth</a>
+      <a class="btn btn-custom-1" href="/effective_bandwidth">Effective Bandwidth</a>
+      <a class="btn btn-custom-0" href="/characterization">Characterization</a>
     </div>          
   </body>
 </html>
+
+<script>
+  var form = document.getElementById('formData');
+  form.onsubmit = function(c) {
+
+    c.preventDefault();
+
+    var formData = new FormData(form);
+    
+    var xhr = new XMLHttpRequest();
+    var spinner = document.getElementById('loader');
+    spinner.style.display = "block";
+
+    xhr.open('POST', '/characterization', true);
+    xhr.responseType = 'blob';
+
+    xhr.send(formData);
+
+    xhr.onload = function () {
+      spinner.style.display = "none";
+      var link = document.createElement("a");
+      link.href = URL.createObjectURL(xhr.response);
+      link.download = "results.zip";
+      link.click();
+      link.remove();
+    }
+  }
+</script>
