@@ -41,9 +41,6 @@ setup(
         'matplotlib',
         'cython',
         'flask',
-        'flask-wtf',
-        'wtforms',
-        'werkzeug'
     ],
 
     entry_points={
