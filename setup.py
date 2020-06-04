@@ -7,6 +7,8 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+extensions = cythonize("**/*.pyx")
+
 setup(
     name='libRL',
     version='1.2.0 α',
@@ -27,7 +29,7 @@ setup(
 
     include_package_data=True,
 
-    ext_modules=cythonize("**/*.pyx"),
+    ext_modules=extensions,
 
     python_requires='>=3.6',
 
