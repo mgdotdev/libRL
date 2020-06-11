@@ -14,6 +14,8 @@ https://1mikegrn.github.io/libRL/#examples
 
 import libRL
 import pandas as pd
+import numpy as np
+from os import path
 
 def main():
     """
@@ -25,38 +27,41 @@ repository for convenience. Results are simply printed.
     :return: nothing
 
     """
-    data_string = 'https://raw.githubusercontent.com/1mikegrn/libRL/master/test/test_data.csv'
 
-
+    here = path.dirname(path.abspath(__file__))
+    data_string = path.join(here, 'test', 'test_data.csv')
+    
     reflection_loss = libRL.reflection_loss(
         data=data_string,
-        f_set=(1,18,0.1),
-        d_set=(0,20,0.1),
+        f_set=(1,18,0.25),
+        d_set=(0,20,0.25),
         interp='cubic',
         multiprocessing=True,
         multicolumn=True,
         as_dataframe=True
     ) 
 
-    characterization = libRL.characterization(
-        data=data_string,
-        f_set=(1,18,0.1),
-        params='all',
-        as_dataframe=True
-    )
+    print(reflection_loss)
 
-    print(characterization)
+    # characterization = libRL.characterization(
+    #     data=data_string,
+    #     f_set=(1,18,0.25),
+    #     params='all',
+    #     as_dataframe=True
+    # )
 
-    band_analysis = libRL.band_analysis(
-        data=data_string,
-        f_set=(1,18,0.1),
-        d_set=(1,5,0.1),
-        m_set=[1,2,3,4,5],
-        thrs=-10,
-        as_dataframe=True,
-    )
+    # print(characterization)
 
-    print(band_analysis)
+    # band_analysis = libRL.band_analysis(
+    #     data=data_string,
+    #     f_set=(1,18,0.1),
+    #     d_set=(1,5,0.1),
+    #     m_set=[1,2,3,4,5],
+    #     thrs=-10,
+    #     as_dataframe=True,
+    # )
+
+    # print(band_analysis)
 
 if __name__ == "__main__":
     main()

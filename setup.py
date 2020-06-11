@@ -1,13 +1,10 @@
 from setuptools import setup, find_packages
-from Cython.Build import cythonize
 from os import path
 
-here = path.abspath(path.dirname(__file__))
+here = path.dirname(path.abspath(__file__))
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
-
-extensions = cythonize("**/*.pyx")
 
 setup(
     name='libRL',
@@ -29,8 +26,6 @@ setup(
 
     include_package_data=True,
 
-    ext_modules=extensions,
-
     python_requires='>=3.6',
 
     install_requires=[
@@ -41,7 +36,6 @@ setup(
         'xlrd',
         'openpyxl',
         'matplotlib',
-        'cython',
         'flask',
     ],
 

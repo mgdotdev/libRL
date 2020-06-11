@@ -1,6 +1,6 @@
 import time
 from pandas import DataFrame
-from libRL.src.tools import refactoring, quick_graphs
+from libRL.src.tools import refactoring, quick_graphs, gamma
 from pathos.multiprocessing import ProcessPool as Pool
 from numpy import(
     array, zeros, arange
@@ -158,6 +158,7 @@ returns Nx3 data set of [RL, f, d] by default
     if 'quick_save' in kwargs:
         if kwargs['quick_save'] is True:
             kwargs['quick_save'], file_name = refactoring.qref(data)
+            
         kwargs['as_dataframe'] = True
         kwargs['multicolumn'] = True
 
@@ -173,44 +174,59 @@ returns Nx3 data set of [RL, f, d] by default
     # in 'refactoring.py'
     f_set = refactoring.f_set_ref(f_set, data)
     d_set = refactoring.d_set_ref(d_set)
+   
+    # bypass to C++ subroutine (if compiled)
+    if gamma.test_Cgamma() == 1:
 
-    # construct a data grid for mapping from refactored data sets
-    # d *must* be first as list comprehension cycles through f_set
-    # for each d value, and this is deterministic of the structure
-    # of the resultant.
-    grid = [(e1f, e2f, mu1f, mu2f, m, n)
-            for n in d_set
-            for m in f_set
-            ]
+        res = array(gamma.gamma(
+            list(f_set), list(d_set), 
+            [e1f(f) for f in f_set],
+            [e2f(f) for f in f_set],
+            [mu1f(f) for f in f_set],
+            [mu2f(f) for f in f_set]
+        ))
 
-    # if multiprocessing is given as True use all available nodes
-    # if multiprocessing is given and is a non-zero
-    # integer, use int value for number of nodes
-    # if multiprocessing is given as anything else, ignore it.
-    # returns res of Zx3 data where Z is the product
-    # of len(f_set) and len(d_set)
+    else:
 
-    if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
+        # construct a data grid for mapping from refactored data sets
+        # d *must* be first as list comprehension cycles through f_set
+        # for each d value, and this is deterministic of the structure
+        # of the resultant.
+        grid = [(e1f, e2f, mu1f, mu2f, m, n)
+                for n in d_set
+                for m in f_set
+                ]
 
-        if kwargs['multiprocessing'] is True:
-            with Pool() as pool:
+        # if multiprocessing is given as True use all available nodes
+        # if multiprocessing is given and is a non-zero
+        # integer, use int value for number of nodes
+        # if multiprocessing is given as anything else, ignore it.
+        # returns res of Zx3 data where Z is the product
+        # of len(f_set) and len(d_set)
 
-                res = array(pool.map(
-                    refactoring.reflection_loss_function, grid
-                    ))
+        if 'multiprocessing' in kwargs and int(kwargs['multiprocessing']) > 0:
 
+            if kwargs['multiprocessing'] is True:
+                with Pool() as pool:
 
-        else:
-            with Pool(nodes=int(kwargs['multiprocessing'])) as pool:
-
-                res = array(pool.map(
+                    res = array(pool.map(
                         refactoring.reflection_loss_function, grid
                         ))
+
+
+            else:
+                with Pool(nodes=int(kwargs['multiprocessing'])) as pool:
+
+                    res = array(pool.map(
+                            refactoring.reflection_loss_function, grid
+                            ))
+            
+        else:
+            res = array(list(map(
+                refactoring.reflection_loss_function, grid
+                )))
         
-    else:
-        res = array(list(map(
-            refactoring.reflection_loss_function, grid
-            )))
+        print(res)
 
     # takes data derived from computation and the file directory string and
     # generates a graphical image at the at location.
@@ -229,7 +245,7 @@ returns Nx3 data set of [RL, f, d] by default
         # get frequency values from grid so
         # to normalize the procedure due to the
         # various frequency input methods
-        gridInt = int(len(grid) / len(d_set))
+        gridInt = len(f_set)
 
         # zero-array of NxM where N is the frequency
         # values and M is 3 times the
@@ -241,8 +257,8 @@ returns Nx3 data set of [RL, f, d] by default
         # map the Zx3 result array to the NxM array
         for i in arange(int(MCres.shape[1] / 3)):
             MCres[:, 3 * i:3 * i + 3] = res[
-                                        i * gridInt:(i + 1) * gridInt, 0:3
-                                        ]
+                i * gridInt:(i + 1) * gridInt, 0:3
+            ]
 
         # stick the MultiColumn Array in the place of the results array
         res = MCres

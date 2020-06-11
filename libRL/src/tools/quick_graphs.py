@@ -98,8 +98,8 @@ string directory location of where to save the resulting graphical image.
 
     ax.tick_params(labelsize=10, pad=0)
     ax.tick_params(axis='z', pad=3)
-    ax.set_xlabel('Frequency / GHz', fontsize=12)
-    ax.set_ylabel('Thickness / mm', fontsize=12)
+    ax.set_ylabel('Frequency / GHz', fontsize=12)
+    ax.set_xlabel('Thickness / mm', fontsize=12)
 
     ax.xaxis.set_major_locator(plt.MaxNLocator(5))
     ax.yaxis.set_major_locator(plt.MaxNLocator(5))

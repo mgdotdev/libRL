@@ -51,7 +51,7 @@ import cmath, time
 from werkzeug.datastructures import FileStorage
 
 from numpy import (
-    arange, delete, abs, array,
+    arange, delete, abs, array, ndarray,
     argmin, float64, average, sqrt
 )
 
@@ -102,7 +102,11 @@ refactored data set of Nx5 dimensionality in numpy array
                    'to an Nx5 numpy array with columns ' \
                    '[freq, e1, e2, mu1, mu2]'
         raise RuntimeError(error_msg)
-    
+
+    # exit point if data is already parsed into Nx5 numpy array
+    if isinstance(dataFile, ndarray) is True:
+        return dataFile
+
     # allows for file location to be passed as the data variable.
     elif isinstance(dataFile, str) is True:
 
