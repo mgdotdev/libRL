@@ -14,7 +14,6 @@ https://1mikegrn.github.io/libRL/#examples
 
 import libRL
 import pandas as pd
-import numpy as np
 from os import path
 
 def main():
@@ -43,25 +42,25 @@ repository for convenience. Results are simply printed.
 
     print(reflection_loss)
 
-    # characterization = libRL.characterization(
-    #     data=data_string,
-    #     f_set=(1,18,0.25),
-    #     params='all',
-    #     as_dataframe=True
-    # )
+    characterization = libRL.characterization(
+        data=data_string,
+        f_set=(1,18,0.25),
+        params='all',
+        as_dataframe=True
+    )
 
-    # print(characterization)
+    print(characterization)
 
-    # band_analysis = libRL.band_analysis(
-    #     data=data_string,
-    #     f_set=(1,18,0.1),
-    #     d_set=(1,5,0.1),
-    #     m_set=[1,2,3,4,5],
-    #     thrs=-10,
-    #     as_dataframe=True,
-    # )
+    band_analysis = libRL.band_analysis(
+        data=data_string,
+        f_set=(1,18,0.1),
+        d_set=(1,5,0.1),
+        m_set=[1,2,3,4,5],
+        thrs=-10,
+        as_dataframe=True,
+    )
 
-    # print(band_analysis)
+    print(band_analysis)
 
 if __name__ == "__main__":
     main()

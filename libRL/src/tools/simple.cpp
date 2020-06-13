@@ -27,7 +27,7 @@ double reflection_loss(
 };
 
 
-static PyObject* Cgamma(
+static PyObject *Cgamma(
         PyObject *f, PyObject *d, PyObject *e1, 
         PyObject *e2, PyObject *mu1, PyObject *mu2
     ) {
@@ -75,6 +75,12 @@ static PyObject* Cgamma(
             count += 1;
         };
     };
+
+    for (int i=0; i<sizeof(NA)/sizeof(*NA); i++){
+        delete[] NA[i];
+    };
+
+    delete[] d_cpp;
 
     return outer;
 };
