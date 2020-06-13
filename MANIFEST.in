@@ -1,1 +1,1 @@
-recursive-include libRL *.html *.css *.pyx *.txt *.ico *.gif *.cpp
+recursive-include libRL *.html *.css *.pyx *.txt *.ico *.gif *.cpp *.c
