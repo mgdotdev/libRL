@@ -23,6 +23,8 @@ later date to generate sets of graphs in a directory for each parameter,
 but to be frank, it's not too high on my list of priorities.
 
 """
+import matplotlib
+matplotlib.use('Agg')
 
 from os import path
 from matplotlib import colors, pyplot as plt, rcParams
@@ -42,7 +44,7 @@ rcParams['ytick.major.width'], rcParams['xtick.major.width'] = lw, lw
 rcParams['ytick.major.size'], rcParams['xtick.major.size'] = tck, tck
 
 
-def quick_graph_reflection_loss(results, location):
+def quick_graph_reflection_loss(results, location, file_name):
     """
 
     quick and dirty default graphing protocols for the band analysis.
@@ -145,12 +147,12 @@ string directory location of where to save the resulting graphical image.
         plt.show()
 
     else:
-        fig.savefig(path.join(location, 'quick_graph RL.png'))
+        fig.savefig(path.join(location, 'reflection_loss ' + file_name + ' quick_graph.png'))
 
     plt.close()
 
 
-def quick_graph_band_analysis(bands, d_vals, m_vals, location):
+def quick_graph_band_analysis(bands, d_vals, m_vals, location, file_name):
     """
 
     quick and dirty default graphing protocols for the band analysis.
@@ -216,6 +218,6 @@ string directory location of where to save the resulting graphical image.
         plt.show()
 
     else:
-        fig.savefig(path.join(location, 'quick_graph band_analysis.png'))
+        fig.savefig(path.join(location, 'band_analysis ' + file_name + ' quick_graph.png'))
 
     plt.close()

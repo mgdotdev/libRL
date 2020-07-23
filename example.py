@@ -16,6 +16,8 @@ import libRL
 import pandas as pd
 from os import path
 
+import glob
+
 def main():
     """
 
@@ -27,40 +29,46 @@ repository for convenience. Results are simply printed.
 
     """
 
-    here = path.dirname(path.abspath(__file__))
-    data_string = path.join(here, 'test', 'test_data.csv')
-    
-    reflection_loss = libRL.reflection_loss(
-        data=data_string,
-        f_set=(1,18,0.25),
-        d_set=(0,20,0.25),
-        interp='cubic',
-        multiprocessing=True,
-        multicolumn=True,
-        as_dataframe=True
-    ) 
+    files = glob.glob(r'C:\Users\1mike\Desktop\results\**.csv')
 
-    print(reflection_loss)
+    for f in files:
 
-    characterization = libRL.characterization(
-        data=data_string,
-        f_set=(1,18,0.25),
-        params='all',
-        as_dataframe=True
-    )
+        data_string = f
 
-    print(characterization)
+        reflection_loss = libRL.reflection_loss(
+            data=data_string,
+            f_set=(1,18,0.1),
+            d_set=(0,20,0.1),
+            interp='cubic',
+            multicolumn=True,
+            as_dataframe=True,
+            quick_save=True,
+            quick_graph=True
+        ) 
 
-    band_analysis = libRL.band_analysis(
-        data=data_string,
-        f_set=(1,18,0.1),
-        d_set=(1,5,0.1),
-        m_set=[1,2,3,4,5],
-        thrs=-10,
-        as_dataframe=True,
-    )
+        print(reflection_loss)
 
-    print(band_analysis)
+        characterization = libRL.characterization(
+            data=data_string,
+            f_set=(1,18,0.1),
+            params='all',
+            as_dataframe=True       
+        )
+
+        print(characterization)
+
+        band_analysis = libRL.band_analysis(
+            data=data_string,
+            f_set=(1,18,0.1),
+            d_set=(1,5,0.1),
+            m_set=[1,2,3,4,5],
+            thrs=-10,
+            as_dataframe=True,
+            quick_save=True,
+            quick_graph=True            
+        )
+
+        print(band_analysis)
 
 if __name__ == "__main__":
     main()

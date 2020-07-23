@@ -1,3 +1,10 @@
+/*
+Originally written in C, but ported over to Cpp better dynamic memory allocation
+and deallocation, and complex variable handling. I'll eventually refactor this 
+to be full Cpp, but for now it works fine. 
+*/
+
+
 #define _USE_MATH_DEFINES
 
 #include <Python.h>
@@ -78,9 +85,11 @@ static PyObject *Cgamma(
 
     for (int i=0; i<sizeof(NA)/sizeof(*NA); i++){
         delete[] NA[i];
+        NA[i] = nullptr;
     };
 
     delete[] d_cpp;
+    d_cpp = nullptr;
 
     return outer;
 };

@@ -243,7 +243,8 @@ correspond with the m_set.
             bands=band_results,
             d_vals = d_set,
             m_vals = m_set,
-            location=kwargs['quick_graph']
+            location=kwargs['quick_graph'],
+            file_name=file_name
         )
 
     if 'as_dataframe' in kwargs and kwargs['as_dataframe'] is True:

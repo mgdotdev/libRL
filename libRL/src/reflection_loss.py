@@ -226,7 +226,7 @@ returns Nx3 data set of [RL, f, d] by default
                 refactoring.reflection_loss_function, grid
                 )))
         
-        print(res)
+    res[:,0][res[:,0]>0] = 0
 
     # takes data derived from computation and the file directory string and
     # generates a graphical image at the at location.
@@ -235,7 +235,7 @@ returns Nx3 data set of [RL, f, d] by default
             ) is True:
 
         quick_graphs.quick_graph_reflection_loss(
-            results=res, location=kwargs['quick_graph']
+            results=res, location=kwargs['quick_graph'], file_name=file_name
             )
 
     # formatting option, sometimes professors
