@@ -29,6 +29,7 @@ setup(
         "Intended Audience :: STEM research",
         "License :: OSI Approved :: GPL-3.0 License",
     ],
+    entry_points={"console_scripts": ["libRL=libRL.__main__:main"]},
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=["scipy",],

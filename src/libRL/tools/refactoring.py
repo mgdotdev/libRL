@@ -57,9 +57,13 @@ def _parse_m_set(m_set):
 
 
 def stepwise(start, stop, step=None):
-    _, precision = str(float(step)).split('.')
-    for i in range(int((stop - start) / step)):
-        yield round(start + (step * i), len(precision))
+    if not step:
+        for i in range(int(start), int(stop)):
+            yield i
+    else:
+        _, precision = str(float(step)).split(".")
+        for i in range(int((stop - start) / step)):
+            yield round(start + (step * i), len(precision))
 
 
 def interpolations(f, e1, e2, mu1, mu2, mode="cubic"):

@@ -3,7 +3,8 @@ import cmath
 
 from numpy import sqrt, pi, array
 
-from .tools.refactoring import parse, stepwise, interpolations
+from .tools.refactoring import parse, interpolations
+from .tools.writer import characterization as write
 
 # constants
 j = cmath.sqrt(-1)  # definition of j
@@ -13,7 +14,10 @@ Z0 = 376.730313461  # intrinsic impedance
 e0 = 8.854188 * 10 ** (-12)  # permittivity of free space
 
 
-def characterization(data=None, f_set=None, params="all", **kwargs):
+def characterization(data=None, f_set=None, params=None, **kwargs):
+    if params is None:
+        params = ["all"]
+
     if isinstance(data, str):
         data = parse.file(data)
         f, e1, e2, mu1, mu2 = data
@@ -22,31 +26,17 @@ def characterization(data=None, f_set=None, params="all", **kwargs):
     fns = interpolations(f, e1, e2, mu1, mu2, interpolation_mode)
     chars = Characterizations(*fns)
 
-    if params == "all":
-        params = [
-            "tgde",
-            "tgdu",
-            "Qe",
-            "Qu",
-            "Qf",
-            "ReRefIndx",
-            "ExtCoeff",
-            "AtnuCnstNm",
-            "AtnuCnstdB",
-            "PhsCnst",
-            "PhsVel",
-            "Res",
-            "React",
-            "Condt",
-            "Skd",
-            "Eddy",
-        ]
+    if params == ["all"]:
+        params = list(chars._CHARACTERIZATION_MAPPING.keys())
 
     if type(params) != list:
         raise TypeError("params arg must be 'all' or a list of params")
 
-    results = {param: chars[param](f).tolist() for param in params}
+    f_set = parse.f_set(f_set, f)
+    results = {"f": f_set, **{param: chars[param](f_set).tolist() for param in params}}
 
+    if filename := kwargs.get("save"):
+        return write(results, filename)
     return results
 
 

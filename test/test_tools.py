@@ -1,12 +1,11 @@
 import math
 
+from libRL.__main__ import _fdm_format
 from libRL.tools.extensions import gamma, test_extension
-
 from libRL.tools.redundancies import gamma as py_gamma
-
 from libRL.tools.refactoring import parse
 
-from .utils import Expectation, Fixture
+from .utils import Expectation
 
 
 def _is_tolerable(a, b):
@@ -15,9 +14,23 @@ def _is_tolerable(a, b):
     return False
 
 
+def test_fdm_format():
+    actual = _fdm_format(int, "1,2,3")
+    assert actual == (1, 2, 3)
+    actual = _fdm_format(int, "1,2")
+    assert actual == (1, 2)
+    actual = _fdm_format(float, "1")
+    assert actual == (1.0,)
+    actual = _fdm_format(float, "[1,2,3]")
+    assert actual == [1.0, 2.0, 3.0]
+    actual = _fdm_format(int, "[1,2,3]")
+    assert actual == [1, 2, 3]
+
+
 class TestExtensions:
     def test_extension(self):
-        assert test_extension()
+        actual = test_extension()
+        assert actual in (1, 0)
 
     def test_gamma(self):
         # RL(0,0,0,0,0,0) converges at -inf
@@ -51,8 +64,7 @@ class TestRedundancies:
 
 
 class TestRefactors:
-    def test_parse(self):
-        fixture = Fixture("paraffin_data.csv")
-        actual = parse.file(fixture.name)
+    def test_parse(self, paraffin_fixture):
+        actual = parse.file(paraffin_fixture.name)
         expected = Expectation("test_parse.json")
         assert actual == expected.read()

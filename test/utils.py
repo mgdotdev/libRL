@@ -5,6 +5,9 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 
 
 class LocalFileUtil:
+    def __init__(self, name) -> None:
+        self._name = name
+
     @property
     def name(self):
         return self._name
@@ -35,9 +38,9 @@ class LocalFileUtil:
 
 class Fixture(LocalFileUtil):
     def __init__(self, name) -> None:
-        self._name = os.path.join(HERE, "fixtures", name)
+        super().__init__(os.path.join(HERE, "fixtures", name))
 
 
 class Expectation(LocalFileUtil):
     def __init__(self, name) -> None:
-        self._name = os.path.join(HERE, "expectations", name)
+        super().__init__(os.path.join(HERE, "expectations", name))
