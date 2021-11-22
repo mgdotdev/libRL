@@ -11,6 +11,11 @@ class TestCharacterization:
         actual = libRL.characterization(paraffin_fixture.name, f_set=(1, 18, 1))
         assert actual == expected.read()
 
+    def test_chars_chi_zero(self, material_fixture):
+        expected = Expectation("characterization_chi_zero.json")
+        actual = libRL.characterization(material_fixture.name, f_set=(1, 18, 1), override="x0")
+        assert actual == expected.read()
+
     def test_save_chars(self, paraffin_fixture, tempdir):
         filename = "test_save_chars.csv"
         filepath = os.path.join(tempdir.name, filename)

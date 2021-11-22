@@ -1,6 +1,8 @@
 import csv
 import cmath
 
+import numpy as np
+
 from types import SimpleNamespace
 
 from numpy import sqrt
@@ -71,12 +73,13 @@ def interpolations(f, e1, e2, mu1, mu2, mode="cubic", override=None):
         interp1d(f, p, kind=mode, fill_value="extrapolate") for p in (e1, e2, mu1, mu2)
     ]
     if override == "x0":
-        fns[2] = lambda f: 1.0
-        fns[3] = lambda f: 0.0
+        fns[2] = lambda f: 0*np.array(f)+1
+        fns[3] = lambda f: 0*np.array(f)
     elif override == "es":
-        fns[0] = lambda f: sum(e1) / len(e1)
-        fns[1] = lambda f: 0.0
+        fns[0] = lambda f: np.average(np.array(f))
+        fns[1] = lambda f: 0*np.array(f)
     return fns
+
 
 def dfind_half(e1f, e2f, mu1f, mu2f, f, m):
     mu = mu1f(f) - cmath.sqrt(-1) * mu2f(f)

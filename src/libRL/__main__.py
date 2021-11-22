@@ -148,13 +148,15 @@ def _characterization_cli(args):
 
 
 def _print_help():
-    _help = "\n".join((
-        "libRL CLI",
-        "Author: Michael Green, PhD",
-        "This tool can be used to calculate the GHz-range electromagnetic "
-        "responses of materials. There are three main modes, `rl`, `ba` and "
-        "`char`. Type 'libRL <mode> --help' for more information on each."
-    ))
+    _help = "\n".join(
+        (
+            "libRL CLI",
+            "Author: Michael Green, PhD",
+            "This tool can be used to calculate the GHz-range electromagnetic "
+            "responses of materials. There are three main modes, `rl`, `ba` and "
+            "`char`. Type 'libRL <mode> --help' for more information on each.",
+        )
+    )
     print(_help)
 
 

@@ -22,8 +22,7 @@ def characterization(data=None, f_set=None, params=None, **kwargs):
         data = parse.file(data)
         f, e1, e2, mu1, mu2 = data
 
-    interpolation_mode = kwargs.get("interp", "cubic")
-    fns = interpolations(f, e1, e2, mu1, mu2, interpolation_mode)
+    fns = interpolations(f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override"))
     chars = Characterizations(*fns)
 
     if params == ["all"]:

@@ -20,8 +20,7 @@ def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwa
         set(ids := [len(str(x).split(".")[1]) for x in f_set]), key=ids.count
     )
 
-    interpolation_mode = kwargs.get("interp", "cubic")
-    e1f, e2f, mu1f, mu2f = interpolations(f, e1, e2, mu1, mu2, interpolation_mode)
+    e1f, e2f, mu1f, mu2f = interpolations(f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override"))
     fns = [e1f, e2f, mu1f, mu2f]
 
     band_results = {}
