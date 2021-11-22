@@ -22,7 +22,7 @@ def _f_set(parser):
         "--f_set",
         type=functools.partial(_fdm_format, float),
         metavar="",
-        help="frequencies for analysis, three numbers separated by ','",
+        help="frequencies for analysis, typically three numbers separated by ',' i.e. 1,5,0.1 which calculates results at 1, 1.1, 1.2 ... 4.9",
         default=None,
     )
 
@@ -33,7 +33,7 @@ def _d_set(parser):
         "--d_set",
         type=functools.partial(_fdm_format, float),
         metavar="",
-        help="thicknesses for analysis, three numbers separated by ','",
+        help="thicknesses for analysis, typically three numbers separated by ',' i.e. 1,5,0.1 which calculates results at 1, 1.1, 1.2 ... 4.9",
         default=(0, 5, 0.1),
     )
 
@@ -44,7 +44,7 @@ def _m_set(parser):
         "--m_set",
         type=functools.partial(_fdm_format, int),
         metavar="",
-        help="band numbers for analysis, three numbers separated by ','",
+        help="band numbers for analysis, typically two numbers separated by ',' i.e. 1,5 which calculates results at 1, 2, ... 4",
         default=[1],
     )
 
@@ -54,13 +54,19 @@ def _saver(parser):
         "-s",
         "--save",
         type=str,
+        metavar="",
         help="filepath to save data at. Directory must exist.",
         default=None,
     )
 
 
-def _reflection_loss_cli(filepath, args):
+def _filepath(parser):
+    parser.add_argument("filepath", type=str, metavar="", help="path to data file")
+
+
+def _reflection_loss_cli(args):
     parser = argparse.ArgumentParser(description="libRL reflection loss")
+    _filepath(parser)
     _f_set(parser)
     _d_set(parser)
     _saver(parser)
@@ -69,13 +75,14 @@ def _reflection_loss_cli(filepath, args):
         type=str,
         metavar="",
         help=(
-            "data override, options are ['x0', 'es'] for ",
-            "chi-zero and epsilon-set, respectively",
+            "data override, options are ['x0', 'es'] for "
+            "chi-zero and epsilon-set, respectively"
         ),
         default=None,
     )
-    ns = parser.parse_args(args)
-    results = libRL.reflection_loss(filepath, **vars(ns))
+    ns = vars(parser.parse_args(args))
+    filepath = ns.pop("filepath")
+    results = libRL.reflection_loss(filepath, **ns)
     vals = zip(results["f"], *results["RL"])
     return "\n".join(
         (
@@ -85,8 +92,9 @@ def _reflection_loss_cli(filepath, args):
     )
 
 
-def _bandwidth_analysis_cli(filepath, args):
+def _bandwidth_analysis_cli(args):
     parser = argparse.ArgumentParser(description="libRL band analysis")
+    _filepath(parser)
     _d_set(parser)
     _m_set(parser)
     _f_set(parser)
@@ -100,11 +108,12 @@ def _bandwidth_analysis_cli(filepath, args):
         help="threshold value, default is -10",
         default=-10,
     )
-    ns = parser.parse_args(args)
-    results = libRL.band_analysis(filepath, **vars(ns))
+    ns = vars(parser.parse_args(args))
+    filepath = ns.pop("filepath")
+    results = libRL.band_analysis(filepath, **ns)
 
-    m_set = parse.m_set(ns.m_set)
-    d_set = parse.d_set(ns.d_set)
+    m_set = parse.m_set(ns["m_set"])
+    d_set = parse.d_set(ns["d_set"])
 
     return "\n".join(
         (
@@ -117,8 +126,9 @@ def _bandwidth_analysis_cli(filepath, args):
     )
 
 
-def _characterization_cli(filepath, args):
+def _characterization_cli(args):
     parser = argparse.ArgumentParser(description="libRL characterizations")
+    _filepath(parser)
     _f_set(parser)
     _saver(parser)
     parser.add_argument(
@@ -129,26 +139,33 @@ def _characterization_cli(filepath, args):
         help="parameters to calculate, separated by comma. Default is 'all'",
         default=["all"],
     )
-    ns = parser.parse_args(args)
-    results = libRL.characterization(filepath, **vars(ns))
+    ns = vars(parser.parse_args(args))
+    filepath = ns.pop("filepath")
+    results = libRL.characterization(filepath, **ns)
     keys = results.keys()
     vals = [list(i) for i in zip(*(results[i] for i in keys))]
     return "\n".join((",".join(keys), *(",".join((str(i) for i in v)) for v in vals)))
 
 
 def _print_help():
-    _help = "libRL"
+    _help = "\n".join((
+        "libRL CLI",
+        "Author: Michael Green, PhD",
+        "This tool can be used to calculate the GHz-range electromagnetic "
+        "responses of materials. There are three main modes, `rl`, `ba` and "
+        "`char`. Type 'libRL <mode> --help' for more information on each."
+    ))
     print(_help)
 
 
 def main():
-    _, cmd, filepath, *args = sys.argv
-    if cmd in ("rl", "reflection_loss"):
-        return _reflection_loss_cli(filepath, args)
+    _, cmd, *args = sys.argv
+    if cmd in ("rl", "RL", "reflection_loss"):
+        return _reflection_loss_cli(args)
     elif cmd in ("ba", "band_analysis"):
-        return _bandwidth_analysis_cli(filepath, args)
+        return _bandwidth_analysis_cli(args)
     elif cmd in ("c", "char", "characterization"):
-        return _characterization_cli(filepath, args)
+        return _characterization_cli(args)
     elif cmd in ("-h", "--help"):
         return _print_help()
     else:
