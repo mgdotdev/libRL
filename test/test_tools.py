@@ -65,6 +65,6 @@ class TestRedundancies:
 
 class TestRefactors:
     def test_parse(self, paraffin_fixture):
-        actual = parse.file(paraffin_fixture.name)
+        actual = parse.data(paraffin_fixture.name)
         expected = Expectation("test_parse.json")
         assert actual == expected.read()

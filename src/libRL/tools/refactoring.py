@@ -1,5 +1,6 @@
 import csv
 import cmath
+import io
 
 import numpy as np
 
@@ -17,8 +18,12 @@ def _data_generator(f):
             continue
 
 
-def _parse_file(filepath):
-    with open(filepath, "r") as fl:
+def _parse_file(_input):
+    if isinstance(_input, io.StringIO):
+        result = [list(i) for i in zip(*_data_generator(_input))]
+        return result
+
+    with open(_input, "r") as fl:
         return [list(i) for i in zip(*_data_generator(fl))]
 
 
@@ -90,5 +95,5 @@ def dfind_half(e1f, e2f, mu1f, mu2f, f, m):
 
 
 parse = SimpleNamespace(
-    file=_parse_file, f_set=_parse_f_set, d_set=_parse_d_set, m_set=_parse_m_set
+    data=_parse_file, f_set=_parse_f_set, d_set=_parse_d_set, m_set=_parse_m_set
 )

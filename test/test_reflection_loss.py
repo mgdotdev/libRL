@@ -1,3 +1,4 @@
+import io
 import os.path
 
 import libRL
@@ -11,6 +12,18 @@ class TestReflectionLoss:
             paraffin_fixture.name, f_set=(1, 18, 1), d_set=(0, 20, 1)
         )
         assert actual == expected.read()
+
+    def test_reflection_loss_StringIO(self, material_fixture):
+
+        data = io.StringIO(material_fixture.read())
+        expected = Expectation("reflection_loss_StringIO.json")
+        actual = libRL.reflection_loss(
+            data=data,
+            f_set=(1,18,1),
+            d_set=(1,5,1),
+        )
+        assert actual == expected.read()
+
 
     def test_reflection_loss_lists(self, paraffin_fixture):
         expected = Expectation("reflection_loss_lists.json")

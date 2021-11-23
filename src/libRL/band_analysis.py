@@ -8,15 +8,8 @@ from .tools.writer import band_analysis as write
 
 def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs):
 
-    if isinstance(data, str):
-        data = parse.file(data)
-        
-    elif isinstance(data, io.StringIO):
-        data = list(_data_generator(data))
-
-    else:
-        raise ValueError("given data of unexpected type")
-
+    data = parse.data(data)
+    
     f, e1, e2, mu1, mu2 = data
 
     f_set = parse.f_set(f_set, f)

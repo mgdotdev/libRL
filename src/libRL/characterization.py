@@ -19,14 +19,7 @@ def characterization(data=None, f_set=None, params=None, **kwargs):
     if params is None:
         params = ["all"]
 
-    if isinstance(data, str):
-        data = parse.file(data)
-        
-    elif isinstance(data, io.StringIO):
-        data = list(_data_generator(data))
-
-    else:
-        raise ValueError("given data of unexpected type")
+    data = parse.data(data)
 
     f, e1, e2, mu1, mu2 = data
 

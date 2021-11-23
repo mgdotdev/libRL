@@ -8,14 +8,7 @@ from .tools.writer import reflection_loss as write
 
 def reflection_loss(data, f_set=None, d_set=None, **kwargs):
 
-    if isinstance(data, str):
-        data = parse.file(data)
-        
-    elif isinstance(data, io.StringIO):
-        data = list(_data_generator(data))
-
-    else:
-        raise ValueError("given data of unexpected type")
+    data = parse.data(data)
 
     f, e1, e2, mu1, mu2 = data
 
