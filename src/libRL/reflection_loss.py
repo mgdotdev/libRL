@@ -1,7 +1,8 @@
+import io
 import itertools
 
 from .tools.extensions import gamma
-from .tools.refactoring import parse, interpolations
+from .tools.refactoring import parse, interpolations, _data_generator
 from .tools.writer import reflection_loss as write
 
 
@@ -9,7 +10,14 @@ def reflection_loss(data, f_set=None, d_set=None, **kwargs):
 
     if isinstance(data, str):
         data = parse.file(data)
-        f, e1, e2, mu1, mu2 = data
+        
+    elif isinstance(data, io.StringIO):
+        data = list(_data_generator(data))
+
+    else:
+        raise ValueError("given data of unexpected type")
+
+    f, e1, e2, mu1, mu2 = data
 
     f_set = parse.f_set(f_set, f)
     d_set = parse.d_set(d_set)

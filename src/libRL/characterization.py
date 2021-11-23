@@ -1,9 +1,10 @@
+import io
 import cmath
 
 
 from numpy import sqrt, pi, array
 
-from .tools.refactoring import parse, interpolations
+from .tools.refactoring import parse, interpolations, _data_generator
 from .tools.writer import characterization as write
 
 # constants
@@ -20,7 +21,14 @@ def characterization(data=None, f_set=None, params=None, **kwargs):
 
     if isinstance(data, str):
         data = parse.file(data)
-        f, e1, e2, mu1, mu2 = data
+        
+    elif isinstance(data, io.StringIO):
+        data = list(_data_generator(data))
+
+    else:
+        raise ValueError("given data of unexpected type")
+
+    f, e1, e2, mu1, mu2 = data
 
     fns = interpolations(f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override"))
     chars = Characterizations(*fns)
