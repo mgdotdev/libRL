@@ -34,7 +34,8 @@ def characterization(data=None, f_set=None, params=None, **kwargs):
     f_set = parse.f_set(f_set, f)
     results = {"f": f_set, **{param: chars[param](f_set).tolist() for param in params}}
 
-    if filename := kwargs.get("save"):
+    filename = kwargs.get("save")
+    if filename:
         return write(results, filename)
     return results
 
