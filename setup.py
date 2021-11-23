@@ -15,7 +15,7 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="libRL",
-    version="2.0.2",
+    version="2.0.3",
     python_requires=">=3.6",
     include_package_data=True,
     description="Python library for characterizing Microwave Absorption",
