@@ -16,9 +16,9 @@ def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwa
     m_set = parse.m_set(m_set)
 
     f_step = (f_set[-1] - f_set[0]) / (len(f_set) - 1)
-    f_precision = max(
-        set(ids := [len(str(x).split(".")[1]) for x in f_set]), key=ids.count
-    )
+
+    precisions = [len(str(x).split(".")[1]) for x in f_set]
+    f_precision = max(set(precisions), key=precisions.count)
 
     e1f, e2f, mu1f, mu2f = interpolations(f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override"))
     fns = [e1f, e2f, mu1f, mu2f]
@@ -42,7 +42,7 @@ def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwa
             band_results.setdefault(m, {})[key] = round(
                 len(values) * f_step, f_precision
             )
-
-    if filename := kwargs.get("save"):
+    filename = kwargs.get("save")
+    if filename:
         return write(d_set, band_results, filename)
     return band_results

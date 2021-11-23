@@ -24,6 +24,7 @@ def reflection_loss(data, f_set=None, d_set=None, **kwargs):
         for _, grouper in itertools.groupby(rl_vals, key=lambda item: item[2])
     ]
     results = {"f": f_set, "d": d_set, "RL": result_grid}
-    if filename := kwargs.get("save"):
+    filename = kwargs.get("save")
+    if filename:
         write(results, filename)
     return results
