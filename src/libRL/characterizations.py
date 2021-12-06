@@ -4,7 +4,7 @@ import cmath
 
 from numpy import sqrt, pi, array
 
-from .tools.refactoring import parse, interpolations, _data_generator
+from .tools.refactoring import parse, interpolations
 from .tools.writer import characterization as write
 
 # constants
@@ -23,7 +23,9 @@ def characterization(data=None, f_set=None, params=None, **kwargs):
 
     f, e1, e2, mu1, mu2 = data
 
-    fns = interpolations(f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override"))
+    fns = interpolations(
+        f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override")
+    )
     chars = Characterizations(*fns)
 
     if params == ["all"]:

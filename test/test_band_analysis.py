@@ -27,7 +27,7 @@ class TestBandAnalysis:
             f_set=(1, 18, 0.1),
             d_set=(0, 20, 0.1),
             m_set=(1, 5, 1),
-            override="x0"
+            override="x0",
         )
         assert all(
             ai == ei

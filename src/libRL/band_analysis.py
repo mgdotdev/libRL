@@ -2,14 +2,14 @@ import io
 import itertools
 
 from .tools.extensions import gamma
-from .tools.refactoring import parse, interpolations, dfind_half, _data_generator
+from .tools.refactoring import parse, interpolations, dfind_half
 from .tools.writer import band_analysis as write
 
 
 def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs):
 
     data = parse.data(data)
-    
+
     f, e1, e2, mu1, mu2 = data
 
     f_set = parse.f_set(f_set, f)
@@ -21,15 +21,16 @@ def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwa
     precisions = [len(str(x).split(".")[1]) for x in f_set]
     f_precision = max(set(precisions), key=precisions.count)
 
-    e1f, e2f, mu1f, mu2f = interpolations(f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override"))
-    fns = [e1f, e2f, mu1f, mu2f]
+    fns = interpolations(
+        f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override")
+    )
 
     band_results = {}
     for m in m_set:
         results = []
         for f in f_set:
-            d_min = dfind_half(e1f, e2f, mu1f, mu2f, f, m)
-            d_max = dfind_half(e1f, e2f, mu1f, mu2f, f, m + 1)
+            d_min = dfind_half(*fns, f, m)
+            d_max = dfind_half(*fns, f, m + 1)
             d_vals = [d for d in d_set if d_min <= d <= d_max]
             reflection_loss_values = gamma(
                 [f], d_vals, *[list(map(fn, [f])) for fn in fns]

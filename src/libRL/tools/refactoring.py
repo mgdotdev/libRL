@@ -78,11 +78,11 @@ def interpolations(f, e1, e2, mu1, mu2, mode="cubic", override=None):
         interp1d(f, p, kind=mode, fill_value="extrapolate") for p in (e1, e2, mu1, mu2)
     ]
     if override == "x0":
-        fns[2] = lambda f: 0*np.array(f)+1
-        fns[3] = lambda f: 0*np.array(f)
+        fns[2] = lambda f: 0 * np.array(f) + 1
+        fns[3] = lambda f: 0 * np.array(f)
     elif override == "es":
         fns[0] = lambda f: np.average(np.array(f))
-        fns[1] = lambda f: 0*np.array(f)
+        fns[1] = lambda f: 0 * np.array(f)
     return fns
 
 

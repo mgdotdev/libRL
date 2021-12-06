@@ -20,6 +20,11 @@ def material_fixture():
 
 
 @pytest.fixture(scope="session")
+def al_tio2_fixture():
+    yield Fixture("Al700.csv")
+
+
+@pytest.fixture(scope="session")
 def tempdir():
     tempd = tempfile.TemporaryDirectory()
     yield tempd
