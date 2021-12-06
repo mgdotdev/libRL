@@ -46,7 +46,7 @@ def f_peak(data, f_set=None, d_set=None, m_set=None, **kwargs):
             for f_i, f in enumerate(f_set):
                 try:
                     rl_val = rl_vals[f_i][d_i]
-                    if all(rl_val >= rl_vals[i][j] for (i, j) in _product(d_i, f_i)):
+                    if all(rl_val <= rl_vals[j][i] for (i, j) in _product(d_i, f_i)):
                         f_peaks.append([rl_val, f, d])
                 except IndexError:
                     continue
