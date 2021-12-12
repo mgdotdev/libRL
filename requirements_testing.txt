@@ -1,2 +1,3 @@
 pytest
 coverage
+memory_profiler
