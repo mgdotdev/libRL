@@ -50,7 +50,7 @@ def f_peak(data, f_set=None, d_set=None, m_set=None, **kwargs):
                 try:
                     rl_val = rl_vals[f_i][d_i]
                     subarr = sorted(rl_vals[j][i] for (i, j) in _product(d_i, f_i))
-                    if rl_val in subarr[:3]:
+                    if rl_val in subarr[:2]:
                         f_peaks.append([rl_val, f, d])
                 except IndexError:
                     continue
