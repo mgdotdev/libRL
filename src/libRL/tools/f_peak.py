@@ -7,9 +7,12 @@ from .extensions import gamma
 from .refactoring import parse, interpolations, dfind_half
 
 
-def _product(d_i, f_i):
-    return itertools.product(
-        (d_i-1, d_i, d_i+1), (f_i-1, f_i, f_i+1)
+def _neighbors(d_i, f_i):
+    return (
+        (d_i-1, f_i),
+        (d_i+1, f_i),
+        (d_i, f_i-1),
+        (d_i, f_i+1),
     )
 
 def f_peak(data, f_set=None, d_set=None, m_set=None, **kwargs):
@@ -49,8 +52,8 @@ def f_peak(data, f_set=None, d_set=None, m_set=None, **kwargs):
             for f_i, f in enumerate(f_set):
                 try:
                     rl_val = rl_vals[f_i][d_i]
-                    subarr = sorted(rl_vals[j][i] for (i, j) in _product(d_i, f_i))
-                    if rl_val in subarr[:2]:
+                    _neighbor_vals = (rl_vals[i][j] for (i, j) in _neighbors(d_i, f_i))
+                    if all(rl_val < _neighbor for _neighbor in _neighbor_vals):
                         f_peaks.append([rl_val, f, d])
                 except IndexError:
                     continue
