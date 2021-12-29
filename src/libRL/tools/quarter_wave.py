@@ -15,4 +15,5 @@ def quarter_wave(data=None, f_set=None, **kwargs):
     def _quarter_wave(m):
         res = ((2*m-1)/4)*(c/(n(f)*(f*GHz)))
         return res*1000
-    return f, _quarter_wave
+    _quarter_wave.f = f
+    return _quarter_wave

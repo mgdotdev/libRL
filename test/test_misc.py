@@ -19,8 +19,8 @@ class TestFPeak:
             assert av == ev
 
     def test_quarter_wave(self, al_tio2_fixture):
-        f, fn = quarter_wave(
+        fn = quarter_wave(
             al_tio2_fixture.name,
             f_set=(1, 18, 0.1),
         )
-        assert len(f) == len(fn(1))
+        assert len(fn.f) == len(fn(1))
