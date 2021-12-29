@@ -1,8 +1,5 @@
 import itertools
 
-import numpy as np
-
-from ..reflection_loss import reflection_loss
 from .extensions import gamma
 from .refactoring import parse, interpolations, dfind_half
 

@@ -1,6 +1,10 @@
 import numpy as np
-from scipy.interpolate import interp1d
 
+from scipy.interpolate import interp1d
+from scipy.optimize import leastsq
+
+from .f_peak import f_peak
+from .refactoring import parse
 from ..characterizations import characterization
 
 c = 299792458  # speed of light
@@ -17,3 +21,27 @@ def quarter_wave(data=None, f_set=None, **kwargs):
         return res*1000
     _quarter_wave.f = f
     return _quarter_wave
+
+def _fitting_function(x, p):
+    return p[0] * x ** p[1]
+
+def _residuals(p, y, x):
+    return y - _fitting_function(x, p)
+
+def power_fn(data=None, f_set=None, d_set=None, m_set=None, **kwargs):
+    initial_guess = kwargs.get("initial", [1,1])
+    _f_peak = f_peak(data, f_set, d_set, m_set, **kwargs)
+    d_set = parse.d_set(d_set)
+    def _power_fn(m):
+        x = np.array([i[2] for i in _f_peak[m]])
+        y = np.array([i[1] for i in _f_peak[m]])
+        cnsts, *_ = leastsq(
+            _residuals, 
+            initial_guess, 
+            args=(y, x)
+        )
+        return np.array([_fitting_function(d_i, cnsts) for d_i in d_set])
+    _power_fn.d = d_set
+    return _power_fn
+
+
