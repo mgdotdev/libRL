@@ -31,16 +31,17 @@ def _residuals(p, y, x):
 def power_fn(data=None, f_set=None, d_set=None, **kwargs):
     initial_guess = kwargs.get("initial", [1,1])
     d_set = parse.d_set(d_set)
+    data = parse.data(data)
     def _power_fn(m):
         _f_peak = f_peak(data=data, f_set=f_set, d_set=d_set, m_set=[m], **kwargs)
         x = np.array([i[2] for i in _f_peak[m]])
         y = np.array([i[1] for i in _f_peak[m]])
-        cnsts, *_ = leastsq(
+        constants, *_ = leastsq(
             _residuals, 
             initial_guess, 
             args=(y, x)
         )
-        return np.array([_fitting_function(d_i, cnsts) for d_i in d_set])
+        return np.array([_fitting_function(d_i, constants) for d_i in d_set])
     _power_fn.d = d_set
     return _power_fn
 
