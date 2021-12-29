@@ -22,11 +22,11 @@ def quarter_wave(data=None, f_set=None, **kwargs):
     _quarter_wave.f = f
     return _quarter_wave
 
-def _fitting_function(x, p):
-    return p[0] * x ** p[1]
+def _fitting_function(x, a, b):
+    return a * x ** b
 
 def _residuals(p, y, x):
-    return y - _fitting_function(x, p)
+    return y - _fitting_function(x, *p)
 
 def power_fn(data=None, f_set=None, d_set=None, **kwargs):
     initial_guess = kwargs.get("initial", [1,1])
@@ -41,7 +41,7 @@ def power_fn(data=None, f_set=None, d_set=None, **kwargs):
             initial_guess, 
             args=(y, x)
         )
-        return np.array([_fitting_function(d_i, constants) for d_i in d_set])
+        return np.array([_fitting_function(d_i, *constants) for d_i in d_set])
     _power_fn.d = d_set
     return _power_fn
 
