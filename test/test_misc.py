@@ -30,7 +30,6 @@ class TestFPeak:
         fn = power_fn(
             al_tio2_fixture.name,
             f_set=(1, 18, 0.1),
-            d_set=(0, 5, 0.1),
-            m_set=(1,5,1)
+            d_set=(0, 5, 0.1)
         )
         assert len(fn.d) == len(fn(1))

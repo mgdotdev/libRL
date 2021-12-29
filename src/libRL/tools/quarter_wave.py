@@ -28,11 +28,11 @@ def _fitting_function(x, p):
 def _residuals(p, y, x):
     return y - _fitting_function(x, p)
 
-def power_fn(data=None, f_set=None, d_set=None, m_set=None, **kwargs):
+def power_fn(data=None, f_set=None, d_set=None, **kwargs):
     initial_guess = kwargs.get("initial", [1,1])
-    _f_peak = f_peak(data, f_set, d_set, m_set, **kwargs)
     d_set = parse.d_set(d_set)
     def _power_fn(m):
+        _f_peak = f_peak(data=data, f_set=f_set, d_set=d_set, m_set=[m], **kwargs)
         x = np.array([i[2] for i in _f_peak[m]])
         y = np.array([i[1] for i in _f_peak[m]])
         cnsts, *_ = leastsq(
