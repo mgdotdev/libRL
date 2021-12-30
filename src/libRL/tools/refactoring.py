@@ -21,62 +21,52 @@ def _data_generator(f):
 def _parse_file(_input):
     if isinstance(_input, list):
         return _input
-    elif isinstance(_input, io.StringIO):
-        result = [list(i) for i in zip(*_data_generator(_input))]
-        return result
-    elif isinstance(_input, str):
+    if isinstance(_input, io.StringIO):
+        return [list(i) for i in zip(*_data_generator(_input))]
+    if isinstance(_input, str):
         with open(_input, "r") as fl:
             return [list(i) for i in zip(*_data_generator(fl))]
-    else:
-        raise ValueError(
-            "unable to parse data input, should be filepath or io.StringIO"
-        )
+    raise ValueError("unable to parse data input, should be filepath or io.StringIO")
 
 
 def _parse_f_set(f_set, f):
     if f_set is None:
-        f_set = f
-    elif isinstance(f_set, tuple):
-        f_set = list(stepwise(*f_set))
-    elif isinstance(f_set, list):
-        pass
-    else:
-        raise ValueError("f_set must be either a tuple, list, or None")
-    return f_set
+        return f
+    if isinstance(f_set, list):
+        return f_set
+    if isinstance(f_set, tuple):
+        return list(stepwise(*f_set))
+    raise ValueError("f_set must be either a tuple, list, or None")
 
 
 def _parse_d_set(d_set):
+    if isinstance(d_set, list):
+        return d_set
     if isinstance(d_set, tuple):
-        d_set = list(stepwise(*d_set))
-    elif isinstance(d_set, (int, float)):
-        d_set = [d_set]
-    elif isinstance(d_set, list):
-        pass
-    else:
-        raise ValueError("d_set must be either a value, a tuple, or a list")
-    return d_set
+        return list(stepwise(*d_set))
+    if isinstance(d_set, (int, float)):
+        return [d_set]
+    raise ValueError("d_set must be either a value, a tuple, or a list")
 
 
 def _parse_m_set(m_set):
+    if isinstance(m_set, list):
+        return m_set
     if isinstance(m_set, tuple):
-        m_set = list(stepwise(*m_set))
-    elif isinstance(m_set, (int, float)):
-        m_set = [m_set]
-    elif isinstance(m_set, list):
-        pass
-    else:
-        raise ValueError("m_set must be either a value, a tuple, or a list")
-    return m_set
+        return list(stepwise(*m_set))
+    if isinstance(m_set, (int, float)):
+        return [m_set]
+    raise ValueError("m_set must be either a value, a tuple, or a list")
 
 
 def stepwise(start, stop, step=None):
     if not step:
-        for i in range(int(start), int(stop)):
-            yield i
-    else:
-        _, precision = str(float(step)).split(".")
-        for i in range(int((stop - start) / step)):
-            yield round(start + (step * i), len(precision))
+        return range(int(start), int(stop))
+    _, precision = str(float(step)).split(".")
+    return (
+        round(start + (step * i), len(precision))
+        for i in range(int((stop - start) / step))
+    )
 
 
 def interpolations(f, e1, e2, mu1, mu2, mode="cubic", override=None):
