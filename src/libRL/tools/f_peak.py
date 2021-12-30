@@ -35,7 +35,7 @@ def f_peak(data, f_set=None, d_set=None, **kwargs):
             d_max = dfind_half(*fns, f, m + 1)
             d_vals = [d for d in d_set if d_min <= d <= d_max]
             reflection_loss_values = gamma(
-                [f], d_vals, *[list(map(fn, [f])) for fn in fns]
+                [f], d_vals, *(list(map(fn, [f])) for fn in fns)
             )
 
             results.extend(reflection_loss_values)
