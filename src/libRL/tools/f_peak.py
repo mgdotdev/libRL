@@ -14,7 +14,9 @@ def _neighbors(d_i, f_i):
 
 
 def f_peak(data, f_set=None, d_set=None, **kwargs):
-
+    """a closure for determining the peak values along a response band. Returns
+    a function which takes m as input, and returns a list of lists formatted
+    [RL, f, d] for each local max value found in the band."""
     data = parse.data(data)
 
     f, e1, e2, mu1, mu2 = data

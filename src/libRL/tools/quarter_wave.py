@@ -12,6 +12,9 @@ GHz = 10 ** 9
 
 
 def quarter_wave(data=None, f_set=None, **kwargs):
+    """a closure for calculating the quarter-wave relation of a dataset. Returns
+    a function which takes m as input. frequencies used for calculation can be
+    acquired using getattr(fn, 'f')"""
     chars = characterization(data=data, f_set=f_set, **kwargs)
     f = np.array(chars["f"])
     ref_index = np.array(chars["ReRefIndx"])
@@ -34,6 +37,9 @@ def _residuals(p, d, f):
 
 
 def power_fn(data=None, f_set=None, d_set=None, **kwargs):
+    """a closure for generating f(d) = ad^b for band m. returns a function which
+    takes m as input. thicknesses used for calculation can be acquired using
+    getattr(fn, 'd')"""
     initial_guess = kwargs.get("initial", [1, 1])
     d_set = parse.d_set(d_set)
     data = parse.data(data)

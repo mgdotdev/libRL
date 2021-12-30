@@ -21,13 +21,16 @@ def _data_generator(f):
 def _parse_file(_input):
     if isinstance(_input, list):
         return _input
-
-    if isinstance(_input, io.StringIO):
+    elif isinstance(_input, io.StringIO):
         result = [list(i) for i in zip(*_data_generator(_input))]
         return result
-
-    with open(_input, "r") as fl:
-        return [list(i) for i in zip(*_data_generator(fl))]
+    elif isinstance(_input, str):
+        with open(_input, "r") as fl:
+            return [list(i) for i in zip(*_data_generator(fl))]
+    else:
+        raise ValueError(
+            "unable to parse data input, should be filepath or io.StringIO"
+        )
 
 
 def _parse_f_set(f_set, f):
