@@ -8,13 +8,26 @@ from .tools.writer import band_analysis as write
 
 def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwargs):
 
+    m_set = parse.m_set(m_set)
+    _analysis = _band_analysis(data=data, f_set=f_set, d_set=d_set, threshold=threshold, **kwargs)
+
+    band_results = {}
+    for m in m_set:
+        band_results[m] = _analysis(m)
+    filename = kwargs.get("save")
+    if filename:
+        d_set = parse.d_set(d_set)
+        return write(d_set, band_results, filename)
+    return band_results
+
+
+def _band_analysis(data, f_set=None, d_set=None, threshold=-10, **kwargs):
     data = parse.data(data)
 
     f, e1, e2, mu1, mu2 = data
 
     f_set = parse.f_set(f_set, f)
     d_set = parse.d_set(d_set)
-    m_set = parse.m_set(m_set)
 
     f_step = (f_set[-1] - f_set[0]) / (len(f_set) - 1)
 
@@ -24,9 +37,7 @@ def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwa
     fns = interpolations(
         f, e1, e2, mu1, mu2, kwargs.get("interp", "cubic"), kwargs.get("override")
     )
-
-    band_results = {}
-    for m in m_set:
+    def _analysis(m):
         results = []
         for f in f_set:
             d_min = dfind_half(*fns, f, m)
@@ -38,13 +49,11 @@ def band_analysis(data, f_set=None, d_set=None, m_set=None, threshold=-10, **kwa
 
             results.extend([x for x in reflection_loss_values if x[0] <= threshold])
         results.sort(key=lambda item: item[2])
-
+        band_results = {}
         for key, grouper in itertools.groupby(results, key=lambda item: item[2]):
             values = list(grouper)
-            band_results.setdefault(m, {})[key] = round(
+            band_results[key] = round(
                 len(values) * f_step, f_precision
             )
-    filename = kwargs.get("save")
-    if filename:
-        return write(d_set, band_results, filename)
-    return band_results
+        return band_results
+    return _analysis
