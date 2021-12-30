@@ -21,7 +21,7 @@ def _data_generator(f):
 def _parse_file(_input):
     if isinstance(_input, list):
         return _input
-        
+
     if isinstance(_input, io.StringIO):
         result = [list(i) for i in zip(*_data_generator(_input))]
         return result

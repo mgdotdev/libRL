@@ -6,11 +6,12 @@ from .refactoring import parse, interpolations, dfind_half
 
 def _neighbors(d_i, f_i):
     return (
-        (d_i+1, f_i),
-        (d_i-1, f_i),
-        (d_i, f_i-1),
-        (d_i, f_i+1),
+        (d_i + 1, f_i),
+        (d_i - 1, f_i),
+        (d_i, f_i - 1),
+        (d_i, f_i + 1),
     )
+
 
 def f_peak(data, f_set=None, d_set=None, **kwargs):
 
@@ -53,4 +54,5 @@ def f_peak(data, f_set=None, d_set=None, **kwargs):
                 except IndexError:
                     continue
         return f_peaks
+
     return _f_peak

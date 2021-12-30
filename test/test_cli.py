@@ -17,11 +17,7 @@ class TestMainReflectionLoss:
     def test_defaults(self, run_patch_and_catch):
         args, kwargs = run_patch_and_catch(
             "libRL.reflection_loss",
-            [
-                "libRL",
-                "rl",
-                "path/to/file.csv",
-            ],
+            ["libRL", "rl", "path/to/file.csv",],
             dict(f=[1], d=[1], RL=[[1]]),
         )
         assert args == ("path/to/file.csv",)
@@ -61,13 +57,7 @@ class TestMainBandAnalysis:
 
     def test_defaults(self, run_patch_and_catch):
         args, kwargs = run_patch_and_catch(
-            "libRL.band_analysis",
-            [
-                "libRL",
-                "ba",
-                "path/to/file.csv",
-            ],
-            {1: {1: 1}},
+            "libRL.band_analysis", ["libRL", "ba", "path/to/file.csv",], {1: {1: 1}},
         )
 
         assert args == ("path/to/file.csv",)
@@ -98,11 +88,7 @@ class TestMainCharacterization:
     def test_defaults(self, run_patch_and_catch):
         args, kwargs = run_patch_and_catch(
             "libRL.characterization",
-            [
-                "libRL",
-                "c",
-                "path/to/file.csv",
-            ],
+            ["libRL", "c", "path/to/file.csv",],
             {"f": [1, 2, 3], "Qe": [1, 2, 3]},
         )
         assert args == ("path/to/file.csv",)

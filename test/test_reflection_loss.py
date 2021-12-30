@@ -17,11 +17,7 @@ class TestReflectionLoss:
 
         data = io.StringIO(material_fixture.read())
         expected = Expectation("reflection_loss_StringIO.json")
-        actual = libRL.reflection_loss(
-            data=data,
-            f_set=(1, 18, 1),
-            d_set=(1, 5, 1),
-        )
+        actual = libRL.reflection_loss(data=data, f_set=(1, 18, 1), d_set=(1, 5, 1),)
         assert actual == expected.read()
 
     def test_reflection_loss_lists(self, paraffin_fixture):
@@ -67,10 +63,7 @@ class TestReflectionLoss:
         filename = "test_save_reflection_loss.csv"
         filepath = os.path.join(tempdir.name, filename)
         libRL.reflection_loss(
-            paraffin_fixture.name,
-            f_set=[1, 2, 3, 4, 5],
-            d_set=1,
-            save=filepath,
+            paraffin_fixture.name, f_set=[1, 2, 3, 4, 5], d_set=1, save=filepath,
         )
         actual = LocalFileUtil(filepath)
         expected = Expectation(filename)

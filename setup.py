@@ -32,9 +32,7 @@ setup(
     entry_points={"console_scripts": ["libRL=libRL.__main__:main"]},
     packages=find_packages(where="src"),
     package_dir={"": "src"},
-    install_requires=[
-        "scipy",
-    ],
+    install_requires=["scipy",],
     tests_require=["pytest", "coverage"],
     ext_modules=extensions,
     project_urls={
