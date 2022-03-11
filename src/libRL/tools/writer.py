@@ -5,7 +5,7 @@ import itertools
 def reflection_loss(data, filepath):
     with open(filepath, "w") as f:
         writer = csv.writer(f)
-        f.write("".join((",", *(str(i) for i in data["d"]), "\n")))
+        f.write(','+','.join((str(i) for i in data["d"]))+'\n')
         writer.writerows(zip(data["f"], *data["RL"]))
 
 
