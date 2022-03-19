@@ -13,7 +13,8 @@ from scipy.interpolate import interp1d
 def _data_generator(f):
     for r in csv.reader(f):
         try:
-            yield [float(i) for i in r]
+            if res := [float(i) for i in r]:
+                yield res
         except ValueError:
             continue
 
